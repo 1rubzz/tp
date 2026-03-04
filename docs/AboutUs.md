@@ -11,11 +11,21 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
+### Ruben Teo
+
+<img src="images/1rubzz.png" width="200px">
+
+[[github](http://github.com/1rubzz)]
+[[portfolio]()]
+
+* Role: Team Lead
+
 ### Natalia Zhao
 
 <img src="images/petelectron.png" width="200px">
 
 [[github](https://github.com/petelectron)]
+[[portfolio]()]
 
 * Role: Team Member
 
@@ -26,33 +36,22 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/emperorgaodi)]
 [[portfolio]()]
 
-* Role: Developer
-* Responsibilities: -
+* Role: Team Member
 
-### Ruben Teo
+### Boo Qi Yang
 
-<img src="images/1rubzz.png" width="200px">
+<img src="images/qyscode.png" width="200px">
 
-[[github](http://github.com/1rubzz)]
+[[github](https://github.com/qyscode)]
 [[portfolio]()]
 
-* Role: Team Lead
-* Responsibilities: -
-
-### Jean Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Role: Team Member
 
 ### Hoang Tuan Minh
 
 <img src="images/moonmertens.png" width="200px">
 
 [[github](https://github.com/moonmertens)]
+[[portfolio]()]
 
 * Role: Team Member
