@@ -26,7 +26,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/qyscode.png" width="200px">
 
 [[github](https://github.com/qyscode)]
-[[portfolio](team/johndoe.md)]
 
 * Role: Team Lead
 * Responsibilities: UI
