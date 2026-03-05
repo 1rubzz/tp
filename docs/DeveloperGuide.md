@@ -272,7 +272,7 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: Human Resource Manager
 
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
@@ -280,21 +280,35 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
-
+**Value proposition**:
+- manage contacts faster than a typical mouse/GUI driven app
+- provides fast access to employee details, with sorting options for further clarity
+- view job applicants details at a glance and decide whether to proceed with interviews and hiring
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​                            | I want to …​                           | So that I can…​                                            |
+|---------|------------------------------------|----------------------------------------|------------------------------------------------------------|
+| `* * *` | new user                           | have a guided tutorial                 | understand the layout and get started quickly              |
+| `* * *` | user                               | add an employee                        | keep track of new employees                                |
+| `* * *` | user                               | delete an employee                     | clear up data when it is no longer needed                  |
+| `* * *` | user                               | view all employees                     | gain a brief overview of everyone in the company           |
+| `* * *` | user                               | store phone numbers and email addresses | contact employees easily                                   |
+| `* * *` | busy user                          | search for employees                   | quickly find a specific staff member                       |
+| `* * *` | busy user                          | add contacts with only name and phone  | track someone now and update details later                 |
+| `* * `  | organised user                     | modify employee details                | keep info up to date                                       |
+| `* * `  | organised user                     | sort employees by variables            | find the most relevant employees for my needs              |
+| `* * `  | organised user                     | tag employees by department            | categorise them                                            |
+| `* * `  | cautious user                      | get confirmation of my work            | not worry that my changes haven't been saved               |
+| `* * `  | clumsy user                        | undo my last action                    | avoid making mistakes or losing data                       |
+| `* * `  | clueless user                      | see error messages                     | correct my mistakes                                        |
+| `* `    | expert user                        | import employee data                   | manage pre-existing details without hand-typing everything |
+| `* `    | expert user                        | export employee data                   | back up data, support audits and planning                  |
+| `* `    | expert user                        | bulk archive or tag multiple applicants | clean up after a role is filled more efficiently           |
+| `* `    | user responsible for reporting	    | use a centralized dashboard            | maintain visibility over workforce and talent pipeline     |
+| `* `    | safe user                          | access the app via login authentication | ensure employee data is secure                             |
 
 *{More to be added}*
 
