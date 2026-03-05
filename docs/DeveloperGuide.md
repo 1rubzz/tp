@@ -316,6 +316,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
+**UC1 Use case: Add employee**
+
+**MSS**
+
+1.  User requests to add a person by adding employee details
+2.  AddressBook adds the person to the records.
+3.  AddressBook displays confirmation message.
+    Use case ends.
+
+**Extensions** // TO REVIEW --------------------------
+
+* 1a. AddressBook detects an error (e.g. format/syntax error) in the entered data.
+      3a1. AddressBook displays an error message with the correct format.
+      3a2. User enters new data.
+      Steps 3a1-3a2 are repeated until the data entered are correct.
+      Use case resumes from step 2.
+
+
+
 **Use case: Quick-add and subsequent update**
 
 **MSS**
@@ -396,28 +415,7 @@ Use case ends.
 
 // --------------------------
 
-**Use case: Login (Secure access)**
 
-**MSS**
-
-1.  User opens the application.
-2.  AddressBook prompts the User for username and password.
-3.  User enters credentials.
-4.  AddresBook validates credentials and grants access to the application.
-
-    Use case ends.
-
-**Extensions** // TO REVIEW --------------------------
-
-* 1a. // there are multiple matching results
-
-      // then how
-
-      Use case restarts at step 1.
-
-* 1b. // one or more of the arguments face a duplicate
-
-  Use case ends.
 
 // --------------------------
 
