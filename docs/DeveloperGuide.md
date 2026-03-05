@@ -314,32 +314,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `HRmanager` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `HRmanager` and the **Actor** is the `HR manager`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC3 - View Employee *
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
-
-    Use case ends.
+1. HR manager requests to view the list of employees.
+2. System retrieves the employee records and displays employee list.
+Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. There are no employees stored in the system.
+      2a1. System displays an empty employee list.
+      Use case ends.
 
-  Use case ends.
 
-* 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
 
-      Use case resumes at step 2.
 
-*{More to be added}*
 
 ### Non-Functional Requirements
 
