@@ -338,7 +338,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **HR Manager**: The primary user of the system who manages employee records using the application.
+* **Employee Record**: A collection of information stored in the system about an employee, such as name, 
+                       email, phone number, and role.
+* **Command Line Interface (CLI)**: A text-based interface where users interact with the application by typing commands.
 
 --------------------------------------------------------------------------------------------------------------------
 
