@@ -316,30 +316,135 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Quick-add and subsequent update**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to add a new employee with only a name and phone number.
+2.  AddressBook adds the employee and shows a confirmation message with the added details.
+3.  Some time later, User requests to edit the same employee to add their email and address.
+// how to reference the same employee? employee id? what if there are conflicts/duplicates e.g. names?
+4.  AddressBook shows the updated details of the employee.
 
     Use case ends.
 
-**Extensions**
+**Extensions** // TO REVIEW --------------------------
 
-* 2a. The list is empty.
+* 1b. // one or more of the arguments face a duplicate
 
   Use case ends.
 
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
-
 *{More to be added}*
+
+// --------------------------
+
+**Use case: Modify a specific employee's details, found by some detail**
+
+**MSS**
+
+1.  User searches for a specific employee by one of the likely-distinct parameters. (name, email, phone number)
+2.  AddressBook shows the employee ID of the target employee with details to be modified.
+3.  User requests to edit the employee's details.
+4.  AddressBook modifies the relevant details to be modified for that specific employee.
+5.  AddressBook shows the new details of the employee.
+
+    Use case ends.
+
+**Extensions** // TO REVIEW --------------------------
+
+* 1a. // there are multiple matching results
+
+      // then how
+
+      Use case restarts at step 1.
+
+* 1b. // one or more of the arguments face a duplicate
+
+  Use case ends.
+
+// --------------------------
+
+**Use case: Undo a mistaken deletion**
+
+**MSS**
+
+1.  User requests to list employees.
+2.  AddressBook shows the list.
+3.  User requests to delete an employee based on an index.
+4.  AddressBook requests to delete the employee.
+5.  AddressBook prompts the User to confirm their action.
+6.  User confirms delete action.
+7.  AddressBook deletes the employee record.
+8.  User realizes they deleted the wrong person and requests to undo the action.
+9.  AddressBook restores the deleted employee to the list and prints a action success message.
+
+Use case ends.
+
+    Use case ends.
+
+**Extensions** // TO REVIEW --------------------------
+
+* 1a. // there are multiple matching results
+
+      // then how
+
+      Use case restarts at step 1.
+
+* 1b. // one or more of the arguments face a duplicate
+
+  Use case ends.
+
+// --------------------------
+
+**Use case: Login (Secure access)**
+
+**MSS**
+
+1.  User opens the application.
+2.  AddressBook prompts the User for username and password.
+3.  User enters credentials.
+4.  AddresBook validates credentials and grants access to the application.
+
+    Use case ends.
+
+**Extensions** // TO REVIEW --------------------------
+
+* 1a. // there are multiple matching results
+
+      // then how
+
+      Use case restarts at step 1.
+
+* 1b. // one or more of the arguments face a duplicate
+
+  Use case ends.
+
+// --------------------------
+
+**Use case: Onboarding via Guided Tutorial**
+
+**MSS**
+
+1.  User launches the application for the first time.
+2.  AddressBook detects a new user and prompts to start a guided tutorial.
+3.  User accepts the prompt.
+4.  AddressBook prints the list of commands.
+
+    Use case ends.
+
+**Extensions** // TO REVIEW --------------------------
+
+* 1a. // there are multiple matching results
+
+      // then how
+
+      Use case restarts at step 1.
+
+* 1b. // one or more of the arguments face a duplicate
+
+  Use case ends.
+
+// --------------------------
 
 ### Non-Functional Requirements
 
