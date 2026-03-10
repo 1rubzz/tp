@@ -19,7 +19,7 @@ public class PersonBuilder {
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_ROLE = "Software Engineer";
 
     private Name name;
     private Phone phone;
@@ -34,7 +34,7 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        role = new Role(DEFAULT_ADDRESS);
+        role = new Role(DEFAULT_ROLE);
         tags = new HashSet<>();
     }
 
@@ -68,8 +68,8 @@ public class PersonBuilder {
     /**
      * Sets the {@code Role} of the {@code Person} that we are building.
      */
-    public PersonBuilder withAddress(String address) {
-        this.role = new Role(address);
+    public PersonBuilder withRole(String role) {
+        this.role = new Role(role);
         return this;
     }
 

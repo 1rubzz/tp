@@ -6,7 +6,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-public class AddressTest {
+public class RoleTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
@@ -14,24 +14,24 @@ public class AddressTest {
     }
 
     @Test
-    public void constructor_invalidAddress_throwsIllegalArgumentException() {
-        String invalidAddress = "";
-        assertThrows(IllegalArgumentException.class, () -> new Role(invalidAddress));
+    public void constructor_invalidRole_throwsIllegalArgumentException() {
+        String invalidRole = "";
+        assertThrows(IllegalArgumentException.class, () -> new Role(invalidRole));
     }
 
     @Test
-    public void isValidAddress() {
-        // null address
+    public void isValidRole() {
+        // null role
         assertThrows(NullPointerException.class, () -> Role.isValidRole(null));
 
-        // invalid addresses
+        // invalid roles
         assertFalse(Role.isValidRole("")); // empty string
         assertFalse(Role.isValidRole(" ")); // spaces only
 
-        // valid addresses
-        assertTrue(Role.isValidRole("Blk 456, Den Road, #01-355"));
+        // valid roles
+        assertTrue(Role.isValidRole("Software Engineer"));
         assertTrue(Role.isValidRole("-")); // one character
-        assertTrue(Role.isValidRole("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
+        assertTrue(Role.isValidRole("Department 3 4th division head of marketing and security")); // long role
     }
 
     @Test
