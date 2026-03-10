@@ -37,20 +37,20 @@ public interface Model {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getHrmanagerFilePath();
+    Path getAddressBookFilePath();
 
     /**
      * Sets the user prefs' address book file path.
      */
-    void setHrmanagerFilePath(Path hrmanagerFilePath);
+    void setAddressBookFilePath(Path addressBookFilePath);
 
     /**
-     * Replaces hrmanager data with the data in {@code hrmanager}.
+     * Replaces address book data with the data in {@code addressBook}.
      */
-    void setHrmanager(ReadOnlyHrmanager hrmanager);
+    void setAddressBook(ReadOnlyAddressBook addressBook);
 
-    /** Returns the Hrmanager */
-    ReadOnlyHrmanager getHrmanager();
+    /** Returns the AddressBook */
+    ReadOnlyAddressBook getAddressBook();
 
     /**
      * Returns true if a person with the same identity as {@code person} exists in the address book.

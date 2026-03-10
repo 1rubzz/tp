@@ -19,25 +19,25 @@ import seedu.address.model.person.Person;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final Hrmanager hrmanager;
+    private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
 
     /**
-     * Initializes a ModelManager with the given Hrmanager and userPrefs.
+     * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyHrmanager hrmanager, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(hrmanager, userPrefs);
+    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(addressBook, userPrefs);
 
-        logger.fine("Initializing with address book: " + hrmanager + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
-        this.hrmanager = new Hrmanager(hrmanager);
+        this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.hrmanager.getPersonList());
+        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
     }
 
     public ModelManager() {
-        this(new Hrmanager(), new UserPrefs());
+        this(new AddressBook(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -65,42 +65,42 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getHrmanagerFilePath() {
-        return userPrefs.getHrmanagerFilePath();
+    public Path getAddressBookFilePath() {
+        return userPrefs.getAddressBookFilePath();
     }
 
     @Override
-    public void setHrmanagerFilePath(Path addressBookFilePath) {
+    public void setAddressBookFilePath(Path addressBookFilePath) {
         requireNonNull(addressBookFilePath);
-        userPrefs.setHrmanagerFilePath(addressBookFilePath);
+        userPrefs.setAddressBookFilePath(addressBookFilePath);
     }
 
-    //=========== Hrmanager ================================================================================
+    //=========== AddressBook ================================================================================
 
     @Override
-    public void setHrmanager(ReadOnlyHrmanager addressBook) {
-        this.hrmanager.resetData(addressBook);
+    public void setAddressBook(ReadOnlyAddressBook addressBook) {
+        this.addressBook.resetData(addressBook);
     }
 
     @Override
-    public ReadOnlyHrmanager getHrmanager() {
-        return hrmanager;
+    public ReadOnlyAddressBook getAddressBook() {
+        return addressBook;
     }
 
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return hrmanager.hasPerson(person);
+        return addressBook.hasPerson(person);
     }
 
     @Override
     public void deletePerson(Person target) {
-        hrmanager.removePerson(target);
+        addressBook.removePerson(target);
     }
 
     @Override
     public void addPerson(Person person) {
-        hrmanager.addPerson(person);
+        addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
@@ -108,14 +108,14 @@ public class ModelManager implements Model {
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        hrmanager.setPerson(target, editedPerson);
+        addressBook.setPerson(target, editedPerson);
     }
 
     //=========== Filtered Person List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedHrmanager}
+     * {@code versionedAddressBook}
      */
     @Override
     public ObservableList<Person> getFilteredPersonList() {
@@ -140,7 +140,7 @@ public class ModelManager implements Model {
         }
 
         ModelManager otherModelManager = (ModelManager) other;
-        return hrmanager.equals(otherModelManager.hrmanager)
+        return addressBook.equals(otherModelManager.addressBook)
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }

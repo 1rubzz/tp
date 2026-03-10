@@ -9,10 +9,10 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Role;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -71,13 +71,13 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
-    public static Role parseRole(String role) throws ParseException {
-        requireNonNull(role);
-        String trimmedRole = role.trim();
-        if (!Role.isValidRole(trimmedRole)) {
-            throw new ParseException(Role.MESSAGE_CONSTRAINTS);
+    public static Address parseAddress(String address) throws ParseException {
+        requireNonNull(address);
+        String trimmedAddress = address.trim();
+        if (!Address.isValidAddress(trimmedAddress)) {
+            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
-        return new Role(trimmedRole);
+        return new Address(trimmedAddress);
     }
 
     /**

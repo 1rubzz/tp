@@ -13,7 +13,7 @@ import seedu.address.model.person.UniquePersonList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
-public class Hrmanager implements ReadOnlyHrmanager {
+public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
 
@@ -28,12 +28,12 @@ public class Hrmanager implements ReadOnlyHrmanager {
         persons = new UniquePersonList();
     }
 
-    public Hrmanager() {}
+    public AddressBook() {}
 
     /**
-     * Creates an Hrmanager using the Persons in the {@code toBeCopied}
+     * Creates an AddressBook using the Persons in the {@code toBeCopied}
      */
-    public Hrmanager(ReadOnlyHrmanager toBeCopied) {
+    public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -49,9 +49,9 @@ public class Hrmanager implements ReadOnlyHrmanager {
     }
 
     /**
-     * Resets the existing data of this {@code Hrmanager} with {@code newData}.
+     * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void resetData(ReadOnlyHrmanager newData) {
+    public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
@@ -87,7 +87,7 @@ public class Hrmanager implements ReadOnlyHrmanager {
     }
 
     /**
-     * Removes {@code key} from this {@code Hrmanager}.
+     * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
     public void removePerson(Person key) {
@@ -115,12 +115,12 @@ public class Hrmanager implements ReadOnlyHrmanager {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Hrmanager)) {
+        if (!(other instanceof AddressBook)) {
             return false;
         }
 
-        Hrmanager otherHrmanager = (Hrmanager) other;
-        return persons.equals(otherHrmanager.persons);
+        AddressBook otherAddressBook = (AddressBook) other;
+        return persons.equals(otherAddressBook.persons);
     }
 
     @Override

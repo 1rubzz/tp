@@ -2,7 +2,7 @@ package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static seedu.address.testutil.TypicalPersons.getTypicalHrmanager;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.nio.file.Path;
 
@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.Hrmanager;
-import seedu.address.model.ReadOnlyHrmanager;
+import seedu.address.model.AddressBook;
+import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
 
 public class StorageManagerTest {
@@ -24,9 +24,9 @@ public class StorageManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonHrmanagerStorage hrmanagerStorage = new JsonHrmanagerStorage(getTempFilePath("ab"));
+        JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(hrmanagerStorage, userPrefsStorage);
+        storageManager = new StorageManager(addressBookStorage, userPrefsStorage);
     }
 
     private Path getTempFilePath(String fileName) {
@@ -48,21 +48,21 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void hrmanagerReadSave() throws Exception {
+    public void addressBookReadSave() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is properly wired to the
-         * {@link JsonHrmanagerStorage} class.
-         * More extensive testing of UserPref saving/reading is done in {@link JsonHrmanagerStorageTest} class.
+         * {@link JsonAddressBookStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link JsonAddressBookStorageTest} class.
          */
-        Hrmanager original = getTypicalHrmanager();
-        storageManager.saveHrmanager(original);
-        ReadOnlyHrmanager retrieved = storageManager.readHrmanager().get();
-        assertEquals(original, new Hrmanager(retrieved));
+        AddressBook original = getTypicalAddressBook();
+        storageManager.saveAddressBook(original);
+        ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
+        assertEquals(original, new AddressBook(retrieved));
     }
 
     @Test
-    public void getHrmanagerFilePath() {
-        assertNotNull(storageManager.getHrmanagerFilePath());
+    public void getAddressBookFilePath() {
+        assertNotNull(storageManager.getAddressBookFilePath());
     }
 
 }

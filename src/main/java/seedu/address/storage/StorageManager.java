@@ -7,24 +7,24 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.ReadOnlyHrmanager;
+import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 
 /**
- * Manages storage of Hrmanager data in local storage.
+ * Manages storage of AddressBook data in local storage.
  */
 public class StorageManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private HrmanagerStorage hrmanagerStorage;
+    private AddressBookStorage addressBookStorage;
     private UserPrefsStorage userPrefsStorage;
 
     /**
-     * Creates a {@code StorageManager} with the given {@code hrmanagerStorage} and {@code UserPrefStorage}.
+     * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
      */
-    public StorageManager(HrmanagerStorage hrmanagerStorage, UserPrefsStorage userPrefsStorage) {
-        this.hrmanagerStorage = hrmanagerStorage;
+    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+        this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -46,33 +46,33 @@ public class StorageManager implements Storage {
     }
 
 
-    // ================ Hrmanager methods ==============================
+    // ================ AddressBook methods ==============================
 
     @Override
-    public Path getHrmanagerFilePath() {
-        return hrmanagerStorage.getHrmanagerFilePath();
+    public Path getAddressBookFilePath() {
+        return addressBookStorage.getAddressBookFilePath();
     }
 
     @Override
-    public Optional<ReadOnlyHrmanager> readHrmanager() throws DataLoadingException {
-        return readHrmanager(hrmanagerStorage.getHrmanagerFilePath());
+    public Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
+        return readAddressBook(addressBookStorage.getAddressBookFilePath());
     }
 
     @Override
-    public Optional<ReadOnlyHrmanager> readHrmanager(Path filePath) throws DataLoadingException {
+    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return hrmanagerStorage.readHrmanager(filePath);
+        return addressBookStorage.readAddressBook(filePath);
     }
 
     @Override
-    public void saveHrmanager(ReadOnlyHrmanager hrmanager) throws IOException {
-        saveHrmanager(hrmanager, hrmanagerStorage.getHrmanagerFilePath());
+    public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
+        saveAddressBook(addressBook, addressBookStorage.getAddressBookFilePath());
     }
 
     @Override
-    public void saveHrmanager(ReadOnlyHrmanager hrmanager, Path filePath) throws IOException {
+    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        hrmanagerStorage.saveHrmanager(hrmanager, filePath);
+        addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
 }

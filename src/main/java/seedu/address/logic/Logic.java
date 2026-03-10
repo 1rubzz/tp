@@ -7,7 +7,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.ReadOnlyHrmanager;
+import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 
 /**
@@ -24,11 +24,11 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the Hrmanager.
+     * Returns the AddressBook.
      *
-     * @see seedu.address.model.Model#getHrmanager()
+     * @see seedu.address.model.Model#getAddressBook()
      */
-    ReadOnlyHrmanager getHrmanager();
+    ReadOnlyAddressBook getAddressBook();
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
@@ -36,7 +36,7 @@ public interface Logic {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getHrmanagerFilePath();
+    Path getAddressBookFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

@@ -9,5 +9,5 @@
       "z" : 99
     }
   },
-  "hrmanagerFilePath" : "hrmanager.json"
+  "addressBookFilePath" : "addressbook.json"
 }

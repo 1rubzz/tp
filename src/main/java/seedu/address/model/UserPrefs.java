@@ -14,7 +14,7 @@ import seedu.address.commons.core.GuiSettings;
 public class UserPrefs implements ReadOnlyUserPrefs {
 
     private GuiSettings guiSettings = new GuiSettings();
-    private Path hrmanagerFilePath = Paths.get("data" , "hrmanager.json");
+    private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
 
     /**
      * Creates a {@code UserPrefs} with default values.
@@ -35,7 +35,7 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     public void resetData(ReadOnlyUserPrefs newUserPrefs) {
         requireNonNull(newUserPrefs);
         setGuiSettings(newUserPrefs.getGuiSettings());
-        setHrmanagerFilePath(newUserPrefs.getHrmanagerFilePath());
+        setAddressBookFilePath(newUserPrefs.getAddressBookFilePath());
     }
 
     public GuiSettings getGuiSettings() {
@@ -47,13 +47,13 @@ public class UserPrefs implements ReadOnlyUserPrefs {
         this.guiSettings = guiSettings;
     }
 
-    public Path getHrmanagerFilePath() {
-        return hrmanagerFilePath;
+    public Path getAddressBookFilePath() {
+        return addressBookFilePath;
     }
 
-    public void setHrmanagerFilePath(Path hrmanagerFilePath) {
-        requireNonNull(hrmanagerFilePath);
-        this.hrmanagerFilePath = hrmanagerFilePath;
+    public void setAddressBookFilePath(Path addressBookFilePath) {
+        requireNonNull(addressBookFilePath);
+        this.addressBookFilePath = addressBookFilePath;
     }
 
     @Override
@@ -69,19 +69,19 @@ public class UserPrefs implements ReadOnlyUserPrefs {
 
         UserPrefs otherUserPrefs = (UserPrefs) other;
         return guiSettings.equals(otherUserPrefs.guiSettings)
-                && hrmanagerFilePath.equals(otherUserPrefs.hrmanagerFilePath);
+                && addressBookFilePath.equals(otherUserPrefs.addressBookFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, hrmanagerFilePath);
+        return Objects.hash(guiSettings, addressBookFilePath);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Gui Settings : " + guiSettings);
-        sb.append("\nLocal data file location : " + hrmanagerFilePath);
+        sb.append("\nLocal data file location : " + addressBookFilePath);
         return sb.toString();
     }
 

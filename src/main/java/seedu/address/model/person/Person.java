@@ -11,7 +11,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Person in hrmanager.
+ * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
@@ -22,18 +22,18 @@ public class Person {
     private final Email email;
 
     // Data fields
-    private final Role role;
+    private final Address address;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Role role, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, role, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.role = role;
+        this.address = address;
         this.tags.addAll(tags);
     }
 
@@ -49,8 +49,8 @@ public class Person {
         return email;
     }
 
-    public Role getRole() {
-        return role;
+    public Address getAddress() {
+        return address;
     }
 
     /**
@@ -93,14 +93,14 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
-                && role.equals(otherPerson.role)
+                && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, role, tags);
+        return Objects.hash(name, phone, email, address, tags);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("role", role)
+                .add("address", address)
                 .add("tags", tags)
                 .toString();
     }

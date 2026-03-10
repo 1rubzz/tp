@@ -5,11 +5,11 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's address in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidRole(String)}
+ * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
  */
-public class Role {
+public class Address {
 
-    public static final String MESSAGE_CONSTRAINTS = "Roles can take any values, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, and it should not be blank";
 
     /*
      * The first character of the address must not be a whitespace,
@@ -20,20 +20,20 @@ public class Role {
     public final String value;
 
     /**
-     * Constructs a {@code Role}.
+     * Constructs an {@code Address}.
      *
-     * @param role A valid role.
+     * @param address A valid address.
      */
-    public Role(String role) {
-        requireNonNull(role);
-        checkArgument(isValidRole(role), MESSAGE_CONSTRAINTS);
-        value = role;
+    public Address(String address) {
+        requireNonNull(address);
+        checkArgument(isValidAddress(address), MESSAGE_CONSTRAINTS);
+        value = address;
     }
 
     /**
      * Returns true if a given string is a valid email.
      */
-    public static boolean isValidRole(String test) {
+    public static boolean isValidAddress(String test) {
         return test.matches(VALIDATION_REGEX);
     }
 
@@ -49,12 +49,12 @@ public class Role {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Role)) {
+        if (!(other instanceof Address)) {
             return false;
         }
 
-        Role otherRole = (Role) other;
-        return value.equals(otherRole.value);
+        Address otherAddress = (Address) other;
+        return value.equals(otherAddress.value);
     }
 
     @Override
