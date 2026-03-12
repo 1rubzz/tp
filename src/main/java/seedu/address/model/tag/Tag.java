@@ -4,13 +4,15 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Tag in the address book.
+ * Represents a Tag in the HRManager.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
  */
 public class Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final int MAX_LENGTH = 50;
+    public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric and "
+            + "between 1 to " + MAX_LENGTH + " characters long";
+    public static final String VALIDATION_REGEX = "\\p{Alnum}{1," + MAX_LENGTH + "}";
 
     public final String tagName;
 

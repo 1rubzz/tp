@@ -22,7 +22,7 @@ HRmanager is a **desktop app for managing employee and applicant records, optimi
 
 1. Copy the file to the folder you want to use as the _home folder_ for HRmanager.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar HRmanager.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -63,6 +63,9 @@ HRmanager is a **desktop app for managing employee and applicant records, optimi
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Tag constraints: Tags must be **alphanumeric** (only letters and numbers) and **between 1 to 50 characters long**. Tags are **case-sensitive**.<br>
+  e.g. `t/HR`, `t/Department123` are valid; `t/HR Department` (contains space), `t/HR!`(contains special character), and tags longer than 50 characters are invalid.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
@@ -173,7 +176,7 @@ HRmanager data are saved automatically as a JSON file `[JAR file location]/data/
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file make its format invalid, HRmanager will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+If your changes to the data file makes its format invalid, HRmanager will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
