@@ -561,10 +561,10 @@ testers are expected to do more *exploratory* testing.
    2. Test case: `delete 1`<br>
       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
    
-   3. Test case: `delete 1 2`<br>  
+   3. Test case: `delete 1 2`  
       Expected: First and second contacts are deleted. Status message indicates two employees were deleted.
    
-   4. Test case: `delete 2 2 3`<br>  
+   4. Test case: `delete 2 2 3`  
       Expected: Duplicate indexes are ignored. Contacts 2 and 3 are deleted once.
 
    5. Test case: `delete 0`<br>
