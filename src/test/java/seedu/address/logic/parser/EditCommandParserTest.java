@@ -101,6 +101,26 @@ public class EditCommandParserTest {
     }
 
     @Test
+    public void parse_nameWithPrefixOrSlash_throws() {
+        // Name starts with an invalid prefix
+        assertParseFailure(parser, "1 q/12345678", MESSAGE_INVALID_FORMAT);
+
+        // Name contains slash
+        assertParseFailure(parser, "1 John/Doe", MESSAGE_INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_nameWithoutPrefix_executesNameBlock() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + " John Doe";
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName("John Doe").build();
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased() + NAME_DESC_AMY + PHONE_DESC_BOB + TAG_DESC_HUSBAND
