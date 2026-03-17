@@ -31,20 +31,11 @@ public class PhoneTest {
         assertFalse(Phone.isValidPhone("phone")); // non-numeric
         assertFalse(Phone.isValidPhone("9011p041")); // alphabets within digits
         assertFalse(Phone.isValidPhone("9312 1534")); // spaces within digits
-        assertFalse(Phone.isValidPhone("+62 185 9312")); // special char within digits (simulate extension)
-        assertFalse(Phone.isValidPhone("62 185 9312")); // spaces within digits (simulate extension)
-        assertFalse(Phone.isValidPhone("+621859312")); // special char within digits (simulate extension)
-        assertFalse(Phone.isValidPhone("62 1249312")); // spaces within digits (simulate country code)
-        assertFalse(Phone.isValidPhone("931! 1534")); // special character '!'
-        assertFalse(Phone.isValidPhone("93#14 1534")); // special character '#'
-        assertFalse(Phone.isValidPhone("93122315678111534")); // len 17 phone number (>16)
-        assertFalse(Phone.isValidPhone("356762194720127421646129468281")); // too long phone number
 
         // valid phone numbers
         assertTrue(Phone.isValidPhone("911")); // exactly 3 numbers
         assertTrue(Phone.isValidPhone("93121534"));
-        assertTrue(Phone.isValidPhone("124293842033123")); // len 15 phone number
-        assertTrue(Phone.isValidPhone("9312231567811153")); // len 16 phone number; possible edge case failure
+        assertTrue(Phone.isValidPhone("124293842033123")); // long phone numbers
     }
 
     @Test

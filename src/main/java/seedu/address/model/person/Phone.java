@@ -9,17 +9,16 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Phone {
 
-    // Length constraint rationale: The minimum global phone number length is 3
-    public static final String MESSAGE_CONSTRAINTS = "Phone numbers should only contain numbers,"
-            + " with no extensions or spaces, and it should be between 3 and 16 digits long inclusive";
 
-    public static final String VALIDATION_REGEX = "\\d{3,16}";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
+    public static final String VALIDATION_REGEX = "\\d{3,}";
     public final String value;
 
     /**
      * Constructs a {@code Phone}.
      *
-     * @param phone A valid phone number (Validity based on our constraints).
+     * @param phone A valid phone number.
      */
     public Phone(String phone) {
         requireNonNull(phone);
