@@ -188,14 +188,14 @@ public class EditCommandParserTest {
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ROLE));
 
         // multiple invalid values
-        userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + INVALID_NAME_DESC + INVALID_EMAIL_DESC
+        userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + INVALID_ROLE_DESC + INVALID_EMAIL_DESC
                 + INVALID_PHONE_DESC + INVALID_ROLE_DESC + INVALID_EMAIL_DESC;
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ROLE));
 
         //some valid some invalid
-        userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + NAME_DESC_AMY + INVALID_EMAIL_DESC
+        userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + ROLE_DESC_AMY + INVALID_EMAIL_DESC
             + INVALID_PHONE_DESC + INVALID_ROLE_DESC + EMAIL_DESC_AMY;
 
         assertParseFailure(parser, userInput,
