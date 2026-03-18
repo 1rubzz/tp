@@ -125,19 +125,16 @@ Finds employees whose names contain any of the given keywords.
 Format: `search KEYWORD [MORE_KEYWORDS]...`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
+* Only one keyword allowed i.e. spaces are invalid.
+* Every field is searched (name, phone, email, role, tag(s) if any).
 * Partial matches are supported. e.g. `Han` will match `Hans`
-* Employees matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
-* Each keyword must be at most `100` characters long.
-* A search can contain at most `100` keywords.
+* The keyword must be at most `50` characters long.
 * A blank search is invalid and HRmanager will show the command usage message.
 
 Examples:
 * `search John` returns `john` and `John Doe`
-* `search alex david` returns employees such as `Alex Yeoh` and `David Li`<br>
-  ![result for 'search alex david'](images/findAlexDavidResult.png)
+* `search friends` returns employees such as `Alex Yeoh` and `Bernice Yu` with the tag "friends". <br>
+  ![result for 'search alex bernice'](images/searchAlexBerniceResult.png)
 * `search zzz` shows `0 employees listed!` if no employee names match.
 
 ### Deleting an employee : `delete`
