@@ -43,16 +43,15 @@ public class DeleteCommand extends Command {
 
         // List of persons to delete
         List<Person> lastShownList = model.getFilteredPersonList();
-        List<Person> personsToDelete = new ArrayList<>();
 
         // Remove duplicate indexes first
         List<Index> uniqueIndexes = targetIndexes.stream().distinct().toList();
 
-        for (Index index : targetIndexes) {
+        // Validate all indexes before deleting
+        for (Index index : uniqueIndexes) {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
-            personsToDelete.add(lastShownList.get(index.getZeroBased()));
         }
 
         // Re-sort to delete the highest index first, avoid shifting
@@ -66,7 +65,7 @@ public class DeleteCommand extends Command {
 
         return new CommandResult(String.format(
                 MESSAGE_DELETE_PERSON_SUCCESS,
-                personsToDelete.size() + " employee(s)"
+                uniqueIndexes.size() + " employee(s)"
         ));
     }
 

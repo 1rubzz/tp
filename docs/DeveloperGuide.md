@@ -50,7 +50,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`. (Note: The delete command also supports multiple indexes, e.g., `delete 1 3 5`, which follows the same interaction pattern.)
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -90,7 +90,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example. Note that the delete command supports multiple indexes (e.g., `delete 1 3 5`), which follows the same parsing and execution pattern shown below, iterating through each index to delete multiple employees.
 
 <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
@@ -350,7 +350,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. System detects an error (e.g. format/syntax error) in the entered data.
+* 1a. System detects an error (e.g. format/syntax/duplicates error) in the entered data.
     * 1a1. System displays an error message with the correct format.
     * 1a2. User enters new data.
     Steps 1a1-1a2 are repeated until the data entered are correct.
@@ -560,7 +560,7 @@ testers are expected to do more *exploratory* testing.
    2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_3
+1. _{ more test cases …​ }_
 
 ### Deleting an employee
 
@@ -569,19 +569,38 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all employee using the `list` command. Multiple employees in the list.
 
    2. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
-   
-   3. Test case: `delete 1 2`  
-      Expected: First and second contacts are deleted. Status message indicates two employees were deleted.
-   
-   4. Test case: `delete 2 2 3`  
-      Expected: Duplicate indexes are ignored. Contacts 2 and 3 are deleted once.
+      Expected: First employee is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   5. Test case: `delete 0`<br>
+   3. Test case: `delete 0`<br>
       Expected: No employee is deleted. Error details shown in the status message. Status bar remains the same.
 
-   6. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   4. Test case: `delete 1 3 5`<br>
+      Expected: 1st, 3rd, and 5th employee are deleted from the list. Status message shows "Deleted employee(s): 3 employee(s)". Timestamp in the status bar is updated.
+
+   5. Test case: `delete 1 1 2`<br>
+      Expected: Only 2 unique employees are deleted (duplicate index filtered out). Status message shows "Deleted employee(s): 2 employee(s)". Only the 1st and 2nd persons are removed.
+
+   6. Test case: `delete 2 1 3`<br>
+      Expected: 1st, 2nd, and 3rd employees are deleted (regardless of order provided). Status message shows "Deleted employee(s): 3 employee(s)". Deletion performed from highest to lowest index to prevent index shifting errors.
+
+   7. Test case: `delete 1 2 999`<br>
+      Expected: No employee is deleted. Error details shown for invalid index 999. Status bar remains the same.
+
+   8. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+      Expected: Similar error handling to above.
+
+2. Deleting a employee from a filtered list (search results)
+
+   1. Prerequisites: Execute `search KEYWORD` to filter the list (where KEYWORD returns one or more matching results based on searchable fields). Multiple search results shown.
+
+   2. Test case: `delete 1`<br>
+      Expected: The 1st employee in the filtered search results is deleted. Confirmation message shown. Filtered list updates automatically.
+
+   3. Test case: `search KEYWORD` (where KEYWORD returns 2 or more matching results) followed by `delete 1 2`<br>
+      Expected: The 1st and 2nd employees in the filtered results are deleted. Confirmation shows "Deleted employee(s): 2 employee(s)". Filtered list updates.
+
+   4. Test case: `search KEYWORD` (where KEYWORD returns no matches) followed by `delete 1`<br>
+      Expected: Error message shown for invalid index since filtered list is empty.
 
 ### Tagging an employee
 
@@ -648,7 +667,6 @@ testers are expected to do more *exploratory* testing.
 
    12. Other incorrect search commands to try: `search @lphabet`, `search 123!@#`, `search keyword with multiple spaces`<br>
        Expected: Similar error messages shown due to non-alphanumeric characters or multiple keywords.
-
 
 ### Saving data
 
