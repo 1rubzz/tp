@@ -190,7 +190,7 @@ public class AddCommandParserTest {
 
         // two invalid values, only first invalid value reported, in different order
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_EMAIL_DESC + PHONE_DESC_BOB + INVALID_ROLE_DESC,
-                Name.MESSAGE_CONSTRAINTS);
+                Email.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
