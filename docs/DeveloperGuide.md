@@ -562,6 +562,51 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Adding a person
+
+1. Adding a person, along with their details.
+
+    1. Prerequisites: List all persons using the `list` command. There are no persons in the list.
+
+    2. Test case: `add n/Bob Choo p/22222222 e/bob@example.com r/Head of Office t/friend` (Valid entry)<br>
+       Expected: The person is added. The success message is shown, along with the added details.
+
+    3. Test case: `add  n/Amy Choo p/22222222 e/amy@example.com r/Head of Office t/friend` (Preamble is a space)<br>
+       Expected: The person is added. The success message is shown, along with the added details.
+
+    4. Test case: `add k n/Amy Choo p/22222222 e/amy@example.com r/Head of Office t/friend` (Preamble is not a space)<br>
+       Expected: The person is added. The success message is shown, along with the added details.
+
+    5. Test case: `add n/Bob Choo p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Same exact name with existing entry)<br>
+       Expected: The person is not added. Duplicate error message is shown, indicating the person with same name already exists.
+
+    6. Test case: `add  n/Lance Choo p/33333333 e/lance@example.com r/Head of HR t/friend t/husband` (Multiple tags)<br>
+       Expected: The person is added. The success message is shown, along with the added details.
+   
+    7. Test case: `add n/Amy Cho n/Bob Choo p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Two names))<br>
+       Expected: The person is not added. Error messages for duplicated prefix shown.
+
+    8. Other incorrect commands with duplicated attributes for the same person: `add <other details> p/11111111 p/22222222`, `add <other details> e/amy@example.com e/bob@example.com`, or similar<br>
+       Expected: The person is not added. Error messages for duplicated prefix shown.
+
+    9. Test case: `add n/James& p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Invalid name)<br>
+       Expected: The person is not added. The correct format for a valid name is shown.
+
+    10. Other incorrect commands with invalid data: `add <other details> p/abc` (Non-numeric phone number) or similar<br>
+        Expected: The person is not added. The correct format for the attribute for which the argument is invalid is shown.
+
+    11. Test case: `add n/Pikachu p/11111111 e/bob@meme.com r/Head of Operations` (No optional Tag)<br>
+        Expected: The person is added. The success message is shown, along with the added details.
+   
+    12. Test case: `add n/Peppa Pig e/peppa@example.com r/Head of Media` (No phone number) or similar absence of necessary attributes <br>
+        Expected: The person is not added. Error message is shown, along with the correct format and required parameters.
+
+    13. Test case: `add n/Pikachu p/11111111 e/bob@meme.com r/Head of Operations` (No optional Tag)<br>
+         Expected: The person is added. The success message is shown, along with the added details.
+
+    14. Other incorrect delete commands to try: `add`, `add johndoe p/3333` (no prefix), and other commands which deviate from the command format<br>
+        Expected: Similar to previous.
+
 ### Deleting a person
 
 1. Deleting one or more persons while all persons are being shown
