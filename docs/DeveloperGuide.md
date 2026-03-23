@@ -422,12 +422,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1b. The user provides more than 100 keywords, or at least one keyword longer than 100 characters.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
-
+ 
     Use case resumes at step 1.
 
 * 3a. No employees match the provided search query.
     * 3a1. System displays `0 employees listed!`.
-
+     
     Use case ends.
 
 ### Use case 5 (UC5): Tag an employee
@@ -488,7 +488,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case resumes at step 1.
 
 * 2a. The user entered an invalid index.
-  * 2a1. System shows an error message.
+    * 2a1. System shows an error message.
 
     Use case resumes at step 1.
 
@@ -498,7 +498,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case resumes at step 3.
 
 * 3b. User enters empty details.
-  * 3b1. System shows an error message.
+    * 3b1. System shows an error message.
 
     Use case resumes at step 3.
 
@@ -507,21 +507,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2. The system should respond to user commands within **1 second** under normal usage conditions.
-3. The system should be able to store and manage at least **100 employee records** while maintaining command response
-    times within **1 second**.
-4. The system should be usable entirely through a **Command Line Interface (CLI)** without requiring graphical
-    interaction such as mouse input.
-5. The system should be usable by **HR managers who are not highly technical**, meaning commands should be simple and
-    documentation should clearly explain how to use them.
-6. The system should follow **standard Java coding conventions and modular design principles** to ensure
-   maintainability.
-7. The system should ensure that employee data stored in the system remains consistent and is not corrupted during
-   normal usage.
-8. The system should ensure that employee information stored locally is not transmitted over the network without
-   user intent.
+3. The system should be able to store and manage at least **100 employee records** while maintaining command response times within **1 second**.
+4. The system should be usable entirely through a **Command Line Interface (CLI)** without requiring graphical interaction such as mouse input.
+5. The system should be usable by **HR managers who are not highly technical**, meaning commands should be simple and documentation should clearly explain how to use them.
+6. The system should follow **standard Java coding conventions and modular design principles** to ensure maintainability.
+7. The system should ensure that employee data stored in the system remains consistent and is not corrupted during normal usage.
+8. The system should ensure that employee information stored locally is not transmitted over the network without user intent.
 9. The system should remain stable when invalid commands or inputs are entered and should not crash during normal usage.
-10. The system should be packaged as a single executable JAR file so that users can run the application without
-    additional installation steps beyond having Java installed.
+10. The system should be packaged as a single executable JAR file so that users can run the application without additional installation steps beyond having Java installed.
 
 ### Glossary
 
@@ -529,8 +522,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **HR Manager**: The primary user of the system who manages employee records using the application.
 * **Employee Record**: A collection of information stored in the system about an employee, such as name, email, phone number, and role.
 * **Command Line Interface (CLI)**: A text-based interface where users interact with the application by typing commands.
-* **Tag**: A label that can be attached to an employee record for categorization purposes. Tags must be alphanumeric
-  and 1-50 characters in length. Examples include "HR", "Manager", "FullTime", "Intern".
+* **Tag**: A label that can be attached to an employee record for categorization purposes. Tags must be alphanumeric and 1-50 characters in length. Examples include "HR", "Manager", "FullTime", "Intern".
 
 --------------------------------------------------------------------------------------------------------------------
 
