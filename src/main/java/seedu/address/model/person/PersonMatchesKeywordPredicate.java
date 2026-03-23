@@ -18,8 +18,8 @@ public class PersonMatchesKeywordPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        boolean hasNonBlankKeyword = keywords.stream().anyMatch(keyword -> !keyword.isBlank());
-        if (!hasNonBlankKeyword) {
+        boolean allKeywordsBlank = keywords.stream().allMatch(String::isBlank);
+        if (allKeywordsBlank) {
             return false;
         }
 
