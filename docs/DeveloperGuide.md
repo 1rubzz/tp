@@ -495,12 +495,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1b. The user provides more than 100 keywords, or at least one keyword longer than 100 characters.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
- 
+
     Use case resumes at step 1.
 
 * 3a. No employees match the provided search query.
     * 3a1. System displays `0 employees listed!`.
-     
+ 
     Use case ends.
 
 ### Use case 5 (UC5): Tag an employee
@@ -647,7 +647,7 @@ testers are expected to do more *exploratory* testing.
 
     6. Test case: `add  n/Lance Choo p/33333333 e/lance@example.com r/Head of HR t/friend t/husband` (Multiple tags)<br>
        Expected: The employee is added. The success message is shown, along with the added details.
-   
+
     7. Test case: `add n/Amy Cho n/Bob Choo p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Two names))<br>
        Expected: The employee is not added. Error messages for duplicated prefix shown.
 
@@ -662,7 +662,7 @@ testers are expected to do more *exploratory* testing.
 
     11. Test case: `add n/Pikachu p/11111111 e/bob@meme.com r/Head of Operations` (No optional Tag)<br>
         Expected: The employee is added. The success message is shown, along with the added details.
-   
+
     12. Test case: `add n/Peppa Pig e/peppa@example.com r/Head of Media` (No phone number) or similar absence of necessary attributes <br>
         Expected: The employee is not added. Error message is shown, along with the correct format and required parameters.
 
