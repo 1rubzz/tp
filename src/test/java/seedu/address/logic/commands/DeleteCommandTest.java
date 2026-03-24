@@ -201,6 +201,19 @@ public class DeleteCommandTest {
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
+    @Test
+    public void getConfirmationPrompt_duplicateIndexes_reportsUniqueCount() {
+        DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON));
+        String expectedPrompt = String.format(DeleteCommand.MESSAGE_CONFIRMATION_PROMPT, 1);
+        assertEquals(expectedPrompt, deleteCommand.getConfirmationPrompt());
+    }
+
+    @Test
+    public void getActionDescription_returnsExpectedDescription() {
+        DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
+        assertEquals(DeleteCommand.ACTION_DESCRIPTION, deleteCommand.getActionDescription());
+    }
+
     /**
      * Updates {@code model}'s filtered list to show no one.
      */
