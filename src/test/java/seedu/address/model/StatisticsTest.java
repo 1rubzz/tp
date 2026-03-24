@@ -22,9 +22,8 @@ public class StatisticsTest {
 
     @Test
     public void constructor_nullPersonList_throwsNullPointerException() {
-        // Fix: Use expression lambda and proper assertion
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class,
-                () -> new Statistics(null));
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () ->
+                new Statistics(null));
     }
 
     @Test
@@ -42,7 +41,6 @@ public class StatisticsTest {
 
     @Test
     public void constructor_singlePersonWithoutTags_returnsCorrectStats() {
-        // Fix: Use Collections.singletonList() instead of Arrays.asList() for single element
         List<Person> persons = Collections.singletonList(ALICE);
 
         Statistics stats = new Statistics(persons);
@@ -58,7 +56,6 @@ public class StatisticsTest {
     @Test
     public void constructor_singlePersonWithTags_returnsCorrectStats() {
         Person personWithTag = createPersonWithTags("Test Person", "HR");
-        // Fix: Use Collections.singletonList() for single element
         List<Person> persons = Collections.singletonList(personWithTag);
 
         Statistics stats = new Statistics(persons);
@@ -97,7 +94,6 @@ public class StatisticsTest {
     @Test
     public void constructor_personWithMultipleTags_countsEachTag() {
         Person multiTagPerson = createPersonWithTags("Multi", "HR", "Manager", "FullTime");
-        // Fix: Use Collections.singletonList() for single element
         List<Person> persons = Collections.singletonList(multiTagPerson);
 
         Statistics stats = new Statistics(persons);
@@ -113,7 +109,6 @@ public class StatisticsTest {
     public void constructor_moreThanFiveTags_showsOnlyTopFive() {
         Person personWithManyTags = createPersonWithTags("Many",
                 "Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6");
-        // Fix: Use Collections.singletonList() for single element
         List<Person> persons = Collections.singletonList(personWithManyTags);
 
         Statistics stats = new Statistics(persons);

@@ -41,8 +41,8 @@ public class StatisticsServiceTest {
 
     @Test
     public void constructor_nullLogic_throwsNullPointerException() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class,
-                () -> new StatisticsService(null));
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () ->
+                new StatisticsService(null));
     }
 
     @Test

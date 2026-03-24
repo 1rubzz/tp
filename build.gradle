@@ -23,6 +23,26 @@ checkstyle {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+
+    enableAssertions = true
+
+    systemProperty 'java.util.logging.config.file', 'src/test/resources/logging.properties'
+    systemProperty 'java.util.logging.level', 'FINE'
+
+    // Show test output in console
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+}
+
+run {
+    // Enable assertions for the application
+    enableAssertions = true
+
+    // Configure logging for the application
+    systemProperty 'java.util.logging.config.file', 'src/main/resources/logging.properties'
+    systemProperty 'java.util.logging.level', 'FINE'
 }
 
 task coverage(type: JacocoReport) {

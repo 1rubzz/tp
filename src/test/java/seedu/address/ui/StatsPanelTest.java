@@ -40,8 +40,7 @@ public class StatsPanelTest {
 
     @Test
     public void constructor_nullLogic_throwsNullPointerException() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class,
-                () -> new StatsPanel(null));
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> new StatsPanel(null));
     }
 
     @Test
