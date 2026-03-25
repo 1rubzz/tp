@@ -820,13 +820,13 @@ testers are expected to do more *exploratory* testing.
 
     1. Prerequisites: List all employees using the list command. Employee to edit exists in the list.
 
-    2. Test case: `edit 1 n/Bob Choo p/22222222 e/bob@example.com r/Head of Office t/friend` (Valid entry)<br>
+    2. Test case: `edit 1 n/Bob Choo p/22222222 e/bob@example.com r/Head of Office d/Marketing t/friend` (Valid entry)<br>
        Expected: After user enters "y" to a y/n confirmation prompt, The employee is edited. The success message is shown, along with the updated details.
 
-    3. Test case: `edit 1  n/Amy Choo p/22222222 e/amy@example.com r/Head of Office t/friend` (Preamble is a space)<br>
+    3. Test case: `edit 1  n/Amy Choo p/22222222 e/amy@example.com r/Head of Office d/Marketing t/friend` (Preamble is a space)<br>
        Expected: After user enters "y" to a y/n confirmation prompt, The employee is edited. The success message is shown, along with the updated details.
 
-    4. Test case: `edit 1 k n/Amy Choo p/22222222 e/amy@example.com r/Head of Office t/friend` (Preamble is not a space)<br>
+    4. Test case: `edit 1 k n/Amy Choo p/22222222 e/amy@example.com r/Head of Office d/Marketing t/friend` (Preamble is not a space)<br>
        Expected: The employee is not edited. An error message is shown, indicating invalid command format.
 
     5. Test case: `edit 1 p/!#$!*)**%{` (Invalid field)<br>
@@ -835,13 +835,13 @@ testers are expected to do more *exploratory* testing.
     6. Test case: `edit 1 t/friend t/husband` (Multiple tags)<br>
        Expected: After user enters "y" to a y/n confirmation prompt, The employee is edited. The success message is shown, along with the updated details.
 
-    7. Test case: `edit 1 n/Amy Cho n/Bob Choo p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Duplicate fields)<br>
+    7. Test case: `edit 1 n/Amy Cho n/Bob Choo p/11111111 e/bob@meme.com r/Head of Operations d/Marketing t/friend` (Duplicate fields)<br>
        Expected: The employee is not edited. Error messages for duplicated prefix shown.
 
     8. Test case: `edit 0 n/Amy Cho` (Invalid index) <br>
        Expected: TThe employee is not edited. An error message is shown, indicating invalid command format.
 
-    9. Test case: `edit n/James& p/11111111 e/bob@meme.com r/Head of Operations t/friend` (Invalid name)<br>
+    9. Test case: `edit n/James& p/11111111 e/bob@meme.com` (Invalid name)<br>
        Expected: The employee is not edited. The correct format for a valid name is shown.
 
     10. Other incorrect commands with invalid data: `edit 1 <other details> e/a` (Invalid email) or similar<br>
