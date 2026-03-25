@@ -10,6 +10,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -32,6 +33,7 @@ public class LogicManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final AddressBookParser addressBookParser;
+    private PendingConfirmation pendingConfirmation;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -46,9 +48,38 @@ public class LogicManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
-        CommandResult commandResult;
+        if (pendingConfirmation != null) {
+            return handlePendingConfirmation(commandText);
+        }
+
         Command command = addressBookParser.parseCommand(commandText);
-        commandResult = command.execute(model);
+        if (command instanceof ConfirmableCommand confirmableCommand) {
+            pendingConfirmation = new PendingConfirmation(command, confirmableCommand.getActionDescription());
+            return new CommandResult(confirmableCommand.getConfirmationPrompt());
+        }
+
+        return executeAndSave(command);
+    }
+
+    private CommandResult handlePendingConfirmation(String commandText) throws CommandException {
+        String confirmationInput = commandText.trim();
+        if (confirmationInput.equalsIgnoreCase("y")) {
+            Command commandToExecute = pendingConfirmation.command();
+            pendingConfirmation = null;
+            return executeAndSave(commandToExecute);
+        }
+
+        if (confirmationInput.equalsIgnoreCase("n")) {
+            String actionDescription = pendingConfirmation.actionDescription();
+            pendingConfirmation = null;
+            return new CommandResult(String.format(Messages.MESSAGE_COMMAND_CANCELLED, actionDescription));
+        }
+
+        return new CommandResult(Messages.MESSAGE_INVALID_CONFIRMATION_INPUT);
+    }
+
+    private CommandResult executeAndSave(Command command) throws CommandException {
+        CommandResult commandResult = command.execute(model);
 
         try {
             storage.saveAddressBook(model.getAddressBook());
@@ -60,6 +91,11 @@ public class LogicManager implements Logic {
 
         return commandResult;
     }
+
+    /**
+     * Represents a command awaiting user confirmation.
+     */
+    private record PendingConfirmation(Command command, String actionDescription) {}
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {

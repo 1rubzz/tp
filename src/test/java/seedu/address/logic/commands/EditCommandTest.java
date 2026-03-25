@@ -259,4 +259,19 @@ public class EditCommandTest {
         assertEquals(expected, editCommand.toString());
     }
 
+    @Test
+    public void getConfirmationPrompt_returnsExpectedPrompt() {
+        EditCommand editCommand = new EditCommand(INDEX_SECOND_PERSON, new EditPersonDescriptor());
+        String expectedPrompt = ConfirmationPromptFormatter.format(
+            String.format(EditCommand.ACTION_SUMMARY_FORMAT, INDEX_SECOND_PERSON.getOneBased()),
+            EditCommand.IMPACT_SUMMARY);
+        assertEquals(expectedPrompt, editCommand.getConfirmationPrompt());
+    }
+
+    @Test
+    public void getActionDescription_returnsExpectedDescription() {
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
+        assertEquals(EditCommand.ACTION_DESCRIPTION, editCommand.getActionDescription());
+    }
+
 }
