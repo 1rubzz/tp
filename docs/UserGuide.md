@@ -170,6 +170,29 @@ Exits the program.
 
 Format: `exit`
 
+### Viewing statistics: `stats`
+
+Displays real-time statistics about your employee records in a dedicated panel on the right side of the application.
+
+The statistics panel automatically updates as you add, edit, or delete employees, providing instant visibility into your workforce metrics.
+
+**Statistics displayed:**
+- 👥 **Total employees**: Total number of employee records
+- 🏷️ **Unique tags**: Number of distinct tags used across all employees
+- 📈 **Most common tag**: The tag that appears most frequently (with count)
+- ✅ **Employees with tags**: Number of employees that have at least one tag
+- ❌ **Employees without tags**: Number of employees with no tags
+- 📋 **Tag distribution**: Top 5 most frequently used tags
+
+![stats panel](images/statspanel.png)
+
+<box type="tip" seamless>
+
+**Tip:** The stats panel is always visible and updates in real-time when you add, edit, or delete employees. No command is needed to view statistics!
+</box>
+
+Format: No command needed - statistics panel is always displayed.
+
 ### Saving the data
 
 HRmanager data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.

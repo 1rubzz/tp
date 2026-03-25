@@ -276,6 +276,79 @@ Matching behavior:
 
 This means a command such as `search ali tan` returns employees whose names contain either `ali` or `tan`, regardless of case.
 
+### Statistics Panel
+
+The statistics panel provides real-time workforce metrics displayed permanently on the right side of the application. This feature follows the **Separation of Concerns (SoC)** principle by separating data calculation from UI display.
+
+#### Design Overview
+
+The statistics feature consists of three main components:
+
+1. **`Statistics`** (Model layer): A pure data container that calculates statistics from a list of employees. It has no UI dependencies and is easily testable.
+2. **`StatisticsService`** (Service layer): Orchestrates the retrieval of statistics by accessing the filtered employee list from `Logic` and creating a `Statistics` object.
+3. **`StatsPanel`** (UI layer): A JavaFX component that displays statistics and listens for changes to the employee list to auto-refresh.
+
+<puml src="diagrams/StatsPanelClassDiagram.puml" width="500" />
+
+#### Implementation Details
+
+**Statistics Class:**
+- Takes a `List<Person>` as input
+- Calculates total employees, unique tags, most common tag, and tag distribution
+- Uses helper methods `findMostCommonTag()` and `createTagDistribution()` for clean separation
+- All fields are final and assigned in the constructor
+
+**StatisticsService Class:**
+- Acts as a bridge between `Logic` and `Statistics`
+- Provides `getCurrentStatistics()` which converts `ObservableList<Person>` to `List<Person>`
+- Uses logging to track statistics calculation events
+
+**StatsPanel Class:**
+- Extends `UiPart<Region>` with FXML layout
+- Listens to `logic.getFilteredPersonList()` for changes
+- Updates UI labels when the employee list changes
+- Only handles UI updates - no calculation logic
+
+#### Sequence Diagram
+
+The sequence diagram below shows how the statistics panel updates when an employee is added:
+
+<puml src="diagrams/StatsUpdateSequenceDiagram.puml" width="600" />
+
+1. User executes `add` command
+2. `LogicManager` executes the command and updates the model
+3. `ObservableList` change triggers the listener in `StatsPanel`
+4. `StatsPanel` calls `refresh()` → `statisticsService.getCurrentStatistics()`
+5. `StatisticsService` creates a new `Statistics` object from the employee list
+6. `StatsPanel` updates its labels with the new statistics
+
+#### Design Considerations
+
+**Aspect: Where to place statistics calculation logic**
+
+- **Alternative 1 (current):** Separate `Statistics` class for calculation
+    - Pros: Easy to test, follows SRP, reusable
+    - Cons: Additional class to maintain
+
+- **Alternative 2:** Calculate statistics directly in `StatsPanel`
+    - Pros: Fewer classes
+    - Cons: UI layer contains business logic, harder to test
+
+**Aspect: Auto-refresh mechanism**
+
+- **Current choice:** Listener on `ObservableList<Person>`
+    - Pros: Updates automatically on any change, no command needed
+    - Cons: More complex setup
+
+- **Alternative:** User must type `stats` command
+    - Pros: Simpler to implement
+    - Cons: Requires manual refresh, less convenient
+
+#### Testing Strategy
+
+- `StatisticsTest`: Unit tests for calculation logic with various employee lists
+- `StatisticsServiceTest`: Tests service layer with temporary storage
+- `StatisticsServiceIntegrationTest`: Integration tests with actual commands
 
 --------------------------------------------------------------------------------------------------------------------
 
