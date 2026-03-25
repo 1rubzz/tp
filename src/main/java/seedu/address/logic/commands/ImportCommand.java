@@ -1,11 +1,6 @@
 package seedu.address.logic.commands;
 
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.person.Person;
-import seedu.address.commons.util.CsvImportUtil;
-import seedu.address.commons.exceptions.CsvParseException;
+import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
+import seedu.address.commons.exceptions.CsvParseException;
+import seedu.address.commons.util.CsvImportUtil;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.AddressBook;
+import seedu.address.model.Model;
+import seedu.address.model.person.Person;
 
 /**
  * Imports an employee list from a local csv file, replacing the current data.
@@ -51,6 +51,9 @@ public class ImportCommand extends Command implements ConfirmableCommand {
 
     private final String filePath;
 
+    /**
+     * Constructs an ImportCommand instance given a file path.
+     */
     public ImportCommand(String filePath) {
         requireNonNull(filePath);
         this.filePath = filePath;

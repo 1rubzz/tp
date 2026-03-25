@@ -1,13 +1,5 @@
 package seedu.address.commons.util;
 
-import seedu.address.commons.exceptions.CsvParseException;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Role;
-import seedu.address.model.tag.Tag;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +10,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import seedu.address.commons.exceptions.CsvParseException;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Utility class for parsing a CSV file into a list of {@link Person} objects.
+ */
 public class CsvImportUtil {
     // Recognised header names (case-insensitive)
     private static final String HEADER_NAME = "name";
@@ -27,11 +30,11 @@ public class CsvImportUtil {
     private static final String HEADER_TAGS = "tags";
 
     /** Column indices. -1 means absent. */
-    private int idxName    = -1;
-    private int idxPhone   = -1;
-    private int idxEmail   = -1;
+    private int idxName = -1;
+    private int idxPhone = -1;
+    private int idxEmail = -1;
     private int idxRole = -1;
-    private int idxTags    = -1;
+    private int idxTags = -1;
 
     /**
      * Parses {@code csvPath} and returns the list of persons found.
@@ -83,22 +86,34 @@ public class CsvImportUtil {
         List<String> headers = splitCsvLine(headerLine);
 
         for (int i = 0; i < headers.size(); i++) {
-            switch (headers.get(i).toLowerCase().trim()) {
-                case HEADER_NAME -> idxName = i;
-                case HEADER_PHONE -> idxPhone = i;
-                case HEADER_EMAIL -> idxEmail = i;
-                case HEADER_ROLE -> idxRole = i;
-                case HEADER_TAGS -> idxTags = i;
-                // add more fields here as app is updated
+
+            if (headers.get(i).equals(HEADER_NAME)) {
+                idxName = i;
+            } else if (headers.get(i).equals(HEADER_PHONE)) {
+                idxPhone = i;
+            } else if (headers.get(i).equals(HEADER_EMAIL)) {
+                idxEmail = i;
+            } else if (headers.get(i).equals(HEADER_ROLE)) {
+                idxRole = i;
+            } else if (headers.get(i).equals(HEADER_TAGS)) {
+                idxTags = i;
             }
         }
 
         // Validate required columns exist
         List<String> missing = new ArrayList<>();
-        if (idxName == -1) missing.add(HEADER_NAME);
-        if (idxPhone == -1) missing.add(HEADER_PHONE);
-        if (idxEmail == -1) missing.add(HEADER_EMAIL);
-        if (idxRole == -1) missing.add(HEADER_ROLE);
+        if (idxName == -1) {
+            missing.add(HEADER_NAME);
+        }
+        if (idxPhone == -1) {
+            missing.add(HEADER_PHONE);
+        }
+        if (idxEmail == -1) {
+            missing.add(HEADER_EMAIL);
+        }
+        if (idxRole == -1) {
+            missing.add(HEADER_ROLE);
+        }
 
         if (!missing.isEmpty()) {
             throw new CsvParseException(String.format(
@@ -112,7 +127,7 @@ public class CsvImportUtil {
 
         try {
             String nameStr = getField(fields, idxName, "name", lineNumber);
-            String phoneStr = getField(fields, idxPhone,   "phone", lineNumber);
+            String phoneStr = getField(fields, idxPhone, "phone", lineNumber);
             String emailStr = getField(fields, idxEmail, "email", lineNumber);
             String roleStr = getField(fields, idxRole, "role", lineNumber);
 
@@ -120,7 +135,7 @@ public class CsvImportUtil {
             Phone phone = new Phone(phoneStr);
             Email email = new Email(emailStr);
             Role role = new Role(roleStr);
-            Set<Tag> tags   = parseTags(fields, lineNumber);
+            Set<Tag> tags = parseTags(fields, lineNumber);
 
             return new Person(name, phone, email, role, tags);
 
@@ -132,8 +147,7 @@ public class CsvImportUtil {
     }
 
     /** Retrieves and trims the field at {@code index}, throwing if absent or blank. */
-    private String getField(List<String> fields, int index, String fieldName, int lineNumber)
-        throws CsvParseException {
+    private String getField(List<String> fields, int index, String fieldName, int lineNumber) throws CsvParseException {
         if (index >= fields.size()) {
             throw new CsvParseException(
                 String.format("Line %d: missing column '%s'.", lineNumber, fieldName));
