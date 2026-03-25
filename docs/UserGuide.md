@@ -37,7 +37,7 @@ HRmanager is a **desktop app for managing employee and applicant records, optimi
 
   * `clear` : Deletes all employees.
 
-   * `exit` : Exits the app.
+  * `exit` : Exits the app.
 
 1. Refer to the [Features](#features) below for details of each command.
 
@@ -82,6 +82,15 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+### Cycle through previous executed commands
+
+You can pre-fill the command box with your last successful command using the **PgUp (up arrow) key** on computer keyboards. This allows users to repeat their last commands without re-typing it in its entirety.
+
+* Use the PgUp (Up arrow) key to move towards older commands, PgDn (Down arrow) key to move towards latest commands.
+* Only successful past commands are saved.
+* Up to 5 past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
+* The current pending command is saved when the command history is explored.
+* The latest command will not be saved if exactly same as the previous consecutive one.
 
 ### Adding an employee: `add`
 

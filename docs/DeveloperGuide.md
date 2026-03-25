@@ -383,13 +383,13 @@ The sequence diagram below shows how the statistics panel updates when an employ
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                            | I want to …​                           | So that I can…​                                            |
+| Priority | As a …​                            | I want to …​                            | So that I can…​                                             |
 |---------|------------------------------------|----------------------------------------|------------------------------------------------------------|
 | `* * *` | new user                           | have a guided tutorial                 | understand the layout and get started quickly              |
 | `* * *` | user                               | add an employee                        | keep track of new employees                                |
 | `* * *` | user                               | delete an employee                     | clear up data when it is no longer needed                  |
 | `* * *` | user                               | view all employees                     | gain a brief overview of everyone in the company           |
-| `* * *` | user                               | store phone numbers and email addresses | contact employees easily                                   |
+| `* * *` | user                               | store phone numbers and email addresses| contact employees easily                                   |
 | `* * *` | busy user                          | search for employees by name           | quickly find a specific staff member                       |
 | `* * *` | busy user                          | add contacts with only name and phone  | track someone now and update details later                 |
 | `* * `  | organised user                     | modify employee details                | keep info up to date                                       |
@@ -400,9 +400,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * `  | clueless user                      | see error messages                     | correct my mistakes                                        |
 | `* `    | expert user                        | import employee data                   | manage pre-existing details without hand-typing everything |
 | `* `    | expert user                        | export employee data                   | back up data, support audits and planning                  |
-| `* `    | expert user                        | bulk archive or tag multiple applicants | clean up after a role is filled more efficiently           |
-| `* `    | user responsible for reporting	    | use a centralized dashboard            | maintain visibility over workforce and talent pipeline     |
-| `* `    | safe user                          | access the app via login authentication | ensure employee data is secure                             |
+| `* `    | expert user                        | repeat previous command or similar     | enter commands quickly                                     |
+| `* `    | expert user                        | bulk archive or tag multiple applicants| clean up after a role is filled more efficiently           |
+| `* `    | user responsible for reporting	  | use a centralized dashboard            | maintain visibility over workforce and talent pipeline     |
+| `* `    | safe user                          | access the app via login authentication| ensure employee data is secure                             |
 
 *{More to be added}*
 
@@ -503,6 +504,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
+
 ### Use case 5 (UC5): Tag an employee
 
 **MSS**
@@ -574,6 +576,40 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3b1. System shows an error message.
 
     Use case resumes at step 3.
+
+
+### Use case 7 (UC7): Cycle through previous executed commands
+
+**MSS**
+
+1.  User requests to edit an employee's phone number.
+2.  System edits the employee's phone number in the records.
+3.  System displays confirmation message.
+4.  User suddenly recalls that they have forgotten to also edit the employee's email address.
+5.  User presses the up arrow (PgUp) key in the CLI.
+6.  System prefills the CLI with the command used in step 1.
+7.  User deletes the phone field and types the email details, then enters the command. (The command "edit" and the relevant employee index is already prepared)
+6.  System edits the employee's email address in the records.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There are no previous successfully executed commands.
+    * 1a1. System does not do anything in response to up arrow (PgUp) key.
+
+    Use case ends.
+
+* 2a. There are up to 5 previous successfully executed commands.
+    * 2a1. User presses up arrow (PgUp) key until their desired previous executed command appears. If there is already an input in the CLI, it is saved.
+    * 2a2. User either modifies or does not modify their desired previous command, and enters it, or, user presses down arrow (PgDn) key to get back to the more recent/original command.
+
+    Use case ends.
+
+* 2a1. User enters more than 5 commands.
+    * 2a1. The oldest command is discarded and can no longer be cycled through.
+
+    Use case ends.
 
 
 ### Non-Functional Requirements
