@@ -31,7 +31,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Edits the details of an existing person in the address book.
  */
-public class EditCommand extends Command {
+public class EditCommand extends Command implements ConfirmableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
@@ -52,6 +52,10 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Employee: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This employee already exists in the list.";
+    public static final String ACTION_SUMMARY_FORMAT = "Edit employee at index %1$d.";
+    public static final String IMPACT_SUMMARY =
+            "Provided fields will overwrite existing employee details.";
+    public static final String ACTION_DESCRIPTION = "edit employee details";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -66,6 +70,18 @@ public class EditCommand extends Command {
 
         this.index = index;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+    }
+
+    @Override
+    public String getConfirmationPrompt() {
+        String actionSummary = String.format(ACTION_SUMMARY_FORMAT, index.getOneBased());
+
+        return ConfirmationPromptFormatter.format(actionSummary, IMPACT_SUMMARY);
+    }
+
+    @Override
+    public String getActionDescription() {
+        return ACTION_DESCRIPTION;
     }
 
     @Override
@@ -94,7 +110,7 @@ public class EditCommand extends Command {
      * edited with {@code editPersonDescriptor}.
      */
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+        requireNonNull(personToEdit);
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());

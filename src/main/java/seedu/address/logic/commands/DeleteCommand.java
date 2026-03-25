@@ -15,12 +15,16 @@ import seedu.address.model.person.Person;
 /**
  * Deletes a person identified using it's displayed index from the address book.
  */
-public class DeleteCommand extends Command {
+public class DeleteCommand extends Command implements ConfirmableCommand {
 
     public static final String COMMAND_WORD = "delete";
     public static final String COMMAND_ALIAS = "del";
     public static final int MAX_INDEX_COUNT = 100;
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted employee(s): %1$s";
+    public static final String ACTION_SUMMARY_FORMAT = "Delete %1$d employee(s).";
+    public static final String IMPACT_SUMMARY =
+            "The selected employee record(s) will be permanently removed.";
+    public static final String ACTION_DESCRIPTION = "delete employee(s)";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + " (Alias:" + COMMAND_ALIAS + "): Deletes the person identified "
             + "by the index number used in the displayed person list.\n"
@@ -35,6 +39,19 @@ public class DeleteCommand extends Command {
 
     public DeleteCommand(List<Index> targetIndexes) {
         this.targetIndexes = targetIndexes;
+    }
+
+    @Override
+    public String getConfirmationPrompt() {
+        int uniqueCount = (int) targetIndexes.stream().distinct().count();
+        String actionSummary = String.format(ACTION_SUMMARY_FORMAT, uniqueCount);
+
+        return ConfirmationPromptFormatter.format(actionSummary, IMPACT_SUMMARY);
+    }
+
+    @Override
+    public String getActionDescription() {
+        return ACTION_DESCRIPTION;
     }
 
     @Override
