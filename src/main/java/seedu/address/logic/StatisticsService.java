@@ -1,5 +1,7 @@
 package seedu.address.logic;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,13 +20,13 @@ public class StatisticsService {
     private final Logic logic;
 
     /**
-     * Constructs a StatisticsService with the given Logic component.
+     * Creates a StatisticsService with the given Logic component.
      *
      * @param logic The Logic component used to access employee data
-     * @throws AssertionError if logic is null
+     * @throws NullPointerException if logic is null
      */
     public StatisticsService(Logic logic) {
-        assert logic != null : "Logic cannot be null";
+        requireNonNull(logic);
         this.logic = logic;
         logger.info("StatisticsService initialized");
     }
@@ -33,23 +35,10 @@ public class StatisticsService {
      * Returns current statistics based on the filtered person list.
      */
     public Statistics getCurrentStatistics() {
-        assert logic != null : "Logic is null in getCurrentStatistics";
-
+        logger.fine("Getting current statistics");
         ObservableList<Person> observableList = logic.getFilteredPersonList();
-        assert observableList != null : "Filtered person list cannot be null";
-
-        logger.fine("Retrieving statistics for " + observableList.size() + " employees");
-
         // ObservableList is a List, so this works fine
         List<Person> personList = observableList;
-        Statistics stats = new Statistics(personList);
-
-        assert stats != null : "Statistics object should not be null";
-        assert stats.getTotalEmployees() == personList.size() : "Total employees count mismatch";
-
-        logger.info("Statistics calculated: " + stats.getTotalEmployees() + " employees, "
-                + stats.getUniqueTagCount() + " unique tags");
-
-        return stats;
+        return new Statistics(personList);
     }
 }
