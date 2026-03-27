@@ -102,10 +102,13 @@ public class CommandBox extends UiPart<Region> {
         try {
             commandExecutor.execute(commandText);
 
-            // if history is empty or last entry is not the same as current, add to history
-            if (commandHistory.isEmpty() || !commandHistory.get(commandHistory.size() - 1).equals(commandText)) {
+            boolean isConfirmationAnswer = commandText.equalsIgnoreCase("y") || commandText.equalsIgnoreCase("n");
+
+            // only keep non-confirmation commands in history
+            if (!isConfirmationAnswer
+                    && (commandHistory.isEmpty() || !commandHistory.get(commandHistory.size() - 1).equals(commandText))) {
                 commandHistory.add(commandText);
-                if (commandHistory.size() > 5) { // Only keep the 5 most recent entries; O(5) = O(1) time complexity
+                if (commandHistory.size() > 10) { // Only keep the 10 most recent entries; O(10) = O(1) time complexity
                     commandHistory.remove(0); // drop oldest entry
                 }
             }
