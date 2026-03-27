@@ -31,7 +31,7 @@ HRmanager is a **desktop app for managing employee and applicant records, optimi
 
   * `list` : Lists all employees currently shown in HRmanager.
 
-  * `add n/John Doe p/98765432 e/johnd@example.com r/Software Engineer` : Adds an employee named `John Doe` to HRmanager.
+  * `add n/John Doe p/98765432 e/johnd@example.com r/Software Engineer d/Human Resources` : Adds an employee named `John Doe` to HRmanager.
 
   * `delete 3` : Deletes the 3rd employee shown in the current list.
 
@@ -68,6 +68,8 @@ HRmanager is a **desktop app for managing employee and applicant records, optimi
 
 * Phone Number constraints: The phone number must contain only numbers, and be between 3 and 16 digits inclusive. Do not include spaces, extensions or country codes.
 
+* Department constraints: Departments can take any values, and it should not be blank.
+
 * Tag constraints: Tags must be **alphanumeric or spaces** (only letters, numbers, spaces) and **between 1 to 50 characters long**. Tags are **case-sensitive**. Tags cannot start with a space.<br>
   e.g. `t/Probation`, `t/On 4 days leave`, `t/HR Department` are valid; `t/HR!`(contains special character), and tags longer than 50 characters are invalid.
 
@@ -99,7 +101,7 @@ You can pre-fill the command box with your last successful command using the **P
 
 Adds an employee to HRmanager.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE d/DEPARTMENT [t/TAG]…​`
 
 <box type="tip" seamless>
 
@@ -107,9 +109,9 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 </box>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com r/Receptionist`
+* `add n/John Doe p/98765432 e/johnd@example.com r/Receptionist d/Operations`
 
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com r/Associate Director p/1234567 t/criminal`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com r/Associate Director d/Finance p/1234567 t/criminal`
 
 ### Listing all employees : `list`
 
@@ -121,8 +123,9 @@ Format: `list`
 
 Edits an existing employee in HRmanager.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]…​`
 
+* You will be prompted to confirm the action before the command executes. Enter `y` to proceed or `n` to cancel.
 * Edits the employee at the specified `INDEX`. The index refers to the index number shown in the displayed employee list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Each optional field accepts at most 1 updated value, i.e. no duplicate fields.
@@ -133,7 +136,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [t/TAG]…​`
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` edits the phone number and email address of the 1st employee to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` edits the name of the 2nd employee to be `Betsy Crower` and clears all existing tags.
+*  `edit 2 n/Betsy Crower d/Marketing t/` edits the name and department of the 2nd employee to be `Betsy Crower` and `Marketing`, and clears all existing tags.
 
 ### Searching employees by name: `search`
 
@@ -143,7 +146,7 @@ Format: `search KEYWORD [MORE_KEYWORDS]...`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * Only one keyword allowed i.e. spaces are invalid.
-* Every field is searched (name, phone, email, role, tag(s) if any).
+* Every field is searched (name, phone, email, role, department, tag(s) if any).
 * Partial matches are supported. e.g. `Han` will match `Hans`
 * The keyword must be at most `50` characters long.
 * A blank search is invalid and HRmanager will show the command usage message.
@@ -160,6 +163,7 @@ Deletes one or more employees from the list using their displayed index numbers.
 
 Format: `delete INDEX [MORE_INDEXES]`
 
+* You will be prompted to confirm the action before the command executes. Enter `y` to proceed or `n` to cancel.
 * Deletes the employee(s) at the specified `INDEX`.
 * The index refers to the index number shown in the displayed employee list.
 * The index **must be a positive integer** 1, 2, 3, …​
@@ -170,17 +174,27 @@ Examples:
 * `search Betsy` followed by `delete 1` deletes the 1st employee in the results of the `search` command.
 * `delete 1 3 5` deletes the 1st, 3rd, and 5th employees in the displayed list.
 
+### Export employee data : `export`
+
+Exports the current list of employees into a CSV file, saved into user-specified local destination.
+
+Format: `export [FILE PATH]`
+
 ### Clearing all entries : `clear`
 
 Clears all entries from HRmanager.
 
 Format: `clear`
 
+* You will be prompted to confirm the action before the command executes. Enter `y` to proceed or `n` to cancel.
+
 ### Exiting the program : `exit`
 
 Exits the program.
 
 Format: `exit`
+
+* You will be prompted to confirm the action before the command executes. Enter `y` to proceed or `n` to cancel.
 
 ### Viewing statistics: `stats`
 
@@ -244,10 +258,10 @@ _Details coming soon ..._
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com r/Software Engineer t/friend t/colleague`
+**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE d/DEPARTMENT [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com r/Software Engineer d/Engineering t/friend t/colleague`
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [r/ROLE] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com d/Finance`
 **Search** | `search KEYWORD...`<br> e.g., `search James`
 **List**   | `list`
 **Help**   | `help`
