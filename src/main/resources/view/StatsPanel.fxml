@@ -47,7 +47,7 @@
             <Label fx:id="mostCommonTagLabel" styleClass="stats-value"/>
         </HBox>
 
-        <HBox spacing="10">
+        <HBox spacing="10" fx:id="employeesWithRow">
             <Label fx:id="employeesWithMetricTextLabel" text="✅ Employees with tags:" styleClass="stats-label" prefWidth="140"/>
             <Label fx:id="employeesWithTagsLabel" styleClass="stats-value"/>
         </HBox>

@@ -42,6 +42,9 @@ public class StatsPanel extends UiPart<Region> {
     private Label employeesWithMetricTextLabel;
 
     @FXML
+    private Region employeesWithRow;
+
+    @FXML
     private Label employeesWithoutMetricTextLabel;
 
     @FXML
@@ -153,6 +156,8 @@ public class StatsPanel extends UiPart<Region> {
             employeesWithMetricTextLabel.setText("✅ Employees with tags:");
             employeesWithoutMetricTextLabel.setText("❌ Without tags:");
             distributionHeaderLabel.setText("📋 Tag Distribution (Top 5)");
+            employeesWithRow.setManaged(true);
+            employeesWithRow.setVisible(true);
             employeesWithoutRow.setManaged(true);
             employeesWithoutRow.setVisible(true);
             tagLegendLabel.setStyle(ACTIVE_LEGEND_STYLE);
@@ -160,8 +165,9 @@ public class StatsPanel extends UiPart<Region> {
         } else {
             uniqueMetricTextLabel.setText("🏢 Unique dept:");
             mostCommonMetricTextLabel.setText("📈 Most common dept:");
-            employeesWithMetricTextLabel.setText("✅ Employees with dept:");
             distributionHeaderLabel.setText("📋 Dept Distribution (Top 5)");
+            employeesWithRow.setManaged(false);
+            employeesWithRow.setVisible(false);
             employeesWithoutRow.setManaged(false);
             employeesWithoutRow.setVisible(false);
             tagLegendLabel.setStyle(INACTIVE_LEGEND_STYLE);
