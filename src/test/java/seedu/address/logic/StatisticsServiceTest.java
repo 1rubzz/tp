@@ -19,6 +19,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.Statistics;
 import seedu.address.model.person.Person;
@@ -81,15 +82,32 @@ public class StatisticsServiceTest {
         assertEquals(1, stats2.getTotalEmployees());
     }
 
+    @Test
+    public void getCurrentDepartments_filteredListExcludesPerson_returnsDepartmentsFromFullAddressBook() {
+        ObservableList<Person> fullPersonList = FXCollections.observableArrayList(ALICE, BENSON);
+        ObservableList<Person> filteredPersonList = FXCollections.observableArrayList(ALICE);
+        testLogic.setAddressBookPersonList(fullPersonList);
+        testLogic.setPersonList(filteredPersonList);
+
+        List<String> departments = statisticsService.getCurrentDepartments();
+
+        assertEquals(List.of("Human Resources", "Security"), departments);
+    }
+
     /**
      * Test implementation of Logic interface for testing StatisticsService.
      */
     private static class TestLogic implements Logic {
 
         private ObservableList<Person> personList = FXCollections.observableArrayList();
+        private final AddressBook addressBook = new AddressBook();
 
         void setPersonList(ObservableList<Person> personList) {
             this.personList = personList;
+        }
+
+        void setAddressBookPersonList(ObservableList<Person> personList) {
+            addressBook.setPersons(personList);
         }
 
         @Override
@@ -104,7 +122,7 @@ public class StatisticsServiceTest {
 
         @Override
         public ReadOnlyAddressBook getAddressBook() {
-            return null;
+            return addressBook;
         }
 
         @Override

@@ -24,21 +24,33 @@ public class CommandResult {
     /** Statistics dashboard mode update, if any. */
     private final StatisticsMode statisticsMode;
 
+    /** Right panel view override, if any. */
+    private final RightPanelView rightPanelView;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null);
+        this(feedbackToUser, showHelp, exit, null, null);
     }
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, StatisticsMode statisticsMode) {
+        this(feedbackToUser, showHelp, exit, statisticsMode, null);
+    }
+
+    /**
+     * Constructs a {@code CommandResult} with the specified fields.
+     */
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, StatisticsMode statisticsMode,
+            RightPanelView rightPanelView) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
         this.statisticsMode = statisticsMode;
+        this.rightPanelView = rightPanelView;
     }
 
     /**
@@ -65,6 +77,10 @@ public class CommandResult {
         return Optional.ofNullable(statisticsMode);
     }
 
+    public Optional<RightPanelView> getRightPanelView() {
+        return Optional.ofNullable(rightPanelView);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -80,12 +96,13 @@ public class CommandResult {
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
                 && showHelp == otherCommandResult.showHelp
                 && exit == otherCommandResult.exit
-                && Objects.equals(statisticsMode, otherCommandResult.statisticsMode);
+                && Objects.equals(statisticsMode, otherCommandResult.statisticsMode)
+                && Objects.equals(rightPanelView, otherCommandResult.rightPanelView);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, statisticsMode);
+        return Objects.hash(feedbackToUser, showHelp, exit, statisticsMode, rightPanelView);
     }
 
     @Override
@@ -97,6 +114,10 @@ public class CommandResult {
 
         if (statisticsMode != null) {
             builder.add("statisticsMode", statisticsMode);
+        }
+
+        if (rightPanelView != null) {
+            builder.add("rightPanelView", rightPanelView);
         }
 
         return builder.toString();

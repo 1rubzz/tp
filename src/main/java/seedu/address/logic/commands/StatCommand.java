@@ -36,7 +36,8 @@ public class StatCommand extends Command {
                 String.format(MESSAGE_SUCCESS, statisticsMode.getFullName()),
                 false,
                 false,
-                statisticsMode);
+                statisticsMode,
+                RightPanelView.STATISTICS);
     }
 }
 
