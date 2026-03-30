@@ -109,7 +109,7 @@ public class StatisticsTest {
     }
 
     @Test
-    public void constructor_moreThanFiveTags_showsOnlyTopFive() {
+    public void constructor_moreThanFiveTags_showsAllTags() {
         Person personWithManyTags = createPersonWithTags("Many", "Engineering",
                 "Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6");
         List<Person> persons = Collections.singletonList(personWithManyTags);
@@ -118,7 +118,7 @@ public class StatisticsTest {
 
         String distribution = stats.getValueDistribution();
         int lineCount = distribution.split("\n").length;
-        assertEquals(5, lineCount);
+        assertEquals(6, lineCount);
     }
 
     // Helper method to create Person with tags

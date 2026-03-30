@@ -155,7 +155,7 @@ public class StatsPanel extends UiPart<Region> {
             mostCommonMetricTextLabel.setText("📈 Most common tag:");
             employeesWithMetricTextLabel.setText("✅ Employees with tags:");
             employeesWithoutMetricTextLabel.setText("❌ Without tags:");
-            distributionHeaderLabel.setText("📋 Tag Distribution (Top 5)");
+            distributionHeaderLabel.setText("📋 Tag Distribution");
             employeesWithRow.setManaged(true);
             employeesWithRow.setVisible(true);
             employeesWithoutRow.setManaged(true);
@@ -165,7 +165,7 @@ public class StatsPanel extends UiPart<Region> {
         } else {
             uniqueMetricTextLabel.setText("🏢 Unique dept:");
             mostCommonMetricTextLabel.setText("📈 Most common dept:");
-            distributionHeaderLabel.setText("📋 Dept Distribution (Top 5)");
+            distributionHeaderLabel.setText("📋 Dept Distribution");
             employeesWithRow.setManaged(false);
             employeesWithRow.setVisible(false);
             employeesWithoutRow.setManaged(false);
