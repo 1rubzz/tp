@@ -62,7 +62,7 @@
     <Region styleClass="separator-line" prefHeight="1"/>
 
     <!-- Distribution -->
-    <Label fx:id="distributionHeaderLabel" text="📋 Tag Distribution (Top 5)" styleClass="stats-label"/>
+    <Label fx:id="distributionHeaderLabel" text="📋 Tag Distribution" styleClass="stats-label"/>
 
     <Label fx:id="tagDistributionLabel" styleClass="tag-distribution" wrapText="true"/>
 

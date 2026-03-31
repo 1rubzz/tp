@@ -142,6 +142,25 @@
      -fx-border-top-width: 1px;
 }
 
+.scroll-pane.stats-scroll-pane,
+#statsScrollPane {
+    -fx-background: #3e3e3e;
+    -fx-background-color: #3e3e3e;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane.stats-scroll-pane > .viewport,
+.scroll-pane.stats-scroll-pane > .corner,
+#statsScrollPane > .viewport,
+#statsScrollPane > .corner,
+#statsScrollPane .viewport,
+#statsScrollPane .content {
+    -fx-background: #3e3e3e;
+    -fx-background-color: #3e3e3e;
+    -fx-background-insets: 0;
+}
+
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 30%);
 }

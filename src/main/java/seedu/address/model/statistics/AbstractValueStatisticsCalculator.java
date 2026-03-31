@@ -14,8 +14,6 @@ import seedu.address.model.person.Person;
  */
 public abstract class AbstractValueStatisticsCalculator implements StatisticsCalculator {
 
-    private static final int TOP_DISTRIBUTION_LIMIT = 5;
-
     /**
      * Returns values contributed by one person for this calculation mode.
      */
@@ -84,8 +82,8 @@ public abstract class AbstractValueStatisticsCalculator implements StatisticsCal
 
         return valueFrequency.entrySet()
                 .stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .limit(TOP_DISTRIBUTION_LIMIT)
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()
+                        .thenComparing(Map.Entry::getKey, String.CASE_INSENSITIVE_ORDER))
                 .map(entry -> "• " + entry.getKey() + ": " + entry.getValue())
                 .collect(Collectors.joining("\n"));
     }

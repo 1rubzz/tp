@@ -19,6 +19,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.Statistics;
 import seedu.address.model.person.Person;
@@ -81,15 +82,40 @@ public class StatisticsServiceTest {
         assertEquals(1, stats2.getTotalEmployees());
     }
 
+    @Test
+    public void getCurrentStatistics_ignoresFilteredList_usesGlobalList() {
+        testLogic.setAddressBookPersons(FXCollections.observableArrayList(ALICE, BENSON));
+        testLogic.setFilteredPersonList(FXCollections.observableArrayList(ALICE));
+
+        Statistics stats = statisticsService.getCurrentStatistics();
+        assertEquals(2, stats.getTotalEmployees());
+    }
+
     /**
      * Test implementation of Logic interface for testing StatisticsService.
      */
     private static class TestLogic implements Logic {
 
         private ObservableList<Person> personList = FXCollections.observableArrayList();
+        private ReadOnlyAddressBook addressBook;
+
+        TestLogic() {
+            setAddressBookPersons(FXCollections.observableArrayList());
+        }
 
         void setPersonList(ObservableList<Person> personList) {
-            this.personList = personList;
+            setAddressBookPersons(personList);
+            setFilteredPersonList(personList);
+        }
+
+        void setAddressBookPersons(ObservableList<Person> persons) {
+            AddressBook editableAddressBook = new AddressBook();
+            editableAddressBook.setPersons(persons);
+            this.addressBook = editableAddressBook;
+        }
+
+        void setFilteredPersonList(ObservableList<Person> persons) {
+            this.personList = persons;
         }
 
         @Override
@@ -104,7 +130,7 @@ public class StatisticsServiceTest {
 
         @Override
         public ReadOnlyAddressBook getAddressBook() {
-            return null;
+            return addressBook;
         }
 
         @Override
