@@ -12,8 +12,9 @@ public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Undoes the previous command that modified the address book.\n"
-            + "Example: " + COMMAND_WORD;
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+        + ": Undoes the previous command that modified the address book.\n"
+        + "Example: " + COMMAND_WORD;
 
     public static final String MESSAGE_SUCCESS = "Undid the previous command.";
     public static final String MESSAGE_FAILURE = "There are no commands to undo.";
