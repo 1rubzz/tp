@@ -175,24 +175,35 @@ Examples:
 <br>
 
 
-### Searching employees by name: `search`
+### Searching for an employee : `search`
 
-Finds employees whose names contain any of the given keywords.
+Finds employees whose fields contain all of the given keywords.
 
 Format: `search KEYWORD [MORE_KEYWORDS]...`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* Only one keyword allowed i.e. spaces are invalid.
-* Every field is searched (name, phone, email, role, department, tag(s) if any).
-* Partial matches are supported. e.g. `Han` will match `Hans`
-* The keyword must be at most `50` characters long.
-* A blank search is invalid and HRmanager will show the command usage message.
+What this feature does:
+* Filters the employee list to show only those who match all provided keywords.
+* Searches across every field (name, phone, email, role, department, and tags).
+* Evaluates partial matches (e.g., `Han` will match `Hans`).
+
+Additional constraints:
+* The search is case-insensitive.
+* At least **one** keyword must be provided.
+* A maximum of **5** keywords can be supplied in a single command.
+* Each keyword must be **alphanumeric** only (no spaces or special characters).
+* Each keyword must be at most **20** characters long.
 
 Examples:
-* `search John` returns `john` and `John Doe`
-* `search friends` returns employees such as `Alex Yeoh` and `Bernice Yu` with the tag "friends". <br>
-  ![result for 'search alex bernice'](images/searchAlexBerniceResult.png)
-* `search zzz` shows `0 employees listed!` if no employee names match.
+* `search John` returns employees with "John" anywhere in their fields (e.g., `John Doe`).
+* `search friends` returns employees with the "friends" tag or keyword.
+* `search alice eng` returns employees that match both "alice" and "eng" (e.g., Alice who is an Engineer).
+* `search zzz` shows `0 employees listed!` if no employee fields match.
+
+**Successful search command output:**
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png`
+
+<br>
 
 
 ### Viewing statistics: `stat` 
