@@ -67,6 +67,7 @@ public class Statistics {
         case TAG -> new TagStatisticsCalculator();
         case DEPARTMENT -> new DepartmentStatisticsCalculator();
         case ROLE -> new RoleStatisticsCalculator();
+        case UNKNOWN -> throw new IllegalArgumentException("Unsupported mode");
         };
     }
 
