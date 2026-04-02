@@ -259,24 +259,33 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Search feature
 
-The `search` command is implemented by `SearchCommand`, `SearchCommandParser`, and `NameContainsKeywordsPredicate`.
+The `search` command is implemented by `SearchCommand`, `SearchCommandParser`, and `PersonMatchesKeywordPredicate`.
 
 The flow is as follows:
 
 1. The user enters `search KEYWORD [MORE_KEYWORDS]...`.
 2. `AddressBookParser` routes the input to `SearchCommandParser`.
-3. `SearchCommandParser` trims the arguments, rejects blank input, rejects searches with more than 100 keywords, and rejects any keyword longer than 100 characters.
-4. If parsing succeeds, `SearchCommand` is created with a `NameContainsKeywordsPredicate`.
+3. `SearchCommandParser` trims the arguments, rejects blank input, rejects searches with more than 5 keywords, rejects any keyword longer than 20 characters, and rejects non-alphanumeric keywords.
+4. If parsing succeeds, `SearchCommand` is created with a `PersonMatchesKeywordPredicate`.
 5. `SearchCommand#execute` updates the model's filtered employee list and returns feedback in the form `X employees listed!`.
+
+The sequence diagram below illustrates the interactions within the `Logic` and `Model` components when a user executes a `search` command (e.g. `search ali hr`).
+
+<puml src="diagrams/SearchSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `search ali hr` Command" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `SearchCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
 
 Matching behavior:
 
 * search is case-insensitive
-* only employee names are searched
+* all employee fields are searched (name, phone, email, role, department, tags)
 * each keyword is treated as a partial substring match rather than a full-word match
-* multiple keywords are combined using `OR` semantics
+* multiple keywords are combined using `AND` semantics
 
-This means a command such as `search ali tan` returns employees whose names contain either `ali` or `tan`, regardless of case.
+This means a command such as `search ali hr` returns employees whose fields contain both `ali` and `hr`, regardless of case (for instance, an employee named "Alice" in the "HR" department).
 
 ### Statistics Panel
 
@@ -481,11 +490,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User enters the `search` command with one or more name keywords.
+1.  User enters the `search` command with one or more keywords.
 2.  System validates the search input.
 3.  System processes the search query against the existing employee records.
 4.  System displays a list of all employees that match the search.
-    Matching is case-insensitive, supports partial-name matching, and returns employees that match any one of the supplied keywords.
+    Matching is case-insensitive, supports partial substring matching across all fields, and returns employees whose fields contain all of the supplied keywords.
 
     Use case ends.
 
@@ -496,7 +505,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at step 1.
 
-* 1b. The user provides more than 100 keywords, or at least one keyword longer than 100 characters.
+* 1b. The user provides more than 5 keywords, at least one keyword longer than 20 characters, or non-alphanumeric keywords.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
 
     Use case resumes at step 1.
@@ -808,16 +817,16 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all employees using the list command. Multiple employees in the list with various names, phones, emails, roles, departments, and tags.
 
    2. Test case: `search John`<br>
-      Expected: All employees whose name contains "John" (case-insensitive) are listed. Status message shows the number of employees listed
+      Expected: All employees whose fields contain "John" (case-insensitive) are listed. Status message shows the number of employees listed.
 
    3. Test case: `search 91234567`<br>
-      Expected: All employees whose phone number contains "91234567" are listed. Status message shows the number of employees listed.
+      Expected: All employees whose fields contain "91234567" are listed. Status message shows the number of employees listed.
 
-   4. Test case: `search example.com`<br>
-      Expected: All employees whose email contains "example.com" are listed. Status message shows the number of employees listed.
+   4. Test case: `search example`<br>
+      Expected: All employees whose fields contain "example" are listed. Status message shows the number of employees listed.
 
    5. Test case: `search HR`<br>
-      Expected: All employees whose tags contain "HR" are listed. Status message shows the number of employees listed.
+      Expected: All employees whose fields contain "HR" are listed. Status message shows the number of employees listed.
 
    6. Test case: `search` (no keyword)<br>
       Expected: No search is performed. Error details shown in the status message indicating invalid command format and displays the correct usage format.
@@ -828,17 +837,17 @@ testers are expected to do more *exploratory* testing.
    8. Test case: `search John_123` (contains underscore)<br>
       Expected: No search is performed. Error details shown due to non-alphanumeric characters in keyword.
 
-   9. Test case: `search [a string of 51 characters]`<br>
-      Expected: No search is performed. Error details shown due to exceeding 50-character limit.
+   9. Test case: `search [a string of 21 characters]`<br>
+      Expected: No search is performed. Error details shown due to exceeding 20-character limit.
 
-   10. Test case: `search John Doe` (multiple words)<br>
-       Expected: No search is performed. Error details shown indicating that only one keyword is allowed. The command expects a single keyword without spaces.
+   10. Test case: `search keyword1 keyword2 keyword3 keyword4 keyword5 keyword6` (more than 5 keywords)<br>
+       Expected: No search is performed. Error details shown indicating invalid command format because maximum keywords is exceeded.
 
    11. Test case: `search keywordThatDoesNotMatchAnyEmployee`<br>
        Expected: Empty list shown. Status message indicates "0 employees listed!".
 
-   12. Other incorrect search commands to try: `search @lphabet`, `search 123!@#`, `search keyword with multiple spaces`<br>
-       Expected: Similar error messages shown due to non-alphanumeric characters or multiple keywords.
+   12. Other incorrect search commands to try: `search @lphabet`, `search 123!@#`<br>
+       Expected: Similar error messages shown due to non-alphanumeric characters.
 
 ### Editing an employee
 
