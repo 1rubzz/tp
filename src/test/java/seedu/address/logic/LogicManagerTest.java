@@ -1,8 +1,12 @@
 package seedu.address.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.Messages.MESSAGE_COMMAND_CANCELLED;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_CONFIRMATION_INPUT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.CommandTestUtil.DEPARTMENT_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -18,8 +22,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmationPromptFormatter;
+import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -59,12 +66,14 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_commandExecutionError_throwsCommandException() {
+    public void execute_commandExecutionError_throwsCommandException() throws Exception {
         String deleteCommand = "delete 9";
-        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandSuccess(deleteCommand, getDeleteConfirmationPrompt(1), model);
+        assertCommandException("y", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
         String deleteAliasCommand = "del 9";
-        assertCommandException(deleteAliasCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandSuccess(deleteAliasCommand, getDeleteConfirmationPrompt(1), model);
+        assertCommandException("Y", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test
@@ -88,6 +97,58 @@ public class LogicManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void getAddressBook_returnsModelAddressBook() {
+        assertEquals(model.getAddressBook(), logic.getAddressBook());
+    }
+
+    @Test
+    public void getAddressBookFilePath_returnsModelAddressBookFilePath() {
+        assertEquals(model.getAddressBookFilePath(), logic.getAddressBookFilePath());
+    }
+
+    @Test
+    public void guiSettings_roundTrip_success() {
+        GuiSettings updatedSettings = new GuiSettings(700, 500, 50, 80);
+
+        logic.setGuiSettings(updatedSettings);
+
+        assertEquals(updatedSettings, logic.getGuiSettings());
+    }
+
+    @Test
+    public void execute_confirmableCommandConfirmed_executesSuccessfully() throws Exception {
+        model.addPerson(new PersonBuilder(AMY).withTags().build());
+
+        String deleteCommand = "delete 1";
+        assertCommandSuccess(deleteCommand, getDeleteConfirmationPrompt(1), model);
+
+        String expectedDeleteSuccess = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, "1 employee(s)");
+        assertCommandSuccess("y", expectedDeleteSuccess, model);
+        assertTrue(logic.getFilteredPersonList().isEmpty());
+    }
+
+    @Test
+    public void execute_confirmableCommandCancelled_doesNotExecute() throws Exception {
+        model.addPerson(new PersonBuilder(AMY).withTags().build());
+
+        assertCommandSuccess("delete 1", getDeleteConfirmationPrompt(1), model);
+        assertCommandSuccess("n", String.format(MESSAGE_COMMAND_CANCELLED, DeleteCommand.ACTION_DESCRIPTION), model);
+
+        assertEquals(1, logic.getFilteredPersonList().size());
+    }
+
+    @Test
+    public void execute_confirmableCommandInvalidConfirmationInput_keepsPendingState() throws Exception {
+        model.addPerson(new PersonBuilder(AMY).withTags().build());
+
+        assertCommandSuccess("delete 1", getDeleteConfirmationPrompt(1), model);
+        assertCommandSuccess("abc", MESSAGE_INVALID_CONFIRMATION_INPUT, model);
+        assertCommandSuccess("n", String.format(MESSAGE_COMMAND_CANCELLED, DeleteCommand.ACTION_DESCRIPTION), model);
+
+        assertEquals(1, logic.getFilteredPersonList().size());
     }
 
     /**
@@ -169,10 +230,15 @@ public class LogicManagerTest {
 
         // Triggers the saveAddressBook method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + ROLE_DESC_AMY;
+                + EMAIL_DESC_AMY + ROLE_DESC_AMY + DEPARTMENT_DESC_AMY;
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
         ModelManager expectedModel = new ModelManager();
         expectedModel.addPerson(expectedPerson);
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
+    }
+
+    private String getDeleteConfirmationPrompt(int uniqueCount) {
+        String actionSummary = String.format(DeleteCommand.ACTION_SUMMARY_FORMAT, uniqueCount);
+        return ConfirmationPromptFormatter.format(actionSummary, DeleteCommand.IMPACT_SUMMARY);
     }
 }

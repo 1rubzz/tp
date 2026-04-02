@@ -1,9 +1,13 @@
 package seedu.address.logic;
 
-import java.util.List;
+import static java.util.Objects.requireNonNull;
 
-import javafx.collections.ObservableList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Statistics;
+import seedu.address.model.StatisticsMode;
 import seedu.address.model.person.Person;
 
 /**
@@ -12,19 +16,35 @@ import seedu.address.model.person.Person;
  */
 public class StatisticsService {
 
+    private static final Logger logger = LogsCenter.getLogger(StatisticsService.class);
     private final Logic logic;
 
+    /**
+     * Creates a StatisticsService with the given Logic component.
+     *
+     * @param logic The Logic component used to access employee data
+     * @throws NullPointerException if logic is null
+     */
     public StatisticsService(Logic logic) {
+        requireNonNull(logic);
         this.logic = logic;
+        logger.info("StatisticsService initialized");
     }
 
     /**
-     * Returns current statistics based on the filtered person list.
+     * Returns current statistics based on the full address book.
      */
     public Statistics getCurrentStatistics() {
-        ObservableList<Person> observableList = logic.getFilteredPersonList();
-        // ObservableList is a List, so this works fine
-        List<Person> personList = observableList;
-        return new Statistics(personList);
+        return getCurrentStatistics(StatisticsMode.DEPARTMENT);
+    }
+
+    /**
+     * Returns current statistics based on the full address book and selected dashboard mode.
+     */
+    public Statistics getCurrentStatistics(StatisticsMode statisticsMode) {
+        requireNonNull(statisticsMode);
+        logger.fine("Getting current statistics");
+        List<Person> personList = logic.getAddressBook().getPersonList();
+        return new Statistics(personList, statisticsMode);
     }
 }

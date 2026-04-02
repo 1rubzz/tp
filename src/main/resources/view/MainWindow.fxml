@@ -58,9 +58,10 @@
           </VBox>
 
           <!-- Right side: Stats Panel with ScrollPane -->
-          <ScrollPane styleClass="pane-with-border"
+          <ScrollPane fx:id="statsScrollPane" styleClass="pane-with-border stats-scroll-pane"
                       minWidth="280" prefWidth="280" maxWidth="280"
-                      fitToWidth="true" fitToHeight="true">
+                      fitToWidth="true" fitToHeight="false"
+                      vbarPolicy="AS_NEEDED">
             <StackPane fx:id="statsPanelPlaceholder"/>
           </ScrollPane>
         </HBox>

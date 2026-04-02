@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.logging.Logger;
 
 import javafx.collections.ListChangeListener;
@@ -10,6 +12,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.logic.StatisticsService;
 import seedu.address.model.Statistics;
+import seedu.address.model.StatisticsMode;
 import seedu.address.model.person.Person;
 
 /**
@@ -20,6 +23,35 @@ public class StatsPanel extends UiPart<Region> {
 
     private static final String FXML = "StatsPanel.fxml";
     private static final Logger logger = LogsCenter.getLogger(StatsPanel.class);
+    private static final String ACTIVE_LEGEND_STYLE = "-fx-text-fill: #2e7d32; -fx-font-weight: bold;";
+    private static final String INACTIVE_LEGEND_STYLE = "-fx-text-fill: #808080; -fx-font-weight: normal;";
+
+    @FXML
+    private Label tagLegendLabel;
+
+    @FXML
+    private Label deptLegendLabel;
+
+    @FXML
+    private Label uniqueMetricTextLabel;
+
+    @FXML
+    private Label mostCommonMetricTextLabel;
+
+    @FXML
+    private Label employeesWithMetricTextLabel;
+
+    @FXML
+    private Region employeesWithRow;
+
+    @FXML
+    private Label employeesWithoutMetricTextLabel;
+
+    @FXML
+    private Region employeesWithoutRow;
+
+    @FXML
+    private Label distributionHeaderLabel;
 
     @FXML
     private Label totalEmployeesLabel;
@@ -40,7 +72,7 @@ public class StatsPanel extends UiPart<Region> {
     private Label tagDistributionLabel;
 
     private final StatisticsService statisticsService;
-    private final Logic logic;
+    private StatisticsMode currentMode;
 
     /**
      * Creates a StatsPanel.
@@ -49,27 +81,46 @@ public class StatsPanel extends UiPart<Region> {
      */
     public StatsPanel(Logic logic) {
         super(FXML);
-        this.logic = logic;
-        this.statisticsService = new StatisticsService(logic);
+        requireNonNull(logic);
 
-        // Listen for changes to the person list - using anonymous class
+        this.statisticsService = new StatisticsService(logic);
+        this.currentMode = StatisticsMode.DEPARTMENT;
+
+        // Listen for changes to the person list.
         logic.getFilteredPersonList().addListener(new ListChangeListener<Person>() {
             @Override
             public void onChanged(Change<? extends Person> change) {
+                logger.fine("Person list changed, refreshing statistics");
                 refresh();
             }
         });
 
         refresh();
-        logger.info("StatsPanel initialized");
+        logger.info("StatsPanel initialized successfully");
+    }
+
+    /**
+     * Sets the current dashboard mode and refreshes the panel.
+     */
+    public void setStatisticsMode(StatisticsMode statisticsMode) {
+        requireNonNull(statisticsMode);
+        if (currentMode == statisticsMode) {
+            return;
+        }
+
+        logger.fine("Switching statistics dashboard mode to: " + statisticsMode.getFullName());
+        currentMode = statisticsMode;
+        refresh();
     }
 
     /**
      * Refreshes all statistics in the panel.
      */
     private void refresh() {
-        Statistics stats = statisticsService.getCurrentStatistics();
+        logger.finer("Refreshing statistics panel");
+        Statistics stats = statisticsService.getCurrentStatistics(currentMode);
         updateUi(stats);
+        logger.finer("Statistics panel refresh completed");
     }
 
     /**
@@ -77,11 +128,50 @@ public class StatsPanel extends UiPart<Region> {
      * This method only handles UI updates, no calculations.
      */
     private void updateUi(Statistics stats) {
+        requireNonNull(stats);
+        assert totalEmployeesLabel != null : "totalEmployeesLabel not injected from FXML";
+        assert uniqueTagsLabel != null : "uniqueTagsLabel not injected from FXML";
+        assert mostCommonTagLabel != null : "mostCommonTagLabel not injected from FXML";
+        assert employeesWithTagsLabel != null : "employeesWithTagsLabel not injected from FXML";
+        assert employeesWithoutTagsLabel != null : "employeesWithoutTagsLabel not injected from FXML";
+        assert tagDistributionLabel != null : "tagDistributionLabel not injected from FXML";
+
+        updateModeLabels();
+
         totalEmployeesLabel.setText(String.valueOf(stats.getTotalEmployees()));
-        uniqueTagsLabel.setText(String.valueOf(stats.getUniqueTagCount()));
-        mostCommonTagLabel.setText(stats.getMostCommonTag());
-        employeesWithTagsLabel.setText(String.valueOf(stats.getEmployeesWithTags()));
-        employeesWithoutTagsLabel.setText(String.valueOf(stats.getEmployeesWithoutTags()));
-        tagDistributionLabel.setText(stats.getTagDistribution());
+        uniqueTagsLabel.setText(String.valueOf(stats.getUniqueValueCount()));
+        mostCommonTagLabel.setText(stats.getMostCommonValue());
+        employeesWithTagsLabel.setText(String.valueOf(stats.getEmployeesWithValue()));
+        employeesWithoutTagsLabel.setText(String.valueOf(stats.getEmployeesWithoutValue()));
+        tagDistributionLabel.setText(stats.getValueDistribution());
+
+        logger.finer("UI updated with: " + stats.getTotalEmployees() + " employees, "
+                + stats.getUniqueValueCount() + " unique values in " + currentMode.getFullName() + " mode");
+    }
+
+    private void updateModeLabels() {
+        if (currentMode == StatisticsMode.TAG) {
+            uniqueMetricTextLabel.setText("🏷️ Unique tags:");
+            mostCommonMetricTextLabel.setText("📈 Most common tag:");
+            employeesWithMetricTextLabel.setText("✅ Employees with tags:");
+            employeesWithoutMetricTextLabel.setText("❌ Without tags:");
+            distributionHeaderLabel.setText("📋 Tag Distribution");
+            employeesWithRow.setManaged(true);
+            employeesWithRow.setVisible(true);
+            employeesWithoutRow.setManaged(true);
+            employeesWithoutRow.setVisible(true);
+            tagLegendLabel.setStyle(ACTIVE_LEGEND_STYLE);
+            deptLegendLabel.setStyle(INACTIVE_LEGEND_STYLE);
+        } else {
+            uniqueMetricTextLabel.setText("🏢 Unique dept:");
+            mostCommonMetricTextLabel.setText("📈 Most common dept:");
+            distributionHeaderLabel.setText("📋 Dept Distribution");
+            employeesWithRow.setManaged(false);
+            employeesWithRow.setVisible(false);
+            employeesWithoutRow.setManaged(false);
+            employeesWithoutRow.setVisible(false);
+            tagLegendLabel.setStyle(INACTIVE_LEGEND_STYLE);
+            deptLegendLabel.setStyle(ACTIVE_LEGEND_STYLE);
+        }
     }
 }
