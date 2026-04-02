@@ -1,13 +1,11 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
@@ -33,7 +30,7 @@ public class UndoCommandTest {
         CommandResult commandResult = new UndoCommand().execute(modelStub);
 
         assertEquals(UndoCommand.MESSAGE_SUCCESS, commandResult.getFeedbackToUser());
-        assertTrue(modelStub.undoCalled);
+        assertTrue(modelStub.isUndoCalled());
     }
 
     @Test
@@ -59,8 +56,12 @@ public class UndoCommandTest {
      * A Model stub that supports undo operations.
      */
     private class ModelStubWithUndo extends ModelStub {
+        private boolean undoCalled = false;
         private final VersionedAddressBook addressBook = new VersionedAddressBook();
-        boolean undoCalled = false;
+
+        public boolean isUndoCalled() {
+            return undoCalled;
+        }
 
         @Override
         public void commitAddressBook() {
