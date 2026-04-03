@@ -71,8 +71,8 @@ public class AddCommand extends Command {
         assert !model.hasPerson(toAdd) : "Person should not exist before adding";
         model.addPerson(toAdd);
         assert model.hasPerson(toAdd) : "Person should exist after adding";
-
         logger.fine("Successfully added person: " + toAdd.getName());
+        model.commitAddressBook();
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
