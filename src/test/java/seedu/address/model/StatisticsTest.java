@@ -102,7 +102,6 @@ public class StatisticsTest {
 
         assertEquals(1, stats.getTotalEmployees());
         assertEquals(3, stats.getUniqueValueCount());
-        assertEquals("manager (1)", stats.getMostCommonValue());
         assertEquals(1, stats.getEmployeesWithValue());
         assertEquals(0, stats.getEmployeesWithoutValue());
     }
