@@ -194,6 +194,8 @@ Examples:
   ![result for 'search alex bernice'](images/searchAlexBerniceResult.png)
 * `search zzz` shows `0 employees listed!` if no employee names match.
 
+<br>
+
 
 ### Viewing statistics: `stat`
 
@@ -223,13 +225,18 @@ Format:
 
 ### Cycle through previous executed commands
 
-You can pre-fill the command box with your last successful command using the **PgUp (up arrow) key** on computer keyboards. This allows users to repeat their last commands without re-typing it in its entirety.
+> Just wrote and executed a long command, and want a faster way to write a very similar command? Or, just want to refer back to the command you wrote?
 
-* Use the PgUp (Up arrow) key to move towards older commands, PgDn (Down arrow) key to move towards latest commands.
-* Only successful past commands are saved.
-* Up to 5 past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
-* The current pending command is saved when the command history is explored.
-* The latest command will not be saved if exactly same as the previous consecutive one.
+You can pre-fill the command box with your last successful commands using the **PgUp (Up arrow) key** on your keyboard. This allows you to easily repeat your last commands without re-typing it in its entirety.
+
+* Command history navigation: Use the **PgUp (Up arrow)** key to move towards older commands, **PgDn (Down arrow) key** to move towards latest commands.
+* Only successful commands are saved.
+* Up to **10** past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
+* The current pending command is saved when the command history is explored, so your progress on current half-written commands is not lost when you browse the command history.
+* The latest command will not be saved if it is exactly the same as the previous consecutively executed one (that is already saved).
+* Confirmatory commands like 'y' and 'n' are not saved.
+
+<br>
 
 
 ### Editing an employee : `edit`
@@ -299,12 +306,15 @@ Examples:
 <br>
 
 
-
 ### Clearing all entries : `clear`
 
-Clears all entries from HRmanager.
+Clears all entries from HRmanager; that is, delete all employees.
 
 Format: `clear`
+
+Tips:
+* This action is **permanent**! There is no going back, so be sure about it. Not even [`undo`](#undo-an-executed-command--undo) can save you.
+* The only meaningful way to use this command is to type `clear` itself, any other parameters will be ignored. See: [Extraneous parameters](#features-1)
 
 <box type="info" seamless>
 
@@ -323,9 +333,25 @@ Format: `export [FILE PATH]`
 <br>
 
 
+### Undo an executed command : `undo`
+
+Reverses the effects of a prior `add`, `edit`, or `delete` command.
+
+Format: `undo`
+
+What this feature does:
+* Reverse/Undo a previous successful `add`, `edit`, or `delete` command.
+* If there are sufficient eligible executed commands (see above), you can execute `undo` up to 10 times in a consecutive sequence (disregarding commands that are not eligible for undo).
+* `undo` still works even if there are commands not eligible for `undo` in the past sequence; it will simply ignore them. For example, if you execute `add [parameters...]` then `help` then `undo`, `undo` can ignore `help` (which is not eligible for undo) and reverse the effects of `add`.
+
+Tip:
+* The only meaningful way to use this command is to type `undo` itself; any other parameters will be ignored. See: [Extraneous parameters](#features-1)
+
+<br>
+
 ### Exiting the program : `exit`
 
-Exits the program.
+Close the application.
 
 Format: `exit`
 
@@ -333,6 +359,9 @@ Format: `exit`
 
 **⚠️ Confirmation Required:** This command requires confirmation before execution. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
 </box>
+
+Tip:
+* The only meaningful way to use this command is to type `exit` itself; any other parameters will be ignored. See: [Extraneous parameters](#features-1)
 
 <br>
 
