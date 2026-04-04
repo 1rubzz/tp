@@ -195,7 +195,7 @@ Examples:
 * `search zzz` shows `0 employees listed!` if no employee names match.
 
 
-### Viewing statistics: `stat` 
+### Viewing statistics: `stat`
 
 * Displays real-time statistics about your employee records in a dedicated panel on the right side of the application.
 

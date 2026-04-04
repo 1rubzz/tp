@@ -124,6 +124,7 @@ public class EditCommand extends Command implements ConfirmableCommand {
 
         assert model.getFilteredPersonList().contains(editedPerson) : "Edited person should be in the filtered list";
 
+        model.commitAddressBook();
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
 
