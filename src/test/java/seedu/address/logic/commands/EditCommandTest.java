@@ -296,6 +296,13 @@ public class EditCommandTest {
     }
 
     @Test
+    public void validateBeforeConfirm_noFieldEdited_success() {
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
+
+        assertDoesNotThrow(() -> editCommand.validateBeforeConfirm(model));
+    }
+
+    @Test
     public void validateBeforeConfirm_invalidPersonIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build();

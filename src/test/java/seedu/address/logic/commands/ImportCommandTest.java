@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.io.TempDir;
 
 import javafx.collections.ObservableList;
@@ -240,6 +241,23 @@ public class ImportCommandTest {
 
         CommandException ex = assertThrows(CommandException.class, () -> cmd.validateBeforeConfirm(model));
         assertEquals(String.format(ImportCommand.MESSAGE_FILE_NOT_FOUND, missing), ex.getMessage());
+    }
+
+    @Test
+    void execute_afterValidateBeforeConfirmFailure_fallsBackAndThrows() throws Exception {
+        Path malformedCsv = writeCsv(
+                "name,email,address",
+                "Alice,alice@example.com,123 Main St");
+        ImportCommand cmd = new ImportCommand(malformedCsv.toString());
+
+        Executable preConfirmAction = () -> cmd.validateBeforeConfirm(model);
+        CommandException preConfirmEx = assertThrows(CommandException.class, preConfirmAction);
+        assertTrue(preConfirmEx.getMessage().startsWith("Failed to parse CSV file"));
+
+        Executable executeAction = () -> cmd.execute(model);
+        CommandException executeEx = assertThrows(CommandException.class, executeAction);
+        assertTrue(executeEx.getMessage().startsWith("Failed to parse CSV file"));
+        assertNull(model.lastSetAddressBook);
     }
 
     @Test
