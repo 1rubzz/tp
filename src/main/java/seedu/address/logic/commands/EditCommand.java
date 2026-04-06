@@ -97,7 +97,7 @@ public class EditCommand extends Command implements ConfirmableCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
-        assert lastShownList != null : "Filtered person list cannot be null";
+        requireNonNull(lastShownList);
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
@@ -107,13 +107,13 @@ public class EditCommand extends Command implements ConfirmableCommand {
         assert personToEdit != null : "Person to edit cannot be null";
 
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
-        assert editedPerson != null : "Edited person cannot be null";
+        requireNonNull(editedPerson);
 
-        assert editedPerson.getName() != null : "Edited person must have a name";
-        assert editedPerson.getPhone() != null : "Edited person must have a phone";
-        assert editedPerson.getEmail() != null : "Edited person must have an email";
-        assert editedPerson.getRole() != null : "Edited person must have a role";
-        assert editedPerson.getDepartment() != null : "Edited person must have a department";
+        requireNonNull(editedPerson.getName());
+        requireNonNull(editedPerson.getPhone());
+        requireNonNull(editedPerson.getEmail());
+        requireNonNull(editedPerson.getRole());
+        requireNonNull(editedPerson.getDepartment());
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -145,11 +145,11 @@ public class EditCommand extends Command implements ConfirmableCommand {
         Department updatedDepartment = editPersonDescriptor.getDepartment().orElse(personToEdit.getDepartment());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        assert updatedName != null : "Updated name cannot be null";
-        assert updatedPhone != null : "Updated phone cannot be null";
-        assert updatedEmail != null : "Updated email cannot be null";
-        assert updatedRole != null : "Updated role cannot be null";
-        assert updatedDepartment != null : "Updated department cannot be null";
+        requireNonNull(updatedName);
+        requireNonNull(updatedPhone);
+        requireNonNull(updatedEmail);
+        requireNonNull(updatedRole);
+        requireNonNull(updatedDepartment);
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedRole, updatedDepartment, updatedTags);
     }
