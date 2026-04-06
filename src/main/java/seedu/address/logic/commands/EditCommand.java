@@ -140,7 +140,7 @@ public class EditCommand extends Command implements ConfirmableCommand {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        assert personToEdit != null : "Person to edit cannot be null";
+        requireNonNull(personToEdit);
         return personToEdit;
     }
 
