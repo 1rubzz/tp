@@ -68,13 +68,8 @@ public class LogicManagerTest {
 
     @Test
     public void execute_commandExecutionError_throwsCommandException() throws Exception {
-        String deleteCommand = "delete 9";
-        assertCommandSuccess(deleteCommand, getDeleteConfirmationPrompt("#9"), model);
-        assertCommandException("y", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-
-        String deleteAliasCommand = "del 9";
-        assertCommandSuccess(deleteAliasCommand, getDeleteConfirmationPrompt("#9"), model);
-        assertCommandException("Y", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandException("delete 9", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandException("del 9", MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test

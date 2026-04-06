@@ -79,6 +79,8 @@ public class ImportCommand extends Command implements ConfirmableCommand {
 
         List<Person> persons = readCsv(path);
 
+        model.commitAddressBook();
+
         // Build a fresh address book and populate it atomically
         AddressBook newBook = new AddressBook();
         persons.forEach(newBook::addPerson);
