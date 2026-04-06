@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
@@ -24,8 +25,9 @@ public class DeleteCommand extends Command implements ConfirmableCommand {
     public static final int MAX_INDEX_COUNT = 100;
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted employee(s): %1$s";
     public static final String ACTION_SUMMARY_FORMAT = "Delete %1$d employee(s).";
-    public static final String IMPACT_SUMMARY =
-            "The selected employee record(s) will be permanently removed.";
+    public static final String IMPACT_SUMMARY = "The selected employee record(s) will be permanently removed.";
+    public static final String IMPACT_SUMMARY_WITH_NAMES_FORMAT =
+            "The selected employee record(s) will be permanently removed: %1$s.";
     public static final String ACTION_DESCRIPTION = "delete employee(s)";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + " (Alias:" + COMMAND_ALIAS + "): Deletes the person identified "
@@ -55,14 +57,40 @@ public class DeleteCommand extends Command implements ConfirmableCommand {
     }
 
     @Override
+    public void validateBeforeConfirm(Model model) throws CommandException {
+        requireNonNull(model);
+        List<Person> lastShownList = model.getFilteredPersonList();
+        for (Index index : getUniqueIndexes()) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                logger.fine("Pre-confirmation validation failed for out-of-range index: " + index.getOneBased());
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
+        }
+    }
+
+    @Override
     public String getConfirmationPrompt() {
-        int uniqueCount = (int) targetIndexes.stream().distinct().count();
+        int uniqueCount = getUniqueIndexes().size();
         assert uniqueCount > 0 : "Delete confirmation should refer to at least one unique index";
         assert uniqueCount <= targetIndexes.size() : "Unique index count cannot exceed requested count";
 
         String actionSummary = String.format(ACTION_SUMMARY_FORMAT, uniqueCount);
 
         return ConfirmationPromptFormatter.format(actionSummary, IMPACT_SUMMARY);
+    }
+
+    @Override
+    public String getConfirmationPrompt(Model model) {
+        requireNonNull(model);
+        List<Person> lastShownList = model.getFilteredPersonList();
+        List<String> targetLabels = getUniqueIndexes().stream()
+                .sorted((a, b) -> Integer.compare(a.getZeroBased(), b.getZeroBased()))
+                .map(index -> lastShownList.get(index.getZeroBased()).getName().fullName)
+                .collect(Collectors.toList());
+
+        String actionSummary = String.format(ACTION_SUMMARY_FORMAT, targetLabels.size());
+        String impactSummary = String.format(IMPACT_SUMMARY_WITH_NAMES_FORMAT, String.join(", ", targetLabels));
+        return ConfirmationPromptFormatter.format(actionSummary, impactSummary);
     }
 
     @Override
@@ -83,7 +111,7 @@ public class DeleteCommand extends Command implements ConfirmableCommand {
         int initialListSize = lastShownList.size();
 
         // Remove duplicate indexes first
-        List<Index> uniqueIndexes = targetIndexes.stream().distinct().toList();
+        List<Index> uniqueIndexes = getUniqueIndexes();
         assert !uniqueIndexes.isEmpty() : "DeleteCommand should retain at least one unique index";
         logger.finer("Delete deduplicated indexes from " + targetIndexes.size()
                 + " to " + uniqueIndexes.size());
@@ -95,6 +123,13 @@ public class DeleteCommand extends Command implements ConfirmableCommand {
                 logger.fine("Delete failed validation for out-of-range index: " + index.getOneBased());
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
+        }
+
+        List<String> deletedNamesInDisplayOrder = new ArrayList<>();
+        for (Index index : uniqueIndexes.stream()
+                .sorted((a, b) -> Integer.compare(a.getZeroBased(), b.getZeroBased()))
+                .toList()) {
+            deletedNamesInDisplayOrder.add(lastShownList.get(index.getZeroBased()).getName().fullName);
         }
 
         // Re-sort to delete the highest index first, avoid shifting
@@ -118,8 +153,12 @@ public class DeleteCommand extends Command implements ConfirmableCommand {
 
         return new CommandResult(String.format(
                 MESSAGE_DELETE_PERSON_SUCCESS,
-                uniqueIndexes.size() + " employee(s)"
+                String.join(", ", deletedNamesInDisplayOrder)
         ));
+    }
+
+    private List<Index> getUniqueIndexes() {
+        return targetIndexes.stream().distinct().toList();
     }
 
     /**
