@@ -74,12 +74,12 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        model.commitAddressBook();
-
         Path path = resolvePath();
         validatePath(path);
 
         List<Person> persons = readCsv(path);
+
+        model.commitAddressBook();
 
         // Build a fresh address book and populate it atomically
         AddressBook newBook = new AddressBook();
