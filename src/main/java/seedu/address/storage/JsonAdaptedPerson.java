@@ -135,7 +135,7 @@ class JsonAdaptedPerson {
         final Set<Tag> modelTags = new HashSet<>(personTags);
         if (modelTags.size() > Person.MAX_TAG_COUNT) {
             logger.warning("Too many tags in JSON data for person: " + name);
-            throw new IllegalValueException(Person.MESSAGE_TAG_COUNT_CONSTRAINTS);
+            throw new IllegalValueException(Tag.MESSAGE_TAG_COUNT_CONSTRAINTS);
         }
         Person person = new Person(modelName, modelPhone, modelEmail, modelRole, modelDepartment, modelTags);
         logger.fine("Successfully converted JsonAdaptedPerson to Person: " + person.getName());
