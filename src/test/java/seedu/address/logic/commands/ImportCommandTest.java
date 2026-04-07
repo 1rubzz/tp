@@ -171,8 +171,7 @@ public class ImportCommandTest {
 
         CommandResult result = new ImportCommand(csv.toString()).execute(model);
 
-        assertNotNull(model.lastSetAddressBook);
-        assertEquals(0, model.lastSetAddressBook.getPersonList().size());
+        assertNull(model.lastSetAddressBook);
         assertEquals(ImportCommand.MESSAGE_EMPTY_FILE, result.getFeedbackToUser());
     }
 

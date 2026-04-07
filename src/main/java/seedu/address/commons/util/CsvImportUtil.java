@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.exceptions.CsvParseException;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -71,6 +72,10 @@ public class CsvImportUtil {
                     headerLine = line;
                     break;
                 }
+            }
+
+            if (headerLine == null) {
+                throw new CsvParseException(ImportCommand.MESSAGE_EMPTY_FILE);
             }
 
             resolveHeaderIndices(headerLine, lineNumber);
