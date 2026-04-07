@@ -16,6 +16,11 @@ public class Tag {
             + "The tag should not start or end with a space or hyphen, "
             + "and it should not contain consecutive spaces or hyphens.";
 
+    public static final String MESSAGE_TOO_MANY_TAGS =
+            "Too many tags! Maximum %d tags allowed per employee. You provided %d tags.";
+
+    public static final int MAX_TAGS = 20;
+
     /*
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.

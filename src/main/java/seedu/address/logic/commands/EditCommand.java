@@ -146,6 +146,11 @@ public class EditCommand extends Command implements ConfirmableCommand {
         Department updatedDepartment = editPersonDescriptor.getDepartment().orElse(personToEdit.getDepartment());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
+        if (updatedTags.size() > Tag.MAX_TAGS) {
+            throw new IllegalArgumentException(
+                    String.format(Tag.MESSAGE_TOO_MANY_TAGS, Tag.MAX_TAGS, updatedTags.size()));
+        }
+
         requireNonNull(updatedName);
         requireNonNull(updatedPhone);
         requireNonNull(updatedEmail);

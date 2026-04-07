@@ -15,6 +15,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.Tag;
 
 /**
  * Imports an employee list from a local csv file, replacing the current data.
@@ -123,7 +124,16 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     private List<Person> readCsv(Path path) throws CommandException {
         CsvImportUtil parser = new CsvImportUtil();
         try {
-            return parser.parse(path);
+            List<Person> persons = parser.parse(path);
+
+            for (Person person : persons) {
+                if (person.getTags().size() > Tag.MAX_TAGS) {
+                    throw new CommandException(
+                            String.format(Tag.MESSAGE_TOO_MANY_TAGS, Tag.MAX_TAGS, person.getTags().size()));
+                }
+            }
+
+            return persons;
         } catch (CsvParseException e) {
             throw new CommandException(
                 String.format(MESSAGE_CSV_PARSE_ERROR, e.getMessage()), e);

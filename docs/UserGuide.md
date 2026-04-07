@@ -136,9 +136,13 @@ What this feature does:
 Additional constraints:
 * The compulsory fields are `n/NAME`, `p/PHONE_NUMBER`, `e/EMAIL`, `r/ROLE`, and `d/DEPARTMENT`. Each compulsory prefix must be provided exactly once.
 * `t/TAG` is optional and can be provided any number of times (including 0).
-* The employee to be added cannot already exist in HRmanager (based on a case-insensitive match on the name).
-* If two employees share the same real-world name, include a differentiating suffix in the name itself (for example, `John Doe Sales` and `John Doe Intern`) so that both names are unique.
+* The employee to be added cannot already exist in HRmanager (based on a case-insensitive match on the name). 
+* All fields must adhere to the parameter restrictions specified in the next section.
+* If two employees share the same real-world name, include a differentiating suffix (eg. nickname) in the name itself (for example, `John Doe - Johnny` and `John Doe - Joe`) so that both names are unique.
+* If two employees share the same real-world name, include a differentiating suffix (eg. nickname) in the name itself (for example, `John Doe - Johnny` and `John Doe - Joe`) so that both names are unique.
 * Names are normalized to lowercase when stored in HRmanager.
+* HRmanager currently restricts names to alphanumeric characters, hyphens, and spaces only. This means names containing: __Diacritics/accents__ (e.g., Müller, Josée, Piñata), __Non-Latin scripts__ (e.g., 王小明, 田中, 김철수) and __Special punctuation__ (e.g., O'Connor, D'Angelo) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`)
+* Since phone numbers are not allowed to have spaces, extensions, or country codes, it is recommended to use a tag to store any additional information related to the phone number. For example, if an employee has a phone number with an extension, you can add the extension as a tag (e.g., `t/ext 1234`). Or if an employee has a country code, you can add the country code as a tag (e.g., `t/sg phone country code` for Singapore). This way, you can still keep track of important details related to the phone number while adhering to the input restrictions.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com r/Receptionist d/Operations` adds an employee named John Doe with the specified details.
@@ -154,36 +158,36 @@ Examples:
 
 #### Name (`n/`)
 
-* __Characters:__ The name should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The name should not contain consecutive hyphens or spaces. The name should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The name should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The name should not contain consecutive hyphens and/or spaces. The name should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The name entered is case-insensitive. For example, adding `John Doe` will be invalid if `john doe` already exists in HRmanager. Names are stored in HRmanager in lowercase.
 * __Input length:__ The name must be between 1 and 50 characters long (inclusive).
 
 #### Phone (`p/`)
 
-* __Characters:__ The number should consist of only numeric digits. Do not include spaces, extensions or country codes. No other characters are allowed.
+* __Characters:__ The number should consist of only numeric digits. Do not include spaces, extensions or country codes. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Input length:__ The number must be between 3 and 16 digits long (inclusive).
 
 #### Email (`e/`)
 
-* __Characters:__ The email must follow the format local-part@domain. The local-part may contain alphanumeric characters and `+`, `_`, `.`, `-`, but cannot start or end with special characters. The domain consists of labels separated by periods (`.`); each label must start and end with alphanumeric characters, may contain hyphens (-), and the final label must be at least 2 characters long. No other characters are allowed.
+* __Characters:__ The email must follow the format local-part@domain. The local-part may contain alphanumeric characters and `+`, `_`, `.`, `-`, but cannot start or end with special characters. The domain consists of labels separated by periods (`.`); each label must start and end with alphanumeric characters, may contain hyphens (-), and the final label must be at least 2 characters long. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The email entered is case-insensitive eg. `john.doe@example.com` will be the same as `John.Doe@Example.COM`. 
 * __Input length:__ The email must be between 1 and 50 characters long (inclusive).
 
 #### Role (`r/`)
 
-* __Characters:__ The role should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The role should not contain consecutive hyphens or spaces. The role should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The role should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The role should not contain consecutive hyphens and/or spaces. The role should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The role entered is case-insensitive eg. inputting `Software Engineer` will be the same as `software engineer` and `SOFTWARE ENGINEER`. The role will be stored in Hr manager in lower casing.
 * __Input length:__ The role must be between 1 and 30 characters long (inclusive).
 
 #### Department (`d/`)
 
-* __Characters:__ The department should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The department should not contain consecutive hyphens or spaces. The department should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The department should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The department should not contain consecutive hyphens and/or spaces. The department should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The department entered is case-insensitive eg. inputting `Human Resources` will be the same as `human resources` and `HUMAN RESOURCES`. The department will be stored in Hr manager in lower casing.
 * __Input length:__ The department must be between 1 and 30 characters long (inclusive).
 
 #### Tag (`t/`)
 
-* __Characters:__ The tag should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The tag should not contain consecutive hyphens or spaces. The tag should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The tag should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The tag should not contain consecutive hyphens and/or spaces. The tag should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The tag entered is case-insensitive eg. inputting `friend` will be the same as `Friend` and `FRIEND`. The tag will be stored in Hr manager in lower casing.
 * __Input length:__ The tag must be between 1 and 30 characters long (inclusive).
 
@@ -466,6 +470,7 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. Non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`) We plan to support non-ASCII characters in a future version.
 
 --------------------------------------------------------------------------------------------------------------------
 

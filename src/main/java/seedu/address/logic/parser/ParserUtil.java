@@ -22,6 +22,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final int MAX_TAGS = 20;
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -30,9 +31,11 @@ public class ParserUtil {
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
+
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
+
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
@@ -44,10 +47,13 @@ public class ParserUtil {
      */
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
+
         String trimmedName = name.trim();
+
         if (!Name.isValidName(trimmedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
+
         return new Name(trimmedName);
     }
 
@@ -59,10 +65,13 @@ public class ParserUtil {
      */
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
+
         String trimmedPhone = phone.trim();
+
         if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
+
         return new Phone(trimmedPhone);
     }
 
@@ -74,10 +83,13 @@ public class ParserUtil {
      */
     public static Role parseRole(String role) throws ParseException {
         requireNonNull(role);
+
         String trimmedRole = role.trim();
+
         if (!Role.isValidRole(trimmedRole)) {
             throw new ParseException(Role.MESSAGE_CONSTRAINTS);
         }
+
         return new Role(trimmedRole);
     }
 
@@ -89,10 +101,13 @@ public class ParserUtil {
      */
     public static Department parseDepartment(String department) throws ParseException {
         requireNonNull(department);
+
         String trimmedDepartment = department.trim();
+
         if (!Department.isValidDepartment(trimmedDepartment)) {
             throw new ParseException(Department.MESSAGE_CONSTRAINTS);
         }
+
         return new Department(trimmedDepartment);
     }
 
@@ -104,10 +119,13 @@ public class ParserUtil {
      */
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
+
         String trimmedEmail = email.trim();
+
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
+
         return new Email(trimmedEmail);
     }
 
@@ -119,10 +137,13 @@ public class ParserUtil {
      */
     public static Tag parseTag(String tag) throws ParseException {
         requireNonNull(tag);
+
         String trimmedTag = tag.trim();
+
         if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
+
         return new Tag(trimmedTag);
     }
 
@@ -131,10 +152,18 @@ public class ParserUtil {
      */
     public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
         requireNonNull(tags);
+
+        if (tags.size() > Tag.MAX_TAGS) {
+            throw new ParseException(
+                    String.format(Tag.MESSAGE_TOO_MANY_TAGS, Tag.MAX_TAGS, tags.size()));
+        }
+
         final Set<Tag> tagSet = new HashSet<>();
+
         for (String tagName : tags) {
             tagSet.add(parseTag(tagName));
         }
+
         return tagSet;
     }
 }
