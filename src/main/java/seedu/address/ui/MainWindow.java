@@ -2,17 +2,13 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -28,8 +24,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
-    private static final double MIN_CONTENT_WIDTH_FOR_RESIZE = 1.0;
-    private static final double WIDTH_CHANGE_EPSILON = 0.5;
+    private static final double MIN_WINDOW_WIDTH = 1020;
+    private static final double MIN_WINDOW_HEIGHT = 600;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -52,24 +48,13 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane personListPanelPlaceholder;
 
     @FXML
-    private VBox personListContainer;
-
-    @FXML
     private StackPane resultDisplayPlaceholder;
-
-    @FXML
-    private HBox mainContentPane;
-
-    @FXML
-    private ScrollPane statsScrollPane;
 
     @FXML
     private StackPane statsPanelPlaceholder;
 
     @FXML
     private StackPane statusbarPlaceholder;
-
-    private double statsPanelWidthRatio = -1;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -83,6 +68,7 @@ public class MainWindow extends UiPart<Stage> {
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
+        enforceMinimumWindowSize();
 
         setAccelerators();
 
@@ -145,53 +131,11 @@ public class MainWindow extends UiPart<Stage> {
 
         statsPanel = new StatsPanel(logic);
         statsPanelPlaceholder.getChildren().add(statsPanel.getRoot());
-
-        initializeResponsivePanelWidths();
     }
 
-    /**
-     * Keeps person list and stats panel widths proportional when window size changes.
-     * Initial ratio is taken from the first rendered layout to preserve current expanded look.
-     */
-    private void initializeResponsivePanelWidths() {
-        Platform.runLater(() -> {
-            double initialContentWidth = mainContentPane.getWidth();
-            if (initialContentWidth > MIN_CONTENT_WIDTH_FOR_RESIZE) {
-                double initialStatsWidth = statsScrollPane.getWidth() > 0
-                        ? statsScrollPane.getWidth() : statsScrollPane.prefWidth(-1);
-                statsPanelWidthRatio = clampRatio(initialStatsWidth / initialContentWidth);
-            }
-
-            // FXML constraints (minWidth/maxWidth=400) are left untouched at startup so the
-            // full-screen layout is pixel-identical to master. Constraints are relaxed only on
-            // the first genuine user resize, allowing proportional scaling from that point on.
-            mainContentPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-                if (Math.abs(newValue.doubleValue() - oldValue.doubleValue()) < WIDTH_CHANGE_EPSILON) {
-                    return;
-                }
-                statsScrollPane.setMinWidth(0);
-                statsScrollPane.setMaxWidth(Double.MAX_VALUE);
-                applyProportionalWidths(newValue.doubleValue());
-            });
-        });
-    }
-
-    private void applyProportionalWidths(double contentWidth) {
-        if (contentWidth <= MIN_CONTENT_WIDTH_FOR_RESIZE) {
-            return;
-        }
-
-        if (statsPanelWidthRatio < 0) {
-            statsPanelWidthRatio = clampRatio(statsScrollPane.prefWidth(-1) / contentWidth);
-        }
-
-        statsScrollPane.setPrefWidth(contentWidth * statsPanelWidthRatio);
-        personListContainer.setPrefWidth(contentWidth * (1 - statsPanelWidthRatio));
-    }
-
-    private double clampRatio(double ratio) {
-        // Prevent one panel from fully collapsing while keeping proportional behavior.
-        return Math.max(0.2, Math.min(0.8, ratio));
+    private void enforceMinimumWindowSize() {
+        primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
+        primaryStage.setMinHeight(MIN_WINDOW_HEIGHT);
     }
 
     /**
