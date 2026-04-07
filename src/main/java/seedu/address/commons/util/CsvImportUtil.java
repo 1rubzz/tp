@@ -104,10 +104,6 @@ public class CsvImportUtil {
             }
         }
 
-        if (persons.isEmpty()) {
-            throw new CsvParseException(ImportCommand.MESSAGE_EMPTY_FILE);
-        }
-
         return persons;
     }
 

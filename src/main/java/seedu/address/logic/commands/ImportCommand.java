@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +30,7 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         + "Example:"
         + "import C:\\Users\\user\\Downloads\\employees.csv";
 
-    public static final String MESSAGE_SUCCESS = "Imported employee list from local file.";
+    public static final String MESSAGE_SUCCESS = "Imported %d employee(s) from %s";
     public static final String ACTION_SUMMARY = "Import local list.";
     public static final String IMPACT_SUMMARY =
         "New employee list will be created from local data, overwriting existing import list.";
@@ -86,6 +87,10 @@ public class ImportCommand extends Command implements ConfirmableCommand {
 
         validatedPath = path;
         validatedPersons = readCsv(path);
+
+        if (validatedPersons.isEmpty()) {
+            throw new CommandException(MESSAGE_EMPTY_FILE);
+        }
     }
 
     @Override
@@ -111,6 +116,7 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         AddressBook newBook = new AddressBook();
         persons.forEach(newBook::addPerson);
         model.setAddressBook(newBook);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(
             String.format(MESSAGE_SUCCESS, persons.size(), path.toAbsolutePath()));
