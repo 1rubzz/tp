@@ -32,4 +32,10 @@ public class ImportCommandParserTest {
     void parse_whitespaceOnlyArgs_throwsParseException() {
         assertThrows(ParseException.class, () -> parser.parse("   "));
     }
+
+    @Test
+    void parse_notCsv_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("sample.txt"));
+        assertThrows(ParseException.class, () -> parser.parse("sample"));
+    }
 }
