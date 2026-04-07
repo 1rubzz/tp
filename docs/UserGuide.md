@@ -262,7 +262,7 @@ Supported modes:
 * **Role mode:** Unique roles, most common role, and role distribution.
 * For all modes, distribution values are shown top-to-bottom in descending count (highest at the top, lowest at the bottom).
 * If multiple values have the same count, they are ordered alphabetically (case-insensitive).
-* If multiple values tie for the highest count, the displayed most common value (tag/department/role) is the alphabetically first one (case-insensitive).
+* If multiple values tie for the highest count, the displayed most common value (tag/department/role) is the one ordered first alphabetically (case-insensitive).
 * For all modes, values are computed from the full HRmanager dataset (global distribution), not only the currently filtered on-screen list.
 </box>
 
