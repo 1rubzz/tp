@@ -29,6 +29,7 @@ public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
     private static final double MIN_CONTENT_WIDTH_FOR_RESIZE = 1.0;
+    private static final double WIDTH_CHANGE_EPSILON = 0.5;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -154,9 +155,24 @@ public class MainWindow extends UiPart<Stage> {
      */
     private void initializeResponsivePanelWidths() {
         Platform.runLater(() -> {
-            applyProportionalWidths(mainContentPane.getWidth());
-            mainContentPane.widthProperty().addListener((observable, oldValue, newValue) ->
-                    applyProportionalWidths(newValue.doubleValue()));
+            double initialContentWidth = mainContentPane.getWidth();
+            if (initialContentWidth > MIN_CONTENT_WIDTH_FOR_RESIZE) {
+                double initialStatsWidth = statsScrollPane.getWidth() > 0
+                        ? statsScrollPane.getWidth() : statsScrollPane.prefWidth(-1);
+                statsPanelWidthRatio = clampRatio(initialStatsWidth / initialContentWidth);
+            }
+
+            // FXML constraints (minWidth/maxWidth=400) are left untouched at startup so the
+            // full-screen layout is pixel-identical to master. Constraints are relaxed only on
+            // the first genuine user resize, allowing proportional scaling from that point on.
+            mainContentPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+                if (Math.abs(newValue.doubleValue() - oldValue.doubleValue()) < WIDTH_CHANGE_EPSILON) {
+                    return;
+                }
+                statsScrollPane.setMinWidth(0);
+                statsScrollPane.setMaxWidth(Double.MAX_VALUE);
+                applyProportionalWidths(newValue.doubleValue());
+            });
         });
     }
 
@@ -166,9 +182,7 @@ public class MainWindow extends UiPart<Stage> {
         }
 
         if (statsPanelWidthRatio < 0) {
-            double initialStatsWidth = statsScrollPane.getWidth() > 0
-                    ? statsScrollPane.getWidth() : statsScrollPane.prefWidth(-1);
-            statsPanelWidthRatio = clampRatio(initialStatsWidth / contentWidth);
+            statsPanelWidthRatio = clampRatio(statsScrollPane.prefWidth(-1) / contentWidth);
         }
 
         statsScrollPane.setPrefWidth(contentWidth * statsPanelWidthRatio);
