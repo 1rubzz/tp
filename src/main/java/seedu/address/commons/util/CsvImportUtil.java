@@ -63,6 +63,7 @@ public class CsvImportUtil {
         try (BufferedReader reader = Files.newBufferedReader(csvPath)) {
             String headerLine = null;
             int lineNumber = 0;
+            int employeeNumber = 0;
 
             // Find the first non-blank line — treat it as the header
             String line;
@@ -84,6 +85,10 @@ public class CsvImportUtil {
             List<String> names = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
+                employeeNumber++;
+                if (employeeNumber > 200) {
+                    throw new CsvParseException("Max 200 employees allowed.");
+                }
                 if (line.isBlank()) {
                     continue; // skip blank rows silently
                 }

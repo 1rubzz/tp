@@ -45,7 +45,7 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     public static final String MESSAGE_NOT_CSV =
         "Only csv files are supported";
     public static final String MESSAGE_FILE_SIZE_OVER_LIMIT =
-        "Target file exceeds the limit of 0.5mb (500000 bytes).";
+        "Target file exceeds the limit of 1.0mb (1000000 bytes).";
     public static final String MESSAGE_CSV_PARSE_ERROR =
         "Failed to parse CSV file — %s";
     public static final String MESSAGE_IO_ERROR =
