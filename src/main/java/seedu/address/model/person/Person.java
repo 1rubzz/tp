@@ -34,7 +34,7 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Role role, Department department, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, role, department, tags);
-        checkArgument(tags.size() <= MAX_TAG_COUNT, Tag.MESSAGE_TOO_MANY_TAGS);
+        checkArgument(tags.size() <= MAX_TAG_COUNT, Tag.MESSAGE_TAG_COUNT_CONSTRAINTS);
         this.name = name;
         this.phone = phone;
         this.email = email;
