@@ -30,7 +30,8 @@ Here is a quick guide to jump straight to the section you need:
 * [Editing an employee: `edit`](#editing-an-employee-edit)
 * [Deleting an employee: `delete`](#deleting-an-employee-delete)
 * [Clearing all entries: `clear`](#clearing-all-entries-clear)
-* [Import/Export employee data: `import` or `export`](#importexport-employee-data-import-or-export)
+* [Importing employee data: `import`](#import-employee-data--import)
+* [Exporting employee data: `export`](#export-employee-data--export)
 * [Exiting the program: `exit`](#exiting-the-program-exit)
 
 ### Other sections
@@ -412,7 +413,45 @@ Examples:
 <br>
 
 
-### Import/Export employee data : `import` or `export`
+### Import employee data : `import`
+
+Imports a new list of employees from a local CSV file, overwriting existing app data.
+
+Format: `import [FILE PATH]`
+
+Notes on file format:
+* The target file must be a csv (comma-separated values) file (that means, ending in ".csv").
+* File must have a valid header row consisting of: name, phone, email, role, department, tags (optional) in any order.
+* File must be smaller than 1MB.
+* File must have no more than 200 employees' data, due to HRmanager's storage limit.
+* All data validation rules apply, e.g. no employees with duplicate names or invalid/missing fields are allowed.
+* When there are multiple invalid values or rule violations in the target file, only the first error will be detected and reported.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/correct-csv-file-placeholder.png`
+
+Examples:
+* `import employees.csv`
+* `import "C:\Users\username\Downloads\2026_employee_list.csv"`
+
+Alternative ways to import:
+1. Drag the target file into HRmanager's home folder, and input `import (file name in full, including extension)` into HRmanager. 
+2. Right-click on the target file, click "Copy as path", and input `import (Ctrl+V to paste file path)` into HRmanager.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/import-steps-graphic-placeholder.png`
+
+<box type="info" seamless>
+
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+<box type="info" seamless>
+
+**🔁 Undo Possible:** `import` command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+</box>
+
+<br>
+
+
+### Export employee data : `export`
 
 Exports the current list of employees into a CSV (comma-separated values) file, saved into user-specified local destination.
 
@@ -424,6 +463,10 @@ Notes:
 * Entering only a file name (e.g. "employees.csv") will export the current list into HRmanager's home folder.
 * No overwriting of local files is allowed.
 
+Examples:
+* `export employees.csv`
+* `export C:\Users\username\Desktop\2026_employee_list.csv`
+
 Exported file format:
 
 > **PNG placeholder:** Insert a screenshot here, e.g. `images/exported-csv-placeholder.png`
@@ -433,9 +476,6 @@ Exported file format:
 **⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
 </box>
 <box type="info" seamless>
-
-**🔁 Undo Possible:** `import` (but NOT `export`) command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
-</box>
 
 <br>
 

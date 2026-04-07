@@ -122,6 +122,17 @@ public class CsvImportUtilTest {
     }
 
     @Test
+    void parse_duplicateNames_throwsCsvParseException() throws Exception {
+        Path csv = writeCsv(
+            "name,phone,email,role,department",
+            "Alice Tan,91234567,alice@example.com,Software Engineer,Backend",
+            "Alice Tan,98765432,bob@example.com,UI Designer,Design",
+            "Carol Ng,81234567,carol@example.com,Head of Marketing,Marketing"
+        );
+        assertThrows(CsvParseException.class, () -> parser.parse(csv));
+    }
+
+    @Test
     void parse_missingFields_throwsCsvParseException() throws Exception {
         Path csv = writeCsv(
             "name,role,department,email",
