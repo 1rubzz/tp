@@ -111,9 +111,12 @@ Format: `help`
 
 ### Listing all employees : `list`
 
-Shows a list of all employees in HRmanager.
+Shows a list of all employees in HRmanager. 
 
 Format: `list`
+
+What this feature does:
+* Employees are sorted based on the order they were added, with the most recently added employee shown at the bottom of the list.
 
 <br>
 
