@@ -124,16 +124,7 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     private List<Person> readCsv(Path path) throws CommandException {
         CsvImportUtil parser = new CsvImportUtil();
         try {
-            List<Person> persons = parser.parse(path);
-
-            for (Person person : persons) {
-                if (person.getTags().size() > Tag.MAX_TAGS) {
-                    throw new CommandException(
-                            String.format(Tag.MESSAGE_TOO_MANY_TAGS, Tag.MAX_TAGS, person.getTags().size()));
-                }
-            }
-
-            return persons;
+            return parser.parse(path);
         } catch (CsvParseException e) {
             throw new CommandException(
                 String.format(MESSAGE_CSV_PARSE_ERROR, e.getMessage()), e);
