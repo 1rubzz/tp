@@ -18,7 +18,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
      */
     @Override
     public ImportCommand parse(String args) throws ParseException {
-        String trimmed = args.trim();
+        String trimmed = args.trim().replace("\"", ""); //remove spaces and quotes
         if (trimmed.isEmpty()) {
             throw new ParseException(
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE));

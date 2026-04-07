@@ -30,7 +30,8 @@ Here is a quick guide to jump straight to the section you need:
 * [Editing an employee: `edit`](#editing-an-employee-edit)
 * [Deleting an employee: `delete`](#deleting-an-employee-delete)
 * [Clearing all entries: `clear`](#clearing-all-entries-clear)
-* [Import/Export employee data: `import` or `export`](#importexport-employee-data-import-or-export)
+* [Importing employee data: `import`](#import-employee-data--import)
+* [Exporting employee data: `export`](#export-employee-data--export)
 * [Exiting the program: `exit`](#exiting-the-program-exit)
 
 ### Other sections
@@ -374,14 +375,42 @@ Format: `clear`
 <br>
 
 
-### Import/Export employee data : `import` or `export`
+### Import employee data : `import`
+
+Imports a new list of employees from a local CSV file, overwriting existing app data.
+
+Format: `import [FILE PATH]`
+
+Notes on file format:
+* The target file must be a csv (comma-separated values) file (that means, ending in ".csv").
+* File must have a valid header row consisting of: name, phone, email, role, department, tags (optional) in any order.
+* File must be smaller than 1MB.
+* File must have no more than 200 employees' data, due to HRmanager's storage limit.
+* All data validation rules apply, e.g. no employees with duplicate names or invalid/missing fields are allowed.
+* When there are multiple invalid values or rule violations in the target file, only the first error will be detected and reported.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/correct-csv-file-placeholder.png`
+
+How to quickly import:
+* OPTION 1: Drag the target file into HRmanager's home folder, and input `import (file name in full, including extension)` into HRmanager.
+* OPTION 2: Right-click on the target file, click "Copy as path", and input `import (Ctrl+V to paste file path)` into HRmanager.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/import-steps-graphic-placeholder.png`
+
+<box type="info" seamless>
+
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+
+<br>
+
+### Export employee data : `export`
 
 Exports the current list of employees into a CSV file, saved into user-specified local destination.
 
 Format: `export [FILE PATH]`
 
 <br>
-
 
 ### Exiting the program : `exit`
 
