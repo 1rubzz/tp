@@ -622,14 +622,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-### Use case 8 (UC8): Exporting current employee data
+### Use case 8 (UC8): Importing employee data
 
 **MSS**
 
-1. User requests to export current employee data into destination of choice.
+1. User requests to import employee data from destination of choice.
 2. System resolves path and checks validity.
-3. System converts app data into csv format.
-4. System saves csv file into target destination.
+3. System converts csv data into list of employees.
+4. System saves list of employees, overwriting any pre-existing employee data.
+5. System displays a confirmation message indicating the number of employees imported and the file used.
 
     Use case ends.
 
@@ -640,10 +641,34 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at Step 1.
 
-* 2b. File already exists at target destination.
-  * 2b1. System displays an error message.
+* 3a. File data is invalid (e.g. missing required header rows, duplicate persons).
+  * 3a1. System displays an error message.
 
     Use case resumes at step 1.
+
+### Use case 9 (UC9): Exporting current employee data
+
+**MSS**
+
+1. User requests to export current employee data into destination of choice.
+2. System resolves path and checks validity.
+3. System converts app data into csv format.
+4. System saves csv file into target destination.
+5. System displays a confirmation message indicating the file destination.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User input filepath is invalid.
+    * 2a1. System displays an error message.
+
+      Use case resumes at Step 1.
+
+* 2b. File already exists at target destination.
+    * 2b1. System displays an error message.
+
+      Use case resumes at step 1.
 
 
 ### Non-Functional Requirements
@@ -884,20 +909,45 @@ testers are expected to do more *exploratory* testing.
     11. Other incorrect delete commands to try: `add`, `add johndoe p/3333` (no prefix), and other commands which deviate from the command format<br>
         Expected: Similar to previous.
 
+### Importing employee list
+
+1. Importing employee data
+   
+   1. Test case: `import C:\Users\username\Downloads\test.csv` (Valid entry, assuming file format and data are valid)
+       Expected: Employee list is imported by parsing test.csv in user's Downloads folder, overwriting existing employee data.
+
+   2. Test case: `import test.csv` (Valid entry, assuming file format and data are valid)
+       Expected: Employee list is imported by parsing test.csv in HRmanager's home folder, overwriting existing employee data.
+   
+   3. Test case: `import C:\Users\username\invalid\path\nonexistent\test.csv` (Invalid entry)
+       Expected: Employee list is not imported. An error message is shown, indicating invalid path.
+   
+   4. Test case:`import C:\Users\username\Downloads\wrongformat.csv` (Invalid entry, assuming file exists but is in the wrong format, e.g. duplicate persons, missing required headers, invalid data...)
+       Expected: Employee list is not imported. An error message is shown, indicating failure in parsing and the exact format error that caused it.
+   
+   5. Test case: `import C:\Users\username\Downloads\test.txt` (Invalid entry)
+      Expected: Employee list is not imported. An error message is shown, indicating invalid file extension.
+
+
 ### Exporting employee list
 
-1. Editing an employee's details
+1. Exporting current employee data
 
-    1. Prerequisites: Existing list is non-empty, target destination is non-empty
-
-    2. Test case: `export C:\Users\username\Downloads\test.csv` (Valid entry, assuming tester doesn't have existing test.csv in Downloads folder)
+   1. Test case: `export C:\Users\username\Downloads\test.csv` (Valid entry, assuming tester doesn't have existing test.csv in Downloads folder)
         Expected: A file test.csv is created in the User's Downloads folder, containing the current employee data in csv format.
 
-    3. Test case: `export asasearoj` (Invalid path)
-        Expected: No csv file is created. An error message is shown, indicating invalid file path.
+   2. Test case: `export employees.csv` (Valid path)
+        Expected: A file employees.csv is created in HRmanager's home folder, containing the current employee data in csv format.
 
-    4. Test case: `export C:\Users\username\Downloads\existingfile.csv` (Invalid entry, existing file in destination)
-       Expected: No csv file is created. An error message is shown, indicating existing file.
+   3. Test case: `export C:\Users\username\Downloads\existingfile.csv` (Invalid entry, existing file in destination)
+        Expected: No csv file is created. An error message is shown, indicating existing file at target destination.
+
+   4. Test case: `export employees.txt` (Invalid path, only csv exports are allowed)
+        Expected: No csv file is created. An error message is shown, indicating the required .csv extension.
+   
+   5. Test case: `export C:\Users\username\nonexisting\invalid\path\employees.csv` (Invalid entry, path is invalid)
+        Expected: No csv file is created. An error message is shown, indicating invalid path.
+
 
 
 ### Saving data
