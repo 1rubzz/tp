@@ -385,7 +385,7 @@ Examples:
 
 Additional notes:
 * The target file must be a `.csv` file with a valid header row: `name, phone, email, role, department, tags` (tags optional, any order).
-* File size limit: 1MB. Employee limit: 200 employees.
+* File size limit: 100kB. Employee limit: 200 employees.
 * All data validation rules apply (e.g., no duplicate names, invalid or missing fields). [Parameter restrictions](#Parameter-restrictions-for-each-field)
 * When multiple errors exist, only the first error is reported.
 
