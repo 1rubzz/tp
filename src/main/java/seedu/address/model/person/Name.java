@@ -27,7 +27,7 @@ public class Name {
         + "[a-zA-Z0-9])?" // ends with an alphanumeric character
         + "$";
 
-    public final String fullName;
+    private final String fullName;
 
     /**
      * Constructs a {@code Name}.
@@ -45,6 +45,10 @@ public class Name {
      */
     public static boolean isValidName(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
 

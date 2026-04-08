@@ -39,12 +39,12 @@ public class PersonMatchesKeywordPredicate implements Predicate<Person> {
     }
 
     private boolean matchesAnyPersonField(Person person, String keyword) {
-        return containsIgnoreCase(person.getName().fullName, keyword)
-                || containsIgnoreCase(person.getPhone().value, keyword)
-                || containsIgnoreCase(person.getEmail().value, keyword)
-                || containsIgnoreCase(person.getRole().value, keyword)
-                || containsIgnoreCase(person.getDepartment().value, keyword)
-                || person.getTags().stream().anyMatch(tag -> containsIgnoreCase(tag.tagName, keyword));
+        return containsIgnoreCase(person.getName().getFullName(), keyword)
+                || containsIgnoreCase(person.getPhone().getValue(), keyword)
+                || containsIgnoreCase(person.getEmail().getValue(), keyword)
+                || containsIgnoreCase(person.getRole().getValue(), keyword)
+                || containsIgnoreCase(person.getDepartment().getValue(), keyword)
+                || person.getTags().stream().anyMatch(tag -> containsIgnoreCase(tag.getTagName(), keyword));
     }
 
     private boolean containsIgnoreCase(String value, String keyword) {

@@ -29,9 +29,9 @@ public class CsvImportUtilTest {
         );
         List<Person> persons = parser.parse(csv);
         assertEquals(1, persons.size());
-        assertEquals("alice tan", persons.get(0).getName().fullName);
-        assertEquals("91234567", persons.get(0).getPhone().value);
-        assertEquals("alice@example.com", persons.get(0).getEmail().value);
+        assertEquals("alice tan", persons.get(0).getName().getFullName());
+        assertEquals("91234567", persons.get(0).getPhone().getValue());
+        assertEquals("alice@example.com", persons.get(0).getEmail().getValue());
     }
 
     @Test
@@ -42,9 +42,9 @@ public class CsvImportUtilTest {
         );
         List<Person> persons = parser.parse(csv);
         assertEquals(1, persons.size());
-        assertEquals("alice tan", persons.get(0).getName().fullName);
-        assertEquals("91234567", persons.get(0).getPhone().value);
-        assertEquals("alice@example.com", persons.get(0).getEmail().value);
+        assertEquals("alice tan", persons.get(0).getName().getFullName());
+        assertEquals("91234567", persons.get(0).getPhone().getValue());
+        assertEquals("alice@example.com", persons.get(0).getEmail().getValue());
     }
 
     @Test
