@@ -24,7 +24,7 @@ Here is a quick guide to jump straight to the section you need:
 * [Viewing help: `help`](#viewing-help-help)
 * [Listing all employees: `list`](#listing-all-employees-list)
 * [Adding an employee: `add`](#adding-an-employee-add)
-* [Searching for an employee : `search`](#searching-for-an-employee-search)
+* [Searching employees by keyword: `search`](#searching-for-employees-search)
 * [Switching the statistics dashboard mode: `stat`](#switching-the-statistics-dashboard-mode-stat)
 * [Cycle through previous executed commands](#cycle-through-previous-executed-commands)
 * [Editing an employee: `edit`](#editing-an-employee-edit)
@@ -208,21 +208,22 @@ Successful command output:
 <br>
 
 
-### Searching for an employee : `search`
+### Searching for employees : `search`
 
-Filters employees by searching across all fields (name, phone, email, role, department, tags) with partial match support (e.g., Han matches Hans).
+Finds employees whose fields contain at least one of the given keywords (name, phone, email, role, department, tags) with partial match support (e.g., Han matches Hans).
 
-Format: `search KEYWORD [MORE_KEYWORDS]...` (each keyword separated by a space)
+Format: `search KEYWORD [MORE_KEYWORDS]...` (keywords are separated by whitespace)
 
 Examples:
 * `search John` returns employees with "John" anywhere in their fields (e.g., `John Doe`).
-* `search friends` returns employees with the "friends" tag or keyword.
+* `search @` returns employees with `@` in any searchable field (commonly email).
 * `search alice eng` returns employees that match either "alice" and "eng" (e.g., Alice who is an Engineer).
 * `search zzz` shows `0 employees listed!` if no employee fields match.
 
 Additional notes:
 * The search is case-insensitive.
-* at least **1** and at most **5** alphanumeric keywords (max 50 chars each) must be provided, separated by spaces.
+* at least **1** and at most **5** keywords (max **50** chars each) must be provided, separated by spaces. Special characters are allowed (for example `@`, `_`, `-`, and `.`).  Each keyword must be a **non-whitespace** token.
+* Combines multiple keywords using `OR` semantics.
 * To return to the full employee list after `search`, run `list`.
 
 Successful command output:
@@ -639,6 +640,7 @@ Action     | Format, Examples
 **List**   | `list`
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE d/DEPARTMENT [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com r/Software Engineer d/Engineering t/friend t/colleague`
 **Search** | `search KEYWORD...`<br> e.g., `search James`
+**Search** | `search KEYWORD [MORE_KEYWORDS]...`<br> e.g., `search James @`
 **Stat** | `stat MODE`<br> e.g., `stat tag`, `stat dept`, `stat role`
 **Cycle commands** | up/down arrow keys
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com d/Finance`
