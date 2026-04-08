@@ -2,9 +2,6 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.Messages.MESSAGE_SEARCH_EXCEED_MAX_KEYWORDS;
-import static seedu.address.logic.Messages.MESSAGE_SEARCH_KEYWORD_NOT_ALPHANUMERIC;
-import static seedu.address.logic.Messages.MESSAGE_SEARCH_KEYWORD_TOO_LONG;
 
 import java.util.Arrays;
 
@@ -34,8 +31,7 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         String[] keywords = trimmedArgs.split("\\s+");
         if (keywords.length > SearchCommand.MAX_KEYWORDS) {
             throw new ParseException(
-                    String.format(MESSAGE_SEARCH_EXCEED_MAX_KEYWORDS,
-                        SearchCommand.MAX_KEYWORDS, SearchCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
         }
 
         boolean hasInvalidKeyword = Arrays.stream(keywords)
@@ -43,7 +39,7 @@ public class SearchCommandParser implements Parser<SearchCommand> {
 
         if (hasInvalidKeyword) {
             throw new ParseException(
-                    String.format(MESSAGE_SEARCH_KEYWORD_NOT_ALPHANUMERIC, SearchCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
         }
 
         return new SearchCommand(new PersonMatchesKeywordPredicate(Arrays.asList(keywords)));
