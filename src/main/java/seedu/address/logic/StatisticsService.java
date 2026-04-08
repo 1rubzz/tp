@@ -44,7 +44,7 @@ public class StatisticsService {
     public Statistics getCurrentStatistics(StatisticsMode statisticsMode) {
         requireNonNull(statisticsMode);
         logger.fine("Getting current statistics");
-        List<Person> personList = logic.getAddressBook().getPersonList();
-        return new Statistics(personList, statisticsMode);
+        List<Person> persons = logic.getAddressBook().getPersonList();
+        return new Statistics(persons, statisticsMode);
     }
 }

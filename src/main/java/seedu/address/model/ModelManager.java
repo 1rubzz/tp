@@ -136,7 +136,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean undoAddressBook() {
+    public boolean isUndoAddressBookSuccessful() {
         if (!canUndoAddressBook()) {
             return false;
         }
@@ -146,7 +146,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean redoAddressBook() {
+    public boolean isRedoAddressBookSuccessful() {
         if (!canRedoAddressBook()) {
             return false;
         }

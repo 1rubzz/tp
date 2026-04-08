@@ -16,10 +16,10 @@ public class CommandResult {
     private final String feedbackToUser;
 
     /** Help information should be shown to the user. */
-    private final boolean showHelp;
+    private final boolean shouldShowHelp;
 
     /** The application should exit. */
-    private final boolean exit;
+    private final boolean shouldExit;
 
     /** Statistics dashboard mode update, if any. */
     private final StatisticsMode statisticsMode;
@@ -27,17 +27,18 @@ public class CommandResult {
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, exit, null);
+    public CommandResult(String feedbackToUser, boolean shouldShowHelp, boolean shouldExit) {
+        this(feedbackToUser, shouldShowHelp, shouldExit, null);
     }
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, StatisticsMode statisticsMode) {
+    public CommandResult(String feedbackToUser, boolean shouldShowHelp, boolean shouldExit,
+                         StatisticsMode statisticsMode) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
-        this.showHelp = showHelp;
-        this.exit = exit;
+        this.shouldShowHelp = shouldShowHelp;
+        this.shouldExit = shouldExit;
         this.statisticsMode = statisticsMode;
     }
 
@@ -53,12 +54,12 @@ public class CommandResult {
         return feedbackToUser;
     }
 
-    public boolean isShowHelp() {
-        return showHelp;
+    public boolean shouldShowHelp() {
+        return shouldShowHelp;
     }
 
-    public boolean isExit() {
-        return exit;
+    public boolean shouldExit() {
+        return shouldExit;
     }
 
     public Optional<StatisticsMode> getStatisticsMode() {
@@ -78,22 +79,22 @@ public class CommandResult {
 
         CommandResult otherCommandResult = (CommandResult) other;
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
-                && showHelp == otherCommandResult.showHelp
-                && exit == otherCommandResult.exit
+                && shouldShowHelp == otherCommandResult.shouldShowHelp
+                && shouldExit == otherCommandResult.shouldExit
                 && Objects.equals(statisticsMode, otherCommandResult.statisticsMode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackToUser, showHelp, exit, statisticsMode);
+        return Objects.hash(feedbackToUser, shouldShowHelp, shouldExit, statisticsMode);
     }
 
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this)
                 .add("feedbackToUser", feedbackToUser)
-                .add("showHelp", showHelp)
-                .add("exit", exit);
+                .add("showHelp", shouldShowHelp)
+                .add("exit", shouldExit);
 
         if (statisticsMode != null) {
             builder.add("statisticsMode", statisticsMode);

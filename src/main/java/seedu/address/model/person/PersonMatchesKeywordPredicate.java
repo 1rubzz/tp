@@ -28,17 +28,17 @@ public class PersonMatchesKeywordPredicate implements Predicate<Person> {
     public boolean test(Person person) {
         requireNonNull(person);
 
-        boolean allKeywordsBlank = keywords.stream().allMatch(String::isBlank);
-        if (allKeywordsBlank) {
+        boolean areAllKeywordsBlank = keywords.stream().allMatch(String::isBlank);
+        if (areAllKeywordsBlank) {
             return false;
         }
 
         return keywords.stream()
                 .filter(keyword -> !keyword.isBlank())
-            .anyMatch(keyword -> matchesAnyPersonField(person, keyword));
+            .anyMatch(keyword -> doesMatchAnyPersonField(person, keyword));
     }
 
-    private boolean matchesAnyPersonField(Person person, String keyword) {
+    private boolean doesMatchAnyPersonField(Person person, String keyword) {
         return containsIgnoreCase(person.getName().fullName, keyword)
                 || containsIgnoreCase(person.getPhone().value, keyword)
                 || containsIgnoreCase(person.getEmail().value, keyword)
