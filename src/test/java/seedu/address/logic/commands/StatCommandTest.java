@@ -33,8 +33,8 @@ public class StatCommandTest {
                 String.format(StatCommand.MESSAGE_SUCCESS, StatisticsMode.TAG.getFullName()),
                 result.getFeedbackToUser());
         assertEquals(Optional.of(StatisticsMode.TAG), result.getStatisticsMode());
-        assertFalse(result.isShowHelp());
-        assertFalse(result.isExit());
+        assertFalse(result.shouldShowHelp());
+        assertFalse(result.shouldExit());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class StatCommandTest {
                 String.format(StatCommand.MESSAGE_SUCCESS, StatisticsMode.DEPARTMENT.getFullName()),
                 result.getFeedbackToUser());
         assertEquals(Optional.of(StatisticsMode.DEPARTMENT), result.getStatisticsMode());
-        assertFalse(result.isShowHelp());
-        assertFalse(result.isExit());
+        assertFalse(result.shouldShowHelp());
+        assertFalse(result.shouldExit());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class StatCommandTest {
                 String.format(StatCommand.MESSAGE_SUCCESS, StatisticsMode.ROLE.getFullName()),
                 result.getFeedbackToUser());
         assertEquals(Optional.of(StatisticsMode.ROLE), result.getStatisticsMode());
-        assertFalse(result.isShowHelp());
-        assertFalse(result.isExit());
+        assertFalse(result.shouldShowHelp());
+        assertFalse(result.shouldExit());
     }
 
     @Test

@@ -15,6 +15,10 @@ import seedu.address.model.statistics.TagStatisticsCalculator;
 /**
  * Represents statistics calculated from employee records.
  * This is a data container with no UI logic.
+ *
+ * <p>Statistics are computed based on a selected mode (TAG, DEPARTMENT, or ROLE)
+ * and include metrics such as total employees, unique values, most common value,
+ * and value distribution.
  */
 public class Statistics {
 
@@ -73,31 +77,92 @@ public class Statistics {
         };
     }
 
+    /**
+     * Returns the statistics mode used for calculation.
+     *
+     * @return The current {@link StatisticsMode} (TAG, DEPARTMENT, or ROLE).
+     */
     public StatisticsMode getStatisticsMode() {
         return statisticsMode;
     }
 
-    // Existing getters are preserved for compatibility with current UI and tests.
+    /**
+     * Returns the total number of employees in the dataset.
+     *
+     * @return The total employee count.
+     */
     public int getTotalEmployees() {
         return totalEmployees;
     }
 
+    /**
+     * Returns the number of unique values in the dataset for the current mode.
+     *
+     * <p>For example:
+     * <ul>
+     *   <li>In TAG mode: number of unique tags across all employees</li>
+     *   <li>In DEPARTMENT mode: number of unique departments</li>
+     *   <li>In ROLE mode: number of unique roles</li>
+     * </ul>
+     *
+     * @return The count of unique values.
+     */
     public int getUniqueValueCount() {
         return uniqueValueCount;
     }
 
+    /**
+     * Returns the most frequently occurring value in the dataset for the current mode.
+     *
+     * <p>If multiple values have the same highest frequency, the one ordered first
+     * alphabetically (case-insensitive) is returned.
+     *
+     * @return The most common tag, department, or role as a string.
+     */
     public String getMostCommonValue() {
         return mostCommonValue;
     }
 
+    /**
+     * Returns the number of employees that have at least one value for the current mode.
+     *
+     * <p>For example:
+     * <ul>
+     *   <li>In TAG mode: employees with at least one tag</li>
+     *   <li>In DEPARTMENT mode: all employees (always equals totalEmployees)</li>
+     *   <li>In ROLE mode: all employees (always equals totalEmployees)</li>
+     * </ul>
+     *
+     * @return The count of employees with at least one value.
+     */
     public int getEmployeesWithValue() {
         return employeesWithValue;
     }
 
+    /**
+     * Returns the number of employees that have no value for the current mode.
+     *
+     * <p>For example:
+     * <ul>
+     *   <li>In TAG mode: employees with no tags</li>
+     *   <li>In DEPARTMENT mode: always 0 (department is required)</li>
+     *   <li>In ROLE mode: always 0 (role is required)</li>
+     * </ul>
+     *
+     * @return The count of employees with no value.
+     */
     public int getEmployeesWithoutValue() {
         return employeesWithoutValue;
     }
 
+    /**
+     * Returns a formatted string representing the distribution of values for the current mode.
+     *
+     * <p>The distribution is formatted with each value on a new line, followed by its count
+     * and percentage. Values are sorted by count (highest first), then alphabetically for ties.
+     *
+     * @return A formatted distribution string.
+     */
     public String getValueDistribution() {
         return valueDistribution;
     }
