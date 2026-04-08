@@ -69,7 +69,7 @@ public class UndoCommandTest {
         }
 
         @Override
-        public boolean undoAddressBook() {
+        public boolean isUndoAddressBookSuccessful() {
             if (canUndoAddressBook()) {
                 addressBook.undo();
                 undoCalled = true;
@@ -170,12 +170,12 @@ public class UndoCommandTest {
         }
 
         @Override
-        public boolean undoAddressBook() {
+        public boolean isUndoAddressBookSuccessful() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public boolean redoAddressBook() {
+        public boolean isRedoAddressBookSuccessful() {
             throw new AssertionError("This method should not be called.");
         }
 

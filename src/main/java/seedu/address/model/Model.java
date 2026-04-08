@@ -94,13 +94,13 @@ public interface Model {
      * Restores the previous address book state from history.
      * @return true if undo was successful, false if there are no states to undo.
      */
-    boolean undoAddressBook();
+    boolean isUndoAddressBookSuccessful();
 
     /**
      * Restores a previously undone address book state from history.
      * @return true if redo was successful, false if there are no states to redo.
      */
-    boolean redoAddressBook();
+    boolean isRedoAddressBookSuccessful();
 
     /**
      * Returns true if there are address book states to undo.

@@ -26,7 +26,7 @@ public class ExportCommand extends Command implements ConfirmableCommand {
         + "Parameters: Target file path\n"
         + "Example: " + COMMAND_WORD + " C:\\Users\\user\\Downloads\\employees.csv";
 
-    public static final String MESSAGE_SUCCESS = "Exported app data to csv file";
+    public static final String MESSAGE_SUCCESS = "Exported app data to file: %s";
     public static final String ACTION_SUMMARY = "Export full local list.";
     public static final String IMPACT_SUMMARY =
         "A csv file containing all current in-app employee data will be created at the target destination.";
@@ -88,7 +88,7 @@ public class ExportCommand extends Command implements ConfirmableCommand {
         }
 
         return new CommandResult(
-            String.format(MESSAGE_SUCCESS, persons.size(), path.toAbsolutePath()));
+            String.format(MESSAGE_SUCCESS, path.toAbsolutePath()));
     }
 
     /**
