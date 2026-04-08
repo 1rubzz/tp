@@ -265,7 +265,7 @@ The flow is as follows:
 
 1. The user enters `search KEYWORD [MORE_KEYWORDS]...`.
 2. `AddressBookParser` routes the input to `SearchCommandParser`.
-3. `SearchCommandParser` trims the arguments, rejects blank input, rejects searches with more than 5 keywords, rejects any keyword longer than 20 characters, and rejects non-alphanumeric keywords.
+3. `SearchCommandParser` trims the arguments, rejects blank input, splits input by whitespace into keywords, rejects searches with more than 5 keywords, and rejects any keyword longer than 50 characters.
 4. If parsing succeeds, `SearchCommand` is created with a `PersonMatchesKeywordPredicate`.
 5. `SearchCommand#execute` updates the model's filtered employee list and returns feedback in the form `X employees listed!`.
 
@@ -283,9 +283,10 @@ Matching behavior:
 * search is case-insensitive
 * all employee fields are searched (name, phone, email, role, department, tags)
 * each keyword is treated as a partial substring match rather than a full-word match
-* multiple keywords are combined using `AND` semantics
+* each keyword is a non-whitespace token (symbols such as `@`, `_`, `-`, and `.` are allowed)
+* multiple keywords are combined using `OR` semantics
 
-This means a command such as `search ali hr` returns employees whose fields contain both `ali` and `hr`, regardless of case (for instance, an employee named "Alice" in the "HR" department).
+This means a command such as `search ali hr` returns employees whose fields contain either `ali` or `hr`, regardless of case (for instance, an employee named "Alice", or someone in the "HR" department).
 
 ### Statistics Panel
 
@@ -401,7 +402,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *` | user                               | delete an employee                     | clear up data when it is no longer needed                  |
 | `* * *` | user                               | view all employees                     | gain a brief overview of everyone in the company           |
 | `* * *` | user                               | store phone numbers and email addresses| contact employees easily                                   |
-| `* * *` | busy user                          | search for employees by name           | quickly find a specific staff member                       |
+| `* * *` | busy user                          | search for employees by keywords       | quickly find relevant staff members                        |
 | `* * *` | busy user                          | add contacts with only name and phone  | track someone now and update details later                 |
 | `* * `  | organised user                     | modify employee details                | keep info up to date                                       |
 | `* * `  | organised user                     | sort employees by variables            | find the most relevant employees for my needs              |
@@ -494,7 +495,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  System validates the search input.
 3.  System processes the search query against the existing employee records.
 4.  System displays a list of all employees that match the search.
-    Matching is case-insensitive, supports partial substring matching across all fields, and returns employees whose fields contain all of the supplied keywords.
+   Matching is case-insensitive, supports partial substring matching across all fields, and returns employees whose fields contain any of the supplied keywords.
 
     Use case ends.
 
@@ -505,7 +506,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at step 1.
 
-* 1b. The user provides more than 5 keywords, at least one keyword longer than 20 characters, or non-alphanumeric keywords.
+* 1b. The user provides more than 5 keywords, or at least one keyword longer than 50 characters.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
 
     Use case resumes at step 1.
@@ -836,7 +837,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Searching for employees
 
-1. Searching for employees using a keyword
+1. Searching for employees using one or more keywords
 
    1. Prerequisites: List all employees using the list command. Multiple employees in the list with various names, phones, emails, roles, departments, and tags.
 
@@ -852,26 +853,29 @@ testers are expected to do more *exploratory* testing.
    5. Test case: `search HR`<br>
       Expected: All employees whose fields contain "HR" are listed. Status message shows the number of employees listed.
 
-   6. Test case: `search` (no keyword)<br>
-      Expected: No search is performed. Error details shown in the status message indicating invalid command format and displays the correct usage format.
+   6. Test case: `search ali hr`<br>
+      Expected: Employees whose fields contain either "ali" or "hr" are listed. Status message shows the number of employees listed.
 
-   7. Test case: `search ` (blank keyword with spaces)<br>
-      Expected: No search is performed. Error details shown in the status message indicating invalid command format and displays the correct usage format.
+   7. Test case: `search @`<br>
+      Expected: Search is performed successfully. Employees whose fields contain "@" are listed. Status message shows the number of employees listed.
 
    8. Test case: `search John_123` (contains underscore)<br>
-      Expected: No search is performed. Error details shown due to non-alphanumeric characters in keyword.
+      Expected: Search is performed successfully because underscore is allowed. Matching employees are listed, or an empty list is shown if there are no matches.
 
-   9. Test case: `search [a string of 21 characters]`<br>
-      Expected: No search is performed. Error details shown due to exceeding 20-character limit.
+   9. Test case: `search` (no keyword)<br>
+      Expected: No search is performed. Error details shown in the status message indicating invalid command format and displays the correct usage format.
 
-   10. Test case: `search keyword1 keyword2 keyword3 keyword4 keyword5 keyword6` (more than 5 keywords)<br>
+   10. Test case: `search ` (blank keyword with spaces)<br>
+       Expected: No search is performed. Error details shown in the status message indicating invalid command format and displays the correct usage format.
+
+   11. Test case: `search [a string of 51 characters]`<br>
+       Expected: No search is performed. Error details shown due to exceeding 50-character limit.
+
+   12. Test case: `search keyword1 keyword2 keyword3 keyword4 keyword5 keyword6` (more than 5 keywords)<br>
        Expected: No search is performed. Error details shown indicating invalid command format because maximum keywords is exceeded.
 
-   11. Test case: `search keywordThatDoesNotMatchAnyEmployee`<br>
+   13. Test case: `search keywordThatDoesNotMatchAnyEmployee`<br>
        Expected: Empty list shown. Status message indicates "0 employees listed!".
-
-   12. Other incorrect search commands to try: `search @lphabet`, `search 123!@#`<br>
-       Expected: Similar error messages shown due to non-alphanumeric characters.
 
 ### Editing an employee
 
