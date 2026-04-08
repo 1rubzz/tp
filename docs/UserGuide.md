@@ -166,7 +166,7 @@ Additional notes:
 
 Successful command output:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![add command](images/addCommand.png)
 
 <box type="info" seamless>
 
@@ -236,7 +236,7 @@ Additional notes:
 
 Successful command output:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![search command](images/searchCommand.png)
 
 <br>
 
@@ -268,15 +268,15 @@ Additional notes:
 
 Successful command output - Tag mode dashboard:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![statTag command](images/statTag.png)
 
 Successful command output - Department mode dashboard:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![statDepartment command](images/statDepartment.png)
 
 Successful command output - Role mode dashboard
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![statRole command](images/statRole.png)
 
 <box type="tip" seamless>
 
@@ -303,7 +303,7 @@ Additional notes:
 
 Successful command output:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![edit command](images/editCommand.png)
 
 <box type="info" seamless>
 
@@ -342,7 +342,7 @@ Additional notes:
 
 Successful command output:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![delete command](images/deleteCommand.png)
 
 <box type="info" seamless>
 
@@ -367,6 +367,10 @@ Examples:
 
 Additional notes:
 * Extraneous parameters are ignored (for example, `clear now` is treated as `clear`). See: [Extraneous parameters](#features-1)
+
+Successful command output:
+
+![clear command](images/clearCommand.png)
 
 <box type="info" seamless>
 
@@ -399,11 +403,10 @@ Additional notes:
 Alternative ways to import:
 1) Drag the file into HRmanager's home folder, then run `import filename.csv` 
 2) Right-click the file → "Copy as path" → paste the path (Ctrl+V) when running `import <path/that/was/copied>`
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
 
 Successful command output:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![import command](images/importCommand.png)
 
 <box type="info" seamless>
 
@@ -435,7 +438,7 @@ Additional notes:
 
 Exported file format:
 
-> **PNG placeholder:** Insert a screenshot here, e.g. `images/search-command-placeholder.png` follow this format when inserting photos '![help command](images/helpCommand.png)'
+![export command](images/exportCommand.png)
 
 Successful command output:
 
@@ -606,7 +609,7 @@ HRmanager data are saved in the hard disk automatically after any command that c
 
 ### Editing the data file
 
-HRmanager data are saved automatically as a JSON file `[JAR file location]/data/HRmanager.json`. Advanced users are welcome to update data directly by editing that data file.
+HRmanager data are saved automatically as a JSON file `[JAR file location]/data/HRmanager.json`. Advanced users are welcome to update data directly by editing that data file. 
 
 <box type="warning" seamless>
 
