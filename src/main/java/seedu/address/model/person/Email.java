@@ -33,7 +33,7 @@ public class Email {
     public static final String VALIDATION_REGEX = "^(?=.{1,50}$)"
         + LOCAL_PART_REGEX + "@" + DOMAIN_REGEX;
 
-    public final String value;
+    private final String value;
 
     /**
      * Constructs an {@code Email}.
@@ -51,6 +51,10 @@ public class Email {
      */
     public static boolean isValidEmail(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override

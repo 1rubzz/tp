@@ -31,7 +31,7 @@ public class Tag {
         + "[a-zA-Z0-9])?" // ends with an alphanumeric character
         + "$";
 
-    public final String tagName;
+    private final String tagName;
 
     /**
      * Constructs a {@code Tag}.
@@ -49,6 +49,10 @@ public class Tag {
      */
     public static boolean isValidTagName(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String getTagName() {
+        return tagName;
     }
 
     @Override

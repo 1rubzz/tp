@@ -27,7 +27,7 @@ public class Department {
         + "[a-zA-Z0-9])?" // ends with an alphanumeric character
         + "$";
 
-    public final String value;
+    private final String value;
 
     /**
      * Constructs a {@code Department}.
@@ -45,6 +45,10 @@ public class Department {
      */
     public static boolean isValidDepartment(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override

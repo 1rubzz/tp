@@ -58,11 +58,11 @@ class JsonAdaptedPerson {
      * Converts a given {@code Person} into this class for Jackson use.
      */
     public JsonAdaptedPerson(Person source) {
-        name = source.getName().fullName;
-        phone = source.getPhone().value;
-        email = source.getEmail().value;
-        role = source.getRole().value;
-        department = source.getDepartment().value;
+        name = source.getName().getFullName();
+        phone = source.getPhone().getValue();
+        email = source.getEmail().getValue();
+        role = source.getRole().getValue();
+        department = source.getDepartment().getValue();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));

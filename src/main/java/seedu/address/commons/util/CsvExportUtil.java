@@ -47,11 +47,11 @@ public class CsvExportUtil {
      * Converts a person into a CSV row string.
      */
     public String formatRow(Person person) {
-        String name = quote(person.getName().fullName);
-        String phone = quote(person.getPhone().value);
-        String email = quote(person.getEmail().value);
-        String role = quote(person.getRole().value);
-        String department = quote(person.getDepartment().value);
+        String name = quote(person.getName().getFullName());
+        String phone = quote(person.getPhone().getValue());
+        String email = quote(person.getEmail().getValue());
+        String role = quote(person.getRole().getValue());
+        String department = quote(person.getDepartment().getValue());
         String tags = formatTags(person);
 
         return String.join(",", name, phone, email, role, department, tags);
@@ -59,7 +59,7 @@ public class CsvExportUtil {
 
     private String formatTags(Person person) {
         List<String> tagNames = person.getTags().stream()
-            .map(tag -> tag.tagName)
+            .map(tag -> tag.getTagName())
             .sorted() // deterministic order makes tests and diffs easier
             .collect(Collectors.toList());
 

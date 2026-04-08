@@ -27,7 +27,7 @@ public class Role {
         + "[a-zA-Z0-9])?" // ends with an alphanumeric character
         + "$";
 
-    public final String value;
+    private final String value;
 
     /**
      * Constructs an {@code Role}.
@@ -45,6 +45,10 @@ public class Role {
      */
     public static boolean isValidRole(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override

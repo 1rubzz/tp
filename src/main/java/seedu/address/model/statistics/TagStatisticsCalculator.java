@@ -15,8 +15,8 @@ public class TagStatisticsCalculator extends AbstractValueStatisticsCalculator {
         return person.getTags().stream()
                 .map(tag -> {
                     assert tag != null : "Tag cannot be null";
-                    assert tag.tagName != null : "Tag name cannot be null";
-                    return tag.tagName;
+                    assert tag.getTagName() != null : "Tag name cannot be null";
+                    return tag.getTagName();
                 })
                 .collect(Collectors.toSet());
     }

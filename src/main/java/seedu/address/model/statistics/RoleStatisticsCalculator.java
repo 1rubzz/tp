@@ -13,7 +13,7 @@ public class RoleStatisticsCalculator extends AbstractValueStatisticsCalculator 
     @Override
     protected Set<String> extractValues(Person person) {
         Set<String> roleValues = new HashSet<>();
-        String roleValue = person.getRole().value;
+        String roleValue = person.getRole().getValue();
         if (!roleValue.isBlank()) {
             roleValues.add(roleValue);
         }

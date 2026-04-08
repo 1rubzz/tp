@@ -23,7 +23,7 @@ public class EmailTest {
     @Test
     public void constructor_mixedCaseEmail_savedAsLowercase() {
         Email email = new Email("JoHn.DoE@ExAMPle.CoM");
-        assertEquals("john.doe@example.com", email.value);
+        assertEquals("john.doe@example.com", email.getValue());
     }
 
     @Test

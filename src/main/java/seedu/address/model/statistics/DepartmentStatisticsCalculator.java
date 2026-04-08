@@ -13,7 +13,7 @@ public class DepartmentStatisticsCalculator extends AbstractValueStatisticsCalcu
     @Override
     protected Set<String> extractValues(Person person) {
         Set<String> departmentValues = new HashSet<>();
-        String departmentValue = person.getDepartment().value;
+        String departmentValue = person.getDepartment().getValue();
         if (!departmentValue.isBlank()) {
             departmentValues.add(departmentValue);
         }
