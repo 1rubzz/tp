@@ -30,8 +30,8 @@ Here is a quick guide to jump straight to the section you need:
 * [Editing an employee: `edit`](#editing-an-employee-edit)
 * [Deleting an employee: `delete`](#deleting-an-employee-delete)
 * [Clearing all entries: `clear`](#clearing-all-entries-clear)
-* [Importing employee data: `import`](#import-employee-data--import)
-* [Exporting employee data: `export`](#export-employee-data--export)
+* [Importing employee data: `import`](#import-employee-data-import)
+* [Exporting employee data: `export`](#export-employee-data-export)
 * [Exiting the program: `exit`](#exiting-the-program-exit)
 
 ### Other sections
@@ -99,7 +99,7 @@ Here is a quick guide to jump straight to the section you need:
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help`
+### Viewing help: `help`
 
 Shows a dialog box with a link to te User Guide explaining how to use the app.
 
@@ -118,7 +118,7 @@ Successful command output:
 <br>
 
 
-### Listing all employees : `list`
+### Listing all employees: `list`
 
 Shows a list of all employees in HRmanager, sorted by the order they were added (most recent at the bottom).
 
@@ -138,7 +138,7 @@ Successful command output:
 <br>
 
 
-### Adding an employee : `add`
+### Adding an employee: `add`
 
 Adds a new employee to HRmanager and stores their employee details persistently.
 
@@ -208,7 +208,7 @@ Successful command output:
 <br>
 
 
-### Searching for employees : `search`
+### Searching for employees: `search`
 
 Finds employees whose fields contain at least one of the given keywords (name, phone, email, role, department, tags) with partial match support (e.g., Han matches Hans).
 
@@ -278,7 +278,7 @@ Successful command output - Role mode dashboard
 <br>
 
 
-### Editing an employee : `edit`
+### Editing an employee: `edit`
 
 Edits an existing employee's details in HRmanager.
 
@@ -309,7 +309,7 @@ Successful command output:
 <br>
 
 
-### Deleting an employee : `delete`
+### Deleting an employee: `delete`
 
 Deletes one or more employees from the currently displayed list in HRmanager.
 
@@ -348,7 +348,7 @@ Successful command output:
 <br>
 
 
-### Clearing all entries : `clear`
+### Clearing all entries: `clear`
 
 Clears all employees from HRmanager.
 
@@ -372,7 +372,7 @@ Additional notes:
 <br>
 
 
-### Import employee data : `import`
+### Import employee data: `import`
 
 Imports a new list of employees from a local CSV (comma-separated values) file, overwriting all existing app data.
 
@@ -409,7 +409,7 @@ Successful command output:
 <br>
 
 
-### Export employee data : `export`
+### Export employee data: `export`
 
 Exports the current list of employees into a CSV (comma-separated values) file, saved into user-specified local destination.
 
@@ -441,7 +441,7 @@ Successful command output:
 <br>
 
 
-### Exiting the program : `exit`
+### Exiting the program: `exit`
 
 Closes the HRmanager application.
 
@@ -513,7 +513,7 @@ Cancelled: edit employee details.
 <br>
 
 
-### Undo an executed command : `undo`
+### Undo an executed command: `undo`
 
 Reverses the effects of a prior `add`, `edit`, `delete`, `clear`, or `import` command (Collectively: "Eligible commands").
 
