@@ -6,7 +6,7 @@
 
 # HRmanager User Guide
 
-HRmanager is a **desktop app for managing employee and applicant records, optimized for use via a Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HRmanager can help you manage HR records faster than traditional GUI apps.
+HRmanager is a **desktop app for managing employee and applicant records, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HRmanager can help you manage HR records faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -30,7 +30,8 @@ Here is a quick guide to jump straight to the section you need:
 * [Editing an employee: `edit`](#editing-an-employee-edit)
 * [Deleting an employee: `delete`](#deleting-an-employee-delete)
 * [Clearing all entries: `clear`](#clearing-all-entries-clear)
-* [Import/Export employee data: `import` or `export`](#importexport-employee-data-import-or-export)
+* [Importing employee data: `import`](#import-employee-data--import)
+* [Exporting employee data: `export`](#export-employee-data--export)
 * [Exiting the program: `exit`](#exiting-the-program-exit)
 
 ### Other sections
@@ -92,7 +93,7 @@ Here is a quick guide to jump straight to the section you need:
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `undo`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -106,6 +107,12 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+Additional notes:
+* Extraneous parameters are ignored (for example, `help 123` is treated as `help`). See: [Extraneous parameters](#features-1)
+
+Examples:
+* `help`
+
 <br>
 
 
@@ -114,6 +121,17 @@ Format: `help`
 Shows a list of all employees in HRmanager.
 
 Format: `list`
+
+What this feature does:
+* Employees are sorted based on the order they were added, with the most recently added employee shown at the bottom of the list.
+
+
+Additional notes:
+* Extraneous parameters are ignored (for example, `list abc` is treated as `list`). See: [Extraneous parameters](#features-1)
+* Running `list` returns the display to the full global employee list after any narrowed search results view.
+
+Examples:
+* `list`
 
 <br>
 
@@ -137,8 +155,17 @@ Additional constraints:
 * The compulsory fields are `n/NAME`, `p/PHONE_NUMBER`, `e/EMAIL`, `r/ROLE`, and `d/DEPARTMENT`. Each compulsory prefix must be provided exactly once.
 * `t/TAG` is optional and can be provided any number of times (including 0).
 * The employee to be added cannot already exist in HRmanager (based on a case-insensitive match on the name).
-* If two employees share the same real-world name, include a differentiating suffix in the name itself (for example, `John Doe Sales` and `John Doe Intern`) so that both names are unique.
+* All fields must adhere to the parameter restrictions specified in the next section.
+* If two employees share the same real-world name, include a differentiating suffix (eg. nickname) in the name itself (for example, `John Doe - Johnny` and `John Doe - Joe`) so that both names are unique.
 * Names are normalized to lowercase when stored in HRmanager.
+* HRmanager currently restricts names to alphanumeric characters, hyphens, and spaces only. This means names containing:
+
+- __Diacritics/accents__ (e.g., Müller, Josée, Piñata)
+- __Non-Latin scripts__ (e.g., 王小明, 田中, 김철수) 
+- __Special punctuation__ (e.g., O'Connor, D'Angelo, s/o, d/o) 
+
+are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`, `Rajesh son of Suresh`, `Anita daughter of Kumar`)
+* Since phone numbers are not allowed to have spaces, extensions, or country codes, it is recommended to use a tag to store any additional information related to the phone number. For example, if an employee has a phone number with an extension, you can add the extension as a tag (e.g., `t/ext 1234`). Or if an employee has a country code, you can add the country code as a tag (e.g., `t/sg phone country code` for Singapore). This way, you can still keep track of important details related to the phone number while adhering to the input restrictions.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com r/Receptionist d/Operations` adds an employee named John Doe with the specified details.
@@ -148,42 +175,46 @@ Examples:
 
 > **PNG placeholder:** Insert a screenshot here, e.g. `images/add-command-placeholder.png`
 
+<box type="info" seamless>
+
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+</box>
 <br>
 
 ### Parameter restrictions for each field:
 
 #### Name (`n/`)
 
-* __Characters:__ The name should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The name should not contain consecutive hyphens or spaces. The name should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The name should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The name should not contain consecutive hyphens and/or spaces. The name should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The name entered is case-insensitive. For example, adding `John Doe` will be invalid if `john doe` already exists in HRmanager. Names are stored in HRmanager in lowercase.
 * __Input length:__ The name must be between 1 and 50 characters long (inclusive).
 
 #### Phone (`p/`)
 
-* __Characters:__ The number should consist of only numeric digits. Do not include spaces, extensions or country codes. No other characters are allowed.
+* __Characters:__ The number should consist of only numeric digits. Do not include spaces, extensions or country codes. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Input length:__ The number must be between 3 and 16 digits long (inclusive).
 
 #### Email (`e/`)
 
-* __Characters:__ The email must follow the format local-part@domain. The local-part may contain alphanumeric characters and `+`, `_`, `.`, `-`, but cannot start or end with special characters. The domain consists of labels separated by periods (`.`); each label must start and end with alphanumeric characters, may contain hyphens (-), and the final label must be at least 2 characters long. No other characters are allowed.
+* __Characters:__ The email must follow the format local-part@domain. The local-part may contain alphanumeric characters and `+`, `_`, `.`, `-`, but cannot start or end with special characters. The domain consists of labels separated by periods (`.`); each label must start and end with alphanumeric characters, may contain hyphens (-), and the final label must be at least 2 characters long. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The email entered is case-insensitive eg. `john.doe@example.com` will be the same as `John.Doe@Example.COM`. 
 * __Input length:__ The email must be between 1 and 50 characters long (inclusive).
 
 #### Role (`r/`)
 
-* __Characters:__ The role should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The role should not contain consecutive hyphens or spaces. The role should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The role should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The role should not contain consecutive hyphens and/or spaces. The role should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The role entered is case-insensitive eg. inputting `Software Engineer` will be the same as `software engineer` and `SOFTWARE ENGINEER`. The role will be stored in Hr manager in lower casing.
 * __Input length:__ The role must be between 1 and 30 characters long (inclusive).
 
 #### Department (`d/`)
 
-* __Characters:__ The department should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The department should not contain consecutive hyphens or spaces. The department should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The department should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The department should not contain consecutive hyphens and/or spaces. The department should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The department entered is case-insensitive eg. inputting `Human Resources` will be the same as `human resources` and `HUMAN RESOURCES`. The department will be stored in Hr manager in lower casing.
 * __Input length:__ The department must be between 1 and 30 characters long (inclusive).
 
 #### Tag (`t/`)
 
-* __Characters:__ The tag should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The tag should not contain consecutive hyphens or spaces. The tag should not start or end with a hyphen or space. No other characters are allowed.
+* __Characters:__ The tag should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The tag should not contain consecutive hyphens and/or spaces. The tag should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The tag entered is case-insensitive eg. inputting `friend` will be the same as `Friend` and `FRIEND`. The tag will be stored in Hr manager in lower casing.
 * __Input length:__ The tag must be between 1 and 30 characters long (inclusive).
 
@@ -207,6 +238,7 @@ Additional constraints:
 * A maximum of **5** keywords can be supplied in a single command.
 * Each keyword must be **alphanumeric** only (no spaces or special characters).
 * Each keyword must be at most **20** characters long.
+* To return to the full employee list after `search`, run `list`.
 
 Examples:
 * `search John` returns employees with "John" anywhere in their fields (e.g., `John Doe`).
@@ -248,6 +280,7 @@ Supported modes:
 * **Role mode:** Unique roles, most common role, and role distribution.
 * For all modes, distribution values are shown top-to-bottom in descending count (highest at the top, lowest at the bottom).
 * If multiple values have the same count, they are ordered alphabetically (case-insensitive).
+* If multiple values tie for the highest count, the displayed most common value (tag/department/role) is the one ordered first alphabetically (case-insensitive).
 * For all modes, values are computed from the full HRmanager dataset (global distribution), not only the currently filtered on-screen list.
 </box>
 
@@ -281,17 +314,6 @@ Examples:
 <br>
 
 
-### Cycle through previous executed commands
-
-You can pre-fill the command box with your last successful command using the **PgUp (up arrow) key** on computer keyboards. This allows users to repeat their last commands without re-typing it in its entirety.
-
-* Use the PgUp (Up arrow) key to move towards older commands, PgDn (Down arrow) key to move towards latest commands.
-* Only successful past commands are saved.
-* Up to 5 past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
-* The current pending command is saved when the command history is explored.
-* The latest command will not be saved if exactly same as the previous consecutive one.
-
-
 ### Editing an employee : `edit`
 
 Edits an existing employee in HRmanager.
@@ -304,17 +326,20 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]
 * Each optional field accepts at most 1 updated value, i.e. no duplicate fields.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the employee will be removed i.e. adding of tags is not cumulative.
-* You can remove all the employee's tags by typing `t/` without
-    specifying any tags after it.
+* You can remove all the employee's tags by typing `t/` without specifying any tags after it.
+
+Examples:
+*  `edit 1 p/91234567 e/johndoe@example.com` edits the phone number and email address of the 1st employee to be `91234567` and `johndoe@example.com` respectively.
+*  `edit 2 n/Betsy Crower d/Marketing t/` edits the name and department of the 2nd employee to be `Betsy Crower` and `Marketing`, and clears all existing tags.
 
 <box type="info" seamless>
 
 **⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
 </box>
+<box type="info" seamless>
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` edits the phone number and email address of the 1st employee to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower d/Marketing t/` edits the name and department of the 2nd employee to be `Betsy Crower` and `Marketing`, and clears all existing tags.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+</box>
 
 <br>
 
@@ -331,16 +356,12 @@ What this feature does:
 * Removes one or more employees permanently from HRmanager.
 * Works on the employee list that is currently shown on screen.
 * Supports deleting several employees in one command.
-
-<box type="info" seamless>
-
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental deletion. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
-</box>
+* If deletion is done from a filtered list (for example after `search`), the main window remains on the filtered list view after successful deletion.
 
 Additional constraints:
 * At least **one** index must be provided.
 * Each index must be a **positive non-zero integer**: `1`, `2`, `3`, ...
-* A maximum of **100** indexes can be supplied in a single command.
+* A maximum of **10** indexes can be supplied in a single command.
 * Indexes are based on the **current displayed list**, not on a hidden or previously shown list.
 * If any supplied index is out of range, the deletion fails and no employee is deleted.
 * Repeated indexes are accepted, but duplicate indexes are ignored internally.
@@ -356,38 +377,120 @@ Examples:
 
 > **PNG placeholder:** Insert a screenshot here, e.g. `images/delete-command-placeholder.png`
 
-<br>
-
-
-
-### Clearing all entries : `clear`
-
-Clears all entries from HRmanager.
-
-Format: `clear`
-
 <box type="info" seamless>
 
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental deletion. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+<box type="info" seamless>
+
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
 </box>
 
 <br>
 
 
-### Import/Export employee data : `import` or `export`
+### Clearing all entries : `clear`
 
-Exports the current list of employees into a CSV file, saved into user-specified local destination.
+Clears all entries from HRmanager; that is, delete all employees.
+
+Format: `clear`
+
+Additional notes:
+* Extraneous parameters are ignored (for example, `clear now` is treated as `clear`). See: [Extraneous parameters](#features-1)
+
+Examples:
+* `clear`
+
+<box type="info" seamless>
+
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+<box type="info" seamless>
+
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+</box>
+
+<br>
+
+
+### Import employee data : `import`
+
+Imports a new list of employees from a local CSV file, overwriting existing app data.
+
+Format: `import [FILE PATH]`
+
+Notes on file format:
+* The target file must be a csv (comma-separated values) file (that means, ending in ".csv").
+* File must have a valid header row consisting of: name, phone, email, role, department, tags (optional) in any order.
+* File must be smaller than 1MB.
+* File must have no more than 200 employees' data, due to HRmanager's storage limit.
+* All data validation rules apply, e.g. no employees with duplicate names or invalid/missing fields are allowed.
+* When there are multiple invalid values or rule violations in the target file, only the first error will be detected and reported.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/correct-csv-file-placeholder.png`
+
+Examples:
+* `import employees.csv`
+* `import "C:\Users\username\Downloads\2026_employee_list.csv"`
+
+Alternative ways to import:
+1. Drag the target file into HRmanager's home folder, and input `import (file name in full, including extension)` into HRmanager. 
+2. Right-click on the target file, click "Copy as path", and input `import (Ctrl+V to paste file path)` into HRmanager.
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/import-steps-graphic-placeholder.png`
+
+<box type="info" seamless>
+
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+<box type="info" seamless>
+
+**🔁 Undo Possible:** `import` command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+</box>
+
+<br>
+
+
+### Export employee data : `export`
+
+Exports the current list of employees into a CSV (comma-separated values) file, saved into user-specified local destination.
 
 Format: `export [FILE PATH]`
+
+Notes:
+* The full list of employees is exported, even when your view of the list is narrowed using the search function.
+* [FILE PATH] must end in ".csv". Exporting to other file formats is currently not supported.
+* Entering only a file name (e.g. "employees.csv") will export the current list into HRmanager's home folder.
+* No overwriting of local files is allowed.
+
+Examples:
+* `export employees.csv`
+* `export C:\Users\username\Desktop\2026_employee_list.csv`
+
+Exported file format:
+
+> **PNG placeholder:** Insert a screenshot here, e.g. `images/exported-csv-placeholder.png`
+
+<box type="info" seamless>
+
+**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+<box type="info" seamless>
 
 <br>
 
 
 ### Exiting the program : `exit`
 
-Exits the program.
+Close the application.
 
 Format: `exit`
+
+Additional notes:
+* Extraneous parameters are ignored (for example, `exit now` is treated as `exit`). See: [Extraneous parameters](#features-1)
+
+Examples:
+* `exit`
 
 <box type="info" seamless>
 
@@ -409,10 +512,12 @@ Since HRmanager stores **sensitive employee data** (personal information, contac
 * `delete` - When deleting one or more employees
 * `clear` - When clearing all entries
 * `exit` - When closing the application
+* `import` - When importing data into the application from a file
+* `export` - When exporting data from the application to a file
 
 **How confirmation works:**
 1. After you enter one of the above commands, a confirmation prompt will appear displaying:
-   - The action you're about to perform
+   - The action you are about to perform
    - The impact of this action
 2. You must respond with either:
    - `y` - to proceed with the command
@@ -428,6 +533,14 @@ Impact: Permanently removes employee(s) from HRmanager
 
 > y
 Employee deleted successfully
+
+> edit 1 n/john
+Please confirm this action. Enter 'y' to proceed or 'n' to cancel.
+Action: Edit employee at index 1.
+Impact: Provided fields will overwrite existing employee details.
+
+> n
+Cancelled: edit employee details.
 ```
 
 <box type="tip" seamless>
@@ -437,9 +550,85 @@ Employee deleted successfully
 
 <br>
 
+
+### Undo an executed command : `undo`
+
+Reverses the effects of a prior `add`, `edit`, `delete`, `clear`, or `import` command (Collectively: "Eligible commands").
+
+Format: `undo`
+
+What this feature does:
+* Reverse/undo the effects of a previous successful eligible command.
+* Each previous successful eligible command is saved (up to 10 of the latest ones). Hence, if there are sufficient such saved commands, you can execute `undo` up to 10 times on the 10 eligible commands in a consecutive sequence.
+* You can only undo commands executed in the current session. That is, if you close the app and re-run it, you will lose command execution history and hence the ability to do `undo` on those commands from previous sessions.
+
+Additional notes:
+* Extraneous parameters are ignored (for example, `undo now` or `undo 3` is treated as `undo`). See: [Extraneous parameters](#features-1)
+* `undo` is intended as a quality of life feature primarily to save time that would be spent reversing a few of the most recent changes if users change their mind. Given this, and that most users are likely to only undo a few recent actions, limiting undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour arising from a large number of reversals. 
+
+Examples:
+* `undo` can be used repeatedly: the execution sequence
+```
+> add (parameters...)
+> edit (parameters...)
+> y
+> clear
+> y
+> undo
+> undo
+> undo
+```
+will not result in any net change because all the changes are reversed.
+* `undo` ignores ineligible commands: the execution sequence 
+```
+> add (parameters...)
+> help 
+> edit (parameters...)
+> y
+> clear
+> y
+> search ronald
+> list
+> undo
+> undo
+> undo
+```
+is effectively the same as the above example and will not result in any net change because all the changes are reversed. The `help`, `search` and `list` commands are ineligible and are ignored.
+* `undo` still works even if there are commands not eligible for `undo` in the past sequence; it will simply ignore them. For example, if you execute
+```
+> add (params...)
+> help
+> undo
+```
+then the execution of `undo` will ignore `help` (which is not eligible for undo) and will reverse the effects of `add`. 
+* `undo` can be used up to 10 times, given there are sufficient eligible commands saved: After adding 11 people (with 11 `add (params...)`), you can enter `undo` 10 times to remove the 10 latest additions. Thereafter, using `undo` again results in the hint "There are no commands to undo.". To be clear, consider noting that the example sequence `add (params...)`, then `help`; collectively contributes 1 saved eligible command since `help` is not eligible for undo.
+
+<br>
+
+
+### Cycle through previous executed commands
+
+You can pre-fill the command box with your last successful commands using the **PgUp (Up arrow) key** on your keyboard. This allows you to easily repeat your last commands without re-typing it in its entirety. This is also useful for referring back to the command written, which otherwise disappears after execution.
+
+* Command history navigation: Use the **PgUp (Up arrow)** key to move towards older commands, **PgDn (Down arrow) key** to move towards latest commands.
+* Only successful commands are saved.
+* Up to **10** past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
+* The current pending command is saved when the command history is explored, so your progress on current half-written commands is not lost when you browse the command history.
+* The latest command will not be saved if it is exactly the same as the previous consecutively executed one (that is already saved).
+* Confirmatory commands like 'y' and 'n' are not saved.
+* You can only cycle through commands executed in the current session. That is, if you close the app and re-run it, you will lose command execution history and hence the ability to toggle/cycle through them.
+
+Additional notes:
+* This command history cycling feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands. Given this, and that most users are likely to only use a few of the most recent commands, limiting cycling to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour. 
+
+<br>
+
+
 ### Saving the data
 
 HRmanager data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+
+<br>
 
 
 ### Editing the data file
@@ -466,6 +655,7 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. Non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`) We plan to support non-ASCII characters in a future version.
 
 --------------------------------------------------------------------------------------------------------------------
 

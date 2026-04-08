@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,10 +27,10 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Imports employee list from local CSV file, "
         + "replacing the current app data. "
         + "Parameters: file path of target csv file\n"
-        + "Example:"
-        + "import C:\\Users\\user\\Downloads\\employees.csv";
+        + "Example: "
+        + COMMAND_WORD + " C:\\Users\\user\\Downloads\\employees.csv";
 
-    public static final String MESSAGE_SUCCESS = "Imported employee list from local file.";
+    public static final String MESSAGE_SUCCESS = "Imported %d employee(s) from %s";
     public static final String ACTION_SUMMARY = "Import local list.";
     public static final String IMPACT_SUMMARY =
         "New employee list will be created from local data, overwriting existing import list.";
@@ -42,6 +43,12 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         "The path does not point to a file: %s";
     public static final String MESSAGE_INVALID_PATH =
         "The provided file path is invalid: %s";
+    public static final String MESSAGE_NOT_CSV =
+        "Only csv files are supported";
+    public static final int MAX_KILOBYTES = 100;
+    public static final int MAX_BYTES = 100000; //100kb
+    public static final String MESSAGE_FILE_SIZE_OVER_LIMIT =
+        String.format("Target file exceeds the limit of %d kB (%d bytes)", MAX_KILOBYTES, MAX_BYTES);
     public static final String MESSAGE_CSV_PARSE_ERROR =
         "Failed to parse CSV file — %s";
     public static final String MESSAGE_IO_ERROR =
@@ -50,6 +57,8 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         "Target file is empty!\nTo clear current list, use 'clear' command.";
 
     private final String filePath;
+    private Path validatedPath;
+    private List<Person> validatedPersons;
 
     /**
      * Constructs an ImportCommand instance given a file path.
@@ -69,15 +78,37 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         return ACTION_DESCRIPTION;
     }
 
-
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public void validateBeforeConfirm(Model model) throws CommandException {
         requireNonNull(model);
 
         Path path = resolvePath();
         validatePath(path);
 
-        List<Person> persons = readCsv(path);
+        validatedPath = path;
+        validatedPersons = readCsv(path);
+
+        if (validatedPersons.isEmpty()) {
+            throw new CommandException(MESSAGE_EMPTY_FILE);
+        }
+    }
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+
+        Path path = validatedPath;
+        List<Person> persons = validatedPersons;
+
+        // Clear cached pre-validation results after handoff to execution.
+        validatedPath = null;
+        validatedPersons = null;
+
+        if (path == null || persons == null) {
+            path = resolvePath();
+            validatePath(path);
+            persons = readCsv(path);
+        }
 
         model.commitAddressBook();
 
@@ -85,10 +116,7 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         AddressBook newBook = new AddressBook();
         persons.forEach(newBook::addPerson);
         model.setAddressBook(newBook);
-
-        if (persons.isEmpty()) {
-            return new CommandResult(MESSAGE_EMPTY_FILE);
-        }
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(
             String.format(MESSAGE_SUCCESS, persons.size(), path.toAbsolutePath()));
@@ -114,6 +142,14 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         }
         if (!Files.isRegularFile(path)) {
             throw new CommandException(String.format(MESSAGE_NOT_A_FILE, path));
+        }
+        try {
+            long bytes = Files.size(path);
+            if (bytes > MAX_BYTES) {
+                throw new CommandException(MESSAGE_FILE_SIZE_OVER_LIMIT);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

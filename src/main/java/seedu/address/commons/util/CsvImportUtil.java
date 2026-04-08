@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.exceptions.CsvParseException;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.model.person.Department;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -62,6 +63,7 @@ public class CsvImportUtil {
         try (BufferedReader reader = Files.newBufferedReader(csvPath)) {
             String headerLine = null;
             int lineNumber = 0;
+            int employeeNumber = 0;
 
             // Find the first non-blank line — treat it as the header
             String line;
@@ -74,19 +76,31 @@ public class CsvImportUtil {
             }
 
             if (headerLine == null) {
-                throw new CsvParseException("CSV file is empty.");
+                throw new CsvParseException(ImportCommand.MESSAGE_EMPTY_FILE);
             }
 
             resolveHeaderIndices(headerLine, lineNumber);
 
             // Parse data rows
+            List<String> names = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
+                employeeNumber++;
+                if (employeeNumber > 200) {
+                    throw new CsvParseException("Max 200 employees allowed.");
+                }
                 if (line.isBlank()) {
                     continue; // skip blank rows silently
                 }
                 Person person = parseDataRow(line, lineNumber);
+                //check duplicates
+                if (names.contains(person.getName().toString())) {
+                    throw new CsvParseException(String.format(
+                        "Employees with duplicate names on line %d and %d: %s",
+                        names.indexOf(person.getName().toString()), lineNumber, person.getName()));
+                }
                 persons.add(person);
+                names.add(person.getName().toString());
             }
         }
 
@@ -98,7 +112,8 @@ public class CsvImportUtil {
 
         for (int i = 0; i < headers.size(); i++) {
 
-            String header = headers.get(i).toLowerCase();
+            String header = headers.get(i).toLowerCase().trim();
+            //didn't put a switch here, not sure what to do for the default case
             if (header.equals(HEADER_NAME)) {
                 idxName = i;
             } else if (header.equals(HEADER_PHONE)) {
@@ -165,7 +180,9 @@ public class CsvImportUtil {
         }
     }
 
-    /** Retrieves and trims the field at {@code index}, throwing if absent or blank. */
+    /**
+     * Retrieves and trims the field at {@code index}, throwing if absent or blank.
+     */
     private String getField(List<String> fields, int index, String fieldName, int lineNumber) throws CsvParseException {
         if (index >= fields.size()) {
             throw new CsvParseException(
@@ -179,7 +196,9 @@ public class CsvImportUtil {
         return value;
     }
 
-    /** Parses the optional tags column; returns an empty set if the column is absent. */
+    /**
+     * Parses the optional tags column; returns an empty set if the column is absent.
+     */
     private Set<Tag> parseTags(List<String> fields, int lineNumber) throws CsvParseException {
         if (idxTags == -1 || idxTags >= fields.size()) {
             return Set.of();
@@ -189,11 +208,19 @@ public class CsvImportUtil {
             return Set.of();
         }
         try {
-            return Arrays.stream(raw.split(","))
-                .map(String::trim)
-                .filter(t -> !t.isEmpty())
-                .map(Tag::new)
-                .collect(Collectors.toSet());
+            Set<Tag> tags = Arrays.stream(raw.split(","))
+                    .map(String::trim)
+                    .filter(t -> !t.isEmpty())
+                    .map(Tag::new)
+                    .collect(Collectors.toSet());
+
+            if (tags.size() > Person.MAX_TAG_COUNT) {
+                throw new CsvParseException(
+                        String.format("Line %d: " + Tag.MESSAGE_TAG_COUNT_CONSTRAINTS,
+                                lineNumber, Person.MAX_TAG_COUNT, tags.size()));
+            }
+
+            return tags;
         } catch (IllegalArgumentException e) {
             throw new CsvParseException(
                 String.format("Line %d: invalid tag — %s", lineNumber, e.getMessage()), e);

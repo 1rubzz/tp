@@ -2,7 +2,6 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +13,7 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.io.TempDir;
 
 import javafx.collections.ObservableList;
@@ -145,7 +145,7 @@ public class ImportCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
-            throw new AssertionError("unexpected call");
+            //silently accept
         }
     }
 
@@ -163,17 +163,6 @@ public class ImportCommandTest {
 
         assertEquals(2, model.lastSetAddressBook.getPersonList().size());
         assertTrue(model.isCommitCalled());
-    }
-
-    @Test
-    void execute_csvWithHeaderOnly_setsEmptyAddressBookAndReturnsEmptyMessage() throws Exception {
-        Path csv = writeCsv(VALID_HEADER); // data rows only — header-only file
-
-        CommandResult result = new ImportCommand(csv.toString()).execute(model);
-
-        assertNotNull(model.lastSetAddressBook);
-        assertEquals(0, model.lastSetAddressBook.getPersonList().size());
-        assertEquals(ImportCommand.MESSAGE_EMPTY_FILE, result.getFeedbackToUser());
     }
 
     @Test
@@ -231,6 +220,51 @@ public class ImportCommandTest {
     void getActionDescription_returnsExpectedString() {
         assertEquals(ImportCommand.ACTION_DESCRIPTION,
             new ImportCommand("/some/path.csv").getActionDescription());
+    }
+
+    @Test
+    void validateBeforeConfirm_missingFile_throwsCommandException() {
+        Path missing = tempDir.resolve("missing.csv");
+        ImportCommand cmd = new ImportCommand(missing.toString());
+
+        CommandException ex = assertThrows(CommandException.class, () -> cmd.validateBeforeConfirm(model));
+        assertEquals(String.format(ImportCommand.MESSAGE_FILE_NOT_FOUND, missing), ex.getMessage());
+    }
+
+    @Test
+    void execute_afterValidateBeforeConfirmFailure_fallsBackAndThrows() throws Exception {
+        Path malformedCsv = writeCsv(
+                "name,email,address",
+                "Alice,alice@example.com,123 Main St");
+        ImportCommand cmd = new ImportCommand(malformedCsv.toString());
+
+        Executable preConfirmAction = () -> cmd.validateBeforeConfirm(model);
+        CommandException preConfirmEx = assertThrows(CommandException.class, preConfirmAction);
+        assertTrue(preConfirmEx.getMessage().startsWith("Failed to parse CSV file"));
+
+        Executable executeAction = () -> cmd.execute(model);
+        CommandException executeEx = assertThrows(CommandException.class, executeAction);
+        assertTrue(executeEx.getMessage().startsWith("Failed to parse CSV file"));
+        assertNull(model.lastSetAddressBook);
+    }
+
+    @Test
+    void execute_afterValidateBeforeConfirm_usesCachedValidatedData() throws Exception {
+        Path csv = writeCsv(VALID_HEADER, VALID_ROW_1);
+        ImportCommand cmd = new ImportCommand(csv.toString());
+
+        cmd.validateBeforeConfirm(model);
+        Files.delete(csv);
+
+        CommandResult result = cmd.execute(model);
+
+        assertEquals(1, model.lastSetAddressBook.getPersonList().size());
+        assertTrue(model.isCommitCalled());
+        assertEquals(
+            String.format(ImportCommand.MESSAGE_SUCCESS, 1, csv.toAbsolutePath()),
+            result.getFeedbackToUser()
+        );
+
     }
 
     private Path writeCsv(String... lines) {
