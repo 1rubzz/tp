@@ -21,12 +21,13 @@ Here is a quick guide to jump straight to the section you need:
 
 ### Features
 
+* [Notes about the command format](#notes-about-the-command-format)
 * [Viewing help: `help`](#viewing-help-help)
 * [Listing all employees: `list`](#listing-all-employees-list)
 * [Adding an employee: `add`](#adding-an-employee-add)
+* [Parameter restrictions](#parameter-restrictions-for-each-field)
 * [Searching employees by keyword: `search`](#searching-for-employees-search)
 * [Switching the statistics dashboard mode: `stat`](#switching-the-statistics-dashboard-mode-stat)
-* [Cycle through previous executed commands](#cycle-through-previous-executed-commands)
 * [Editing an employee: `edit`](#editing-an-employee-edit)
 * [Deleting an employee: `delete`](#deleting-an-employee-delete)
 * [Clearing all entries: `clear`](#clearing-all-entries-clear)
@@ -34,14 +35,21 @@ Here is a quick guide to jump straight to the section you need:
 * [Exporting employee data: `export`](#export-employee-data-export)
 * [Exiting the program: `exit`](#exiting-the-program-exit)
 
-### Other sections
+### Other features 
 
 * [Confirmation Prompts](#confirmation-prompts)
+* [Undo an executed command: `undo`](#undo-an-executed-command-undo)
+* [Cycle through previous executed commands](#cycle-through-previous-executed-commands)
 * [Saving the data](#saving-the-data)
 * [Editing the data file](#editing-the-data-file)
+
+### Appendix
+
 * [FAQ](#faq)
 * [Known issues](#known-issues)
+* [Future implementations](#future-implementations)
 * [Command summary](#command-summary)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -78,33 +86,31 @@ Here is a quick guide to jump straight to the section you need:
 
   * `exit` : Exits the app.
 
-6. Refer to the [Features](#features) below for details of each command.
+6. Refer to the [Features](#features) table above to jump each command implementation section quickly or continue scrolling for the for details of each command.
+
+<br>
+
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Features
 
-<box type="info" seamless>
-
-**Notes about the command format:**<br>
+### Notes about the command format
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
-
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
-
+* Items with `…` after them can be used multiple times including zero times.<br>
+  e.g. `[t/TAG]…` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `undo`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
-
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
-</box>
+
+<br>
+
 
 ### Viewing help: `help`
 
@@ -116,7 +122,7 @@ Examples:
 * `help`
 
 Additional notes:
-* Extraneous parameters are ignored (for example, `help 123` is treated as `help`). See: [Extraneous parameters](#features-1)
+* Extraneous parameters are ignored (for example, `help 123` is treated as `help`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
 
 Successful command output:
 
@@ -135,7 +141,7 @@ Examples:
 * `list`
 
 Additional notes:
-* Extraneous parameters are ignored (for example, `list abc` is treated as `list`). See: [Extraneous parameters](#features-1)
+* Extraneous parameters are ignored (for example, `list abc` is treated as `list`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
 * Running `list` returns the display to the full global employee list after any narrowed search results view.
 
 Successful command output:
@@ -170,7 +176,7 @@ Successful command output:
 
 <box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
 
 <br>
@@ -220,7 +226,7 @@ Successful command output:
 
 Finds employees whose fields contain at least one of the given keywords (name, phone, email, role, department, tags) with partial match support (e.g., Han matches Hans).
 
-Format: `search KEYWORD [MORE_KEYWORDS]...` (keywords are separated by whitespace)
+Format: `search KEYWORD [MORE_KEYWORDS]…` (keywords are separated by whitespace)
 
 Examples:
 * `search John` returns employees with "John" anywhere in their fields (e.g., `John Doe`).
@@ -311,7 +317,7 @@ Successful command output:
 </box>
 <box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
 
 <br>
@@ -350,7 +356,7 @@ Successful command output:
 </box>
 <box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
 
 <br>
@@ -366,7 +372,7 @@ Examples:
 * `clear`
 
 Additional notes:
-* Extraneous parameters are ignored (for example, `clear now` is treated as `clear`). See: [Extraneous parameters](#features-1)
+* Extraneous parameters are ignored (for example, `clear now` is treated as `clear`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
 
 Successful command output:
 
@@ -378,7 +384,7 @@ Successful command output:
 </box>
 <box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
 
 <br>
@@ -397,7 +403,7 @@ Examples:
 Additional notes:
 * The target file must be a `.csv` file with a valid header row: `name, phone, email, role, department, tags` (tags optional, any order).
 * File size limit: 100kB. Employee limit: 200 employees.
-* All data validation rules apply (e.g., no duplicate names, invalid or missing fields). [Parameter restrictions](#Parameter-restrictions-for-each-field)
+* All data validation rules apply (e.g., no duplicate names, invalid or missing fields). [Parameter restrictions](#parameter-restrictions-for-each-field)
 * When multiple errors exist, only the first error is reported.
 
 Alternative ways to import:
@@ -414,7 +420,7 @@ Successful command output:
 </box>
 <box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command--undo) for details.
+**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
 
 <br>
@@ -457,7 +463,7 @@ Examples:
 * `exit`
 
 Additional notes:
-* Extraneous parameters are ignored (for example, `exit now` is treated as `exit`). See: [Extraneous parameters](#features-1)
+* Extraneous parameters are ignored (for example, `exit now` is treated as `exit`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
 
 <box type="info" seamless>
 
@@ -534,7 +540,7 @@ What this feature does:
 * You can only undo commands executed in the current session. That is, if you close the app and re-run it, you will lose command execution history and hence the ability to do `undo` on those commands from previous sessions.
 
 Additional notes:
-* Extraneous parameters are ignored (for example, `undo now` or `undo 3` is treated as `undo`). See: [Extraneous parameters](#features-1)
+* Extraneous parameters are ignored (for example, `undo now` or `undo 3` is treated as `undo`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
 * `undo` is intended as a quality of life feature primarily to save time that would be spent reversing a few of the most recent changes if users change their mind. Given this, and that most users are likely to only undo a few recent actions, limiting undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour arising from a large number of reversals. 
 
 Examples:
@@ -613,14 +619,18 @@ If your changes to the data file make its format invalid, HRmanager will discard
 Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
+
 --------------------------------------------------------------------------------------------------------------------
+
+## Appendix
 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data from your previous HRmanager home folder.
 
---------------------------------------------------------------------------------------------------------------------
+<br>
+
 
 ## Known issues
 
@@ -628,15 +638,17 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 3. Non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`)
 
---------------------------------------------------------------------------------------------------------------------
+<br>
 
-## Future implementations - Coming in future versions
+
+## Future implementations
 1. Support for non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) in employee names.
 2. Support for importing and exporting in file formats other than CSV.
 3. Support the management of more employees by increasing the storage limit.
 4. Searchor and Searchand features to allow more powerful searching capabilities.
 
---------------------------------------------------------------------------------------------------------------------
+<br>
+
 
 ## Command summary
 
