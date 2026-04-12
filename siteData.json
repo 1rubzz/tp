@@ -42,6 +42,7 @@
       "headings": {
         "hrmanager-developer-guide": "HRmanager Developer Guide",
         "acknowledgements": "Acknowledgements",
+        "ai-usage": "AI usage",
         "setting-up-getting-started": "Setting up, getting started",
         "design": "Design",
         "architecture": "Architecture",
@@ -75,7 +76,6 @@
         "launch-and-shutdown": "Launch and shutdown",
         "adding-an-employee": "Adding an employee",
         "deleting-an-employee": "Deleting an employee",
-        "tagging-an-employee": "Tagging an employee",
         "searching-for-employees": "Searching for employees",
         "editing-an-employee": "Editing an employee",
         "importing-employee-list": "Importing employee list",
