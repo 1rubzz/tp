@@ -19,6 +19,7 @@ end box
 
 box Model #LightPink
     participant "Model" as Model
+    participant "ReadOnlyAddressBook" as ReadOnlyAddressBook
     participant "ObservableList" as ObservableList
 end box
 
@@ -56,11 +57,17 @@ activate StatsPanel
 StatsPanel -> StatsService : getCurrentStatistics()
 activate StatsService
 
-StatsService -> Model : getFilteredPersonList()
+StatsService -> Model : getAddressBook()
 activate Model
 
-Model --> StatsService : ObservableList<Person>
+Model --> StatsService : ReadOnlyAddressBook
 deactivate Model
+
+StatsService -> ReadOnlyAddressBook : getPersonList()
+activate ReadOnlyAddressBook
+
+ReadOnlyAddressBook --> StatsService : ObservableList<Person>
+deactivate ReadOnlyAddressBook
 
 StatsService -> Statistics : new Statistics(personList)
 activate Statistics

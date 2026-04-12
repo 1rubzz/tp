@@ -65,7 +65,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`. (Note: The delete command also supports multiple indexes, e.g., `delete 1 3 5`, which follows the same interaction pattern.)
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -305,9 +305,13 @@ This means a command such as `search ali hr` returns employees whose fields cont
 
 ### Statistics Panel
 
+
 The statistics panel provides real-time workforce metrics displayed permanently on the right side of the application. This feature follows the **Separation of Concerns (SoC)** principle by separating data calculation from UI display.
 
+**Note:** The statistics panel supports three modes: TAG, DEPARTMENT, and ROLE. The displayed labels and statistics update according to the selected mode. All statistics are always computed from the full employee list (not the filtered list), regardless of any active search or filter.
+
 #### Design Overview
+
 
 The statistics feature consists of three main components:
 
@@ -316,6 +320,8 @@ The statistics feature consists of three main components:
 3. **`StatsPanel`** (UI layer): A JavaFX component that displays statistics and listens for changes to the employee list to auto-refresh.
 
 <puml src="diagrams/StatsPanelClassDiagram.puml" width="500" />
+
+The class diagram above uses generic field and method names (e.g., `uniqueValueCount`, `mostCommonValue`, etc.) to reflect that the statistics panel is not limited to tags, but also supports department and role statistics. The `StatsPanel` class updates its UI fields and labels based on the current mode (TAG, DEPARTMENT, or ROLE).
 
 #### Implementation Details
 
@@ -332,9 +338,16 @@ The statistics feature consists of three main components:
 
 **StatsPanel Class:**
 - Extends `UiPart<Region>` with FXML layout
-- Listens to `logic.getFilteredPersonList()` for changes
+- Listens to `logic.getAddressBook().getPersonList()` for changes (the full, unfiltered list)
 - Updates UI labels when the employee list changes
 - Only handles UI updates - no calculation logic
+- Supports three dashboard modes: TAG, DEPARTMENT, and ROLE. The displayed statistics and labels update according to the selected mode.
+
+<box type="info" seamless>
+
+**Note:** The statistics panel is intentionally designed to reflect statistics for all employees in the HRmanager, regardless of any active search filters or on-screen filtering. This matches the User Guide and actual implementation. The panel's fields and methods are generic to support all three modes.
+
+</box>
 
 #### Sequence Diagram
 
@@ -393,46 +406,47 @@ The sequence diagram below shows how the statistics panel updates when an employ
 
 ### Product scope
 
-**Target user profile**: Human Resource Manager
+**Target user profile**:
 
-* has a need to manage a significant number of employee and applicant records
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
+* Human Resource Manager at a small company (up to 200 employees)
+* needs to store and manage employee contact details and basic HR information (not intended for large enterprises or complex HR processes)
+* prefers desktop apps over web/mobile alternatives
 * is reasonably comfortable using CLI apps
+* does not require complex HR features (e.g., payroll, leave management)
+* can type fast
 
 **Value proposition**:
-- manage employee records faster than a typical mouse/GUI driven app
-- provides fast access to employee details, with sorting options for further clarity
-- view job applicants details at a glance and decide whether to proceed with interviews and hiring
+HRmanager enables small organizations to efficiently manage and quickly access employee contact details, roles, departments, and tags through a fast, keyboard-driven interface—providing lightweight, statistics-driven HR management for up to 200 employees, without the complexity of enterprise HR systems.
+
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                            | I want to …​                            | So that I can…​                                             |
-|---------|------------------------------------|----------------------------------------|------------------------------------------------------------|
-| `* * *` | new user                           | have a guided tutorial                 | understand the layout and get started quickly              |
-| `* * *` | user                               | add an employee                        | keep track of new employees                                |
-| `* * *` | user                               | delete an employee                     | clear up data when it is no longer needed                  |
-| `* * *` | user                               | view all employees                     | gain a brief overview of everyone in the company           |
-| `* * *` | user                               | store phone numbers and email addresses| contact employees easily                                   |
-| `* * *` | busy user                          | search for employees by keywords       | quickly find relevant staff members                        |
-| `* * *` | busy user                          | add contacts with only name and phone  | track someone now and update details later                 |
-| `* * `  | organised user                     | modify employee details                | keep info up to date                                       |
-| `* * `  | organised user                     | sort employees by variables            | find the most relevant employees for my needs              |
-| `* * `  | organised user                     | tag employees by department            | categorise them                                            |
-| `* * `  | cautious user                      | get confirmation of my work            | not worry that my changes haven't been saved               |
-| `* * `  | clumsy user                        | undo my last action                    | avoid making mistakes or losing data                       |
-| `* * `  | clueless user                      | see error messages                     | correct my mistakes                                        |
-| `* `    | expert user                        | import employee data                   | manage pre-existing details without hand-typing everything |
-| `* `    | expert user                        | export employee data                   | back up data, support audits and planning                  |
-| `* `    | expert user                        | repeat previous command or similar     | enter commands quickly                                     |
-| `* `    | expert user                        | bulk archive or tag multiple applicants| clean up after a role is filled more efficiently           |
-| `* `    | user responsible for reporting	  | use a centralized dashboard            | maintain visibility over workforce and talent pipeline     |
-| `* `    | safe user                          | access the app via login authentication| ensure employee data is secure                             |
+| Priority | As a …​                         | I want to …​                                                                     | So that I can…​                                            |
+|----------|---------------------------------|----------------------------------------------------------------------------------|------------------------------------------------------------|
+| `* * *`  | new user                        | have an informative beginner friendly user guide                                 | understand the layout and get started quickly              |
+| `* * *`  | user                            | add an employee                                                                  | keep track of new employees                                |
+| `* * *`  | user                            | delete an employee                                                               | clear up data when it is no longer needed                  |
+| `* * *`  | user                            | view all employees                                                               | gain a brief overview of everyone in the company           |
+| `* * *`  | user                            | store phone numbers and email addresses                                          | contact employees easily                                   |
+| `* * *`  | busy user                       | search for employees by keywords                                                 | quickly find relevant staff members                        |
+| `* * *`  | forgetful user                  | get prompted to add all compulsory employee data fields (e.g. Phone, email, ...) | refrain from having incomplete employee data               |
+| `* * `   | organised user                  | modify employee details                                                          | keep information up to date                                |
+| `* * `   | organised user                  | view a statistics panel summarising employee data                                | quickly understand workforce composition and trends        |
+| `* * `   | organised user                  | tag employees by departments and roles                                           | categorise them for easy search                            |
+| `* * `   | cautious user                   | get confirmation of my work                                                      | not worry that my changes haven't been saved               |
+| `* * `   | clumsy user                     | undo my last action                                                              | avoid making mistakes or losing data                       |
+| `* * `   | clumsy user                     | automatically save all data locally after closing the app                        | avoid needing to export the data all the time              |
+| `* * `   | clueless user                   | see error messages                                                               | correct my mistakes                                        |
+| `* * `   | safe user                       | be notified when executing destructive commands like delete                      | prevent accidental deletion and loss of data               |
+| `* `     | lazy user                       | cycle through my previous commands                                               | avoid retyping long commands                               |
+| `* `     | expert user                     | import employee data                                                             | manage pre-existing details without hand-typing everything |
+| `* `     | expert user                     | export employee data                                                             | back up data, support audits and planning                  |
+| `* `     | expert user                     | repeat previous command or similar                                               | enter commands quickly                                     |
+| `* `     | expert user                     | bulk delete employees                                                            | efficiently remove employees that have left the company    |
+| `* `     | user responsible for reporting	 | use a centralized dashboard                                                      | maintain visibility over workforce and talent pipeline     |
 
-*{More to be added}*
 
 ### Use cases
 
@@ -841,7 +855,7 @@ testers are expected to do more *exploratory* testing.
 
    9. Test case: `delete 1 2 3 4 5 6 7 8 9 10`<br>
       Expected: 10 employees deleted. Status message shows "Deleted employee(s): 10 employee(s)".
-   
+
    10. Test case: `delete 1 2 3 4 5 6 7 8 9 10 11`<br>
       Expected: No employee is deleted. Error shown: "Too many indexes specified."
 
@@ -863,7 +877,7 @@ testers are expected to do more *exploratory* testing.
 
    5. Test case: `search KEYWORD` (where original list has 3 entries, KEYWORD returns 1 match) followed by `delete 3`<br>
       Expected: Error message shown for invalid index since the index applies to the filtered list, not full list.
-      
+
 
 ### Searching for employees
 
@@ -949,19 +963,19 @@ testers are expected to do more *exploratory* testing.
 ### Importing employee list
 
 1. Importing employee data
-   
+
    1. Test case: `import C:\Users\username\Downloads\test.csv` (Valid entry, assuming file format and data are valid)
        Expected: Employee list is imported by parsing test.csv in user's Downloads folder, overwriting existing employee data.
 
    2. Test case: `import test.csv` (Valid entry, assuming file format and data are valid)
        Expected: Employee list is imported by parsing test.csv in HRmanager's home folder, overwriting existing employee data.
-   
+
    3. Test case: `import C:\Users\username\invalid\path\nonexistent\test.csv` (Invalid entry)
        Expected: Employee list is not imported. An error message is shown, indicating invalid path.
-   
+
    4. Test case:`import C:\Users\username\Downloads\wrongformat.csv` (Invalid entry, assuming file exists but is in the wrong format, e.g. duplicate persons, missing required headers, invalid data...)
        Expected: Employee list is not imported. An error message is shown, indicating failure in parsing and the exact format error that caused it.
-   
+
    5. Test case: `import C:\Users\username\Downloads\test.txt` (Invalid entry)
       Expected: Employee list is not imported. An error message is shown, indicating invalid file extension.
 
@@ -981,7 +995,7 @@ testers are expected to do more *exploratory* testing.
 
    4. Test case: `export employees.txt` (Invalid path, only csv exports are allowed)
         Expected: No csv file is created. An error message is shown, indicating the required .csv extension.
-   
+
    5. Test case: `export C:\Users\username\nonexisting\invalid\path\employees.csv` (Invalid entry, path is invalid)
         Expected: No csv file is created. An error message is shown, indicating invalid path.
 
