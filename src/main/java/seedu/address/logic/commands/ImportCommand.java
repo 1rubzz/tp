@@ -33,9 +33,9 @@ public class ImportCommand extends Command implements ConfirmableCommand {
         + COMMAND_WORD + " C:\\Users\\user\\Downloads\\employees.csv";
 
     public static final String MESSAGE_SUCCESS = "Imported %d employee(s) from %s";
-    public static final String ACTION_SUMMARY = "Import local list.";
+    public static final String ACTION_SUMMARY = "Import local list from %s.";
     public static final String IMPACT_SUMMARY =
-        "New employee list will be created from local data, overwriting existing import list.";
+        "%d employees will be imported from local data, overwriting all existing employees.";
     public static final String ACTION_DESCRIPTION = "import local list";
 
 
@@ -46,9 +46,9 @@ public class ImportCommand extends Command implements ConfirmableCommand {
     public static final String MESSAGE_INVALID_PATH =
         "The provided file path is invalid: %s";
     public static final String MESSAGE_NOT_CSV =
-        "Only csv files are supported";
+        "Only csv files are supported. Check that your file path ends in \".csv\".";
     public static final int MAX_KILOBYTES = 100;
-    public static final int MAX_BYTES = 100000; //100kb
+    public static final int MAX_BYTES = 102400; //100kb
     public static final String MESSAGE_FILE_SIZE_OVER_LIMIT =
         String.format("Target file exceeds the limit of %d kB (%d bytes)", MAX_KILOBYTES, MAX_BYTES);
     public static final String MESSAGE_CSV_PARSE_ERROR =
@@ -79,7 +79,9 @@ public class ImportCommand extends Command implements ConfirmableCommand {
      */
     @Override
     public String getConfirmationPrompt() {
-        return ConfirmationPromptFormatter.format(ACTION_SUMMARY, IMPACT_SUMMARY);
+        String actionSummary = String.format(ACTION_SUMMARY, validatedPath.toAbsolutePath());
+        String impactSummary = String.format(IMPACT_SUMMARY, validatedPersons.size());
+        return ConfirmationPromptFormatter.format(actionSummary, impactSummary);
     }
 
     /**

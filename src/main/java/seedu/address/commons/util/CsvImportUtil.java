@@ -8,7 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -84,7 +86,7 @@ public class CsvImportUtil {
             resolveHeaderIndices(headerLine, lineNumber);
 
             // Parse data rows
-            List<String> names = new ArrayList<>();
+            Map<String, Integer> nameToLineMap = new HashMap<>();
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
                 if (employeeNumber >= MAX_SIZE) {
@@ -96,14 +98,14 @@ public class CsvImportUtil {
                 }
                 Person person = parseDataRow(line, lineNumber);
                 //check duplicates
-                if (names.contains(person.getName().toString())) {
+                if (nameToLineMap.containsKey(person.getName().toString())) {
                     throw new CsvParseException(String.format(
                         "Employees with duplicate names on line %d and %d: %s",
-                        names.indexOf(person.getName().toString()), lineNumber, person.getName()));
+                        nameToLineMap.get(person.getName().toString()), lineNumber, person.getName()));
                 }
                 persons.add(person);
                 employeeNumber++;
-                names.add(person.getName().toString());
+                nameToLineMap.put(person.getName().toString(), lineNumber);
             }
         }
 
@@ -113,7 +115,7 @@ public class CsvImportUtil {
     private void resolveHeaderIndices(String headerLine, int lineNumber) throws CsvParseException {
         List<String> headers = splitCsvLine(headerLine);
 
-        for (int i = 0; i < headers.size(); i++) {
+        for (int i = headers.size() - 1; i >= 0; i--) {
 
             String header = headers.get(i).toLowerCase().trim();
             //didn't put a switch here, not sure what to do for the default case

@@ -79,17 +79,9 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_noFieldSpecifiedUnfilteredList_success() {
+    public void execute_noFieldSpecifiedUnfilteredList_failure() {
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
-        Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(editedPerson, editedPerson); // No change
-        expectedModel.commitAddressBook();
-
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
     }
 
     @Test
@@ -320,10 +312,10 @@ public class EditCommandTest {
     }
 
     @Test
-    public void validateBeforeConfirm_noFieldEdited_success() {
+    public void validateBeforeConfirm_noFieldEdited_failure() {
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
 
-        assertDoesNotThrow(() -> editCommand.validateBeforeConfirm(model));
+        assertThrows(CommandException.class, () -> editCommand.validateBeforeConfirm(model));
     }
 
     @Test
@@ -346,6 +338,32 @@ public class EditCommandTest {
         Executable validateAction = () -> editCommand.validateBeforeConfirm(model);
         CommandException exception = assertThrows(CommandException.class, validateAction);
         assertEquals(EditCommand.MESSAGE_DUPLICATE_PERSON, exception.getMessage());
+    }
+
+    @Test
+    public void getConfirmationPrompt_withModelValidIndex_returnsExpectedPromptWithNames() {
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
+        Person targetPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String actionSummary = String.format(EditCommand.ACTION_SUMMARY_FORMAT, INDEX_FIRST_PERSON.getOneBased());
+        String impactSummary = String.format(EditCommand.IMPACT_SUMMARY_WITH_NAMES_FORMAT,
+                targetPerson.getName().getFullName());
+        String expectedPrompt = ConfirmationPromptFormatter.format(actionSummary, impactSummary);
+        assertEquals(expectedPrompt, editCommand.getConfirmationPrompt(model));
+    }
+
+    @Test
+    public void getConfirmationPrompt_withModelInvalidIndex_returnsDefaultPrompt() {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        EditCommand editCommand = new EditCommand(outOfBoundIndex, new EditPersonDescriptor());
+        String actionSummary = String.format(EditCommand.ACTION_SUMMARY_FORMAT, outOfBoundIndex.getOneBased());
+        String expectedPrompt = ConfirmationPromptFormatter.format(actionSummary, EditCommand.IMPACT_SUMMARY);
+        assertEquals(expectedPrompt, editCommand.getConfirmationPrompt(model));
+    }
+
+    @Test
+    public void getConfirmationPrompt_nullModel_throwsNullPointerException() {
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
+        assertThrows(NullPointerException.class, () -> editCommand.getConfirmationPrompt(null));
     }
 
 }

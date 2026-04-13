@@ -17,7 +17,7 @@ import seedu.address.model.person.Person;
 /**
  * Exports current employee list into a csv file in the target destination.
  */
-public class ExportCommand extends Command implements ConfirmableCommand {
+public class ExportCommand extends Command {
 
     public static final String COMMAND_WORD = "export";
 
@@ -27,9 +27,6 @@ public class ExportCommand extends Command implements ConfirmableCommand {
         + "Example: " + COMMAND_WORD + " C:\\Users\\user\\Downloads\\employees.csv";
 
     public static final String MESSAGE_SUCCESS = "Exported app data to file: %s";
-    public static final String ACTION_SUMMARY = "Export full local list.";
-    public static final String IMPACT_SUMMARY =
-        "A csv file containing all current in-app employee data will be created at the target destination.";
     public static final String ACTION_DESCRIPTION = "export full local list";
 
     public static final String MESSAGE_EMPTY_EXPORT =
@@ -43,7 +40,6 @@ public class ExportCommand extends Command implements ConfirmableCommand {
     private static final String MESSAGE_IO_ERROR = "Could not write to file: %s\nCause: %s";
 
     private final String filePath;
-    private Path validatedPath;
 
     /**
      * Creates an ExportCommand
@@ -54,30 +50,12 @@ public class ExportCommand extends Command implements ConfirmableCommand {
     }
 
     @Override
-    public String getConfirmationPrompt() {
-        return ConfirmationPromptFormatter.format(ACTION_SUMMARY, IMPACT_SUMMARY);
-    }
-
-    @Override
-    public String getActionDescription() {
-        return ACTION_DESCRIPTION;
-    }
-
-    @Override
-    public void validateBeforeConfirm(Model model) throws CommandException {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
         Path path = resolvePath();
         checkExistingFile(path);
 
-        validatedPath = path;
-    }
-
-    @Override
-    public CommandResult execute(Model model) throws CommandException {
-        requireNonNull(model);
-
-        Path path = validatedPath;
         List<Person> persons = model.getAddressBook().getPersonList();
 
         writeCsv(persons, path);
