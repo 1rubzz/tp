@@ -9,7 +9,7 @@
 [![CI Status](https://github.com/AY2526S2-CS2103T-T13-1/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103T-T13-1/tp/actions)
 [![codecov](https://codecov.io/gh/AY2526S2-CS2103T-T13-1/tp/branch/master/graph/badge.svg)](https://codecov.io/gh/AY2526S2-CS2103T-T13-1/tp)
 
-![Ui](images/Ui.png)
+![Ui](images/readme.png)
 
 **HRmanager is a desktop application for managing employee records.** While it has a GUI, most interactions are optimized for a CLI (Command Line Interface) workflow.
 
