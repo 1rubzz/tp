@@ -138,7 +138,7 @@
         "other-features-2": "Other features",
         "confirmation-prompts": "Confirmation Prompts",
         "undo-an-executed-command-undo": "Undo an executed command: undo",
-        "cycle-through-previous-executed-commands": "Cycle through previous executed commands",
+        "cycle-through-command-history-previous-executed-commands": "Cycle through command history (previous executed commands)",
         "saving-the-data": "Saving the data",
         "editing-the-data-file": "Editing the data file",
         "appendix-2": "Appendix",

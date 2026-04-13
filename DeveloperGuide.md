@@ -177,7 +177,9 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Undo feature
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+#### Implementation
+
+The undo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
 * `VersionedAddressBook#commit()` — Saves the current HRmanager state in its history.
 * `VersionedAddressBook#undo()` — Restores the previous HRmanager state from its history.
@@ -481,9 +483,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. System detects an error (e.g. format/syntax error) in the entered data.
     * 1a1. System displays an error message with the correct format.
-    * 1a2. User enters new data in the correct format.
-    <br> *Steps 1a1-1a2 are repeated until the data entered are correct.*
-    <br> *Use case resumes from step 2.*<br><br>
+    * 1a2. User enters new data until it is in the correct format.
+
+    Use case resumes from step 2.
 
 * 2a. One or more indexes are invalid (e.g. index exceeds list size).
     * 2a1. System displays an error message indicating the invalid index.
@@ -586,8 +588,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  System {edits the employee's phone number in the records}.
 3.  System {displays confirmation message}. (If the command is confirmable)
 4.  User suddenly recalls that they have forgotten to also edit the employee's email address.
-5.  User presses the up arrow (PgUp) key in the CLI.
-6.  System prefills the CLI with the command used in step 5.
+5.  User presses the **non-numpad Up arrow key** in the CLI.
+6.  System prefills the CLI with the most recently executed command (from step 1)."
 7.  User deletes the {phone field} and types {the email details}, then enters the command. (The command {"edit"} and the relevant {employee index} is already prepared)
 8.  System {edits the employee's email address in the records}.
     <br> *Use case ends.*
@@ -599,11 +601,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     <br> *Use case ends.*<br><br>
 
 * 5a. There are no previous successfully executed commands.
-    * 5a1. System does not do anything in response to up arrow (PgUp) key.
-    <br> *Use case ends.*<br><br>
+    * 5a1. System does not do anything in response to the up arrow key.
 
-* 6a. There are up to 10 previous successfully executed commands. User presses up arrow (PgUp) again.
-    * 6a1. User presses up arrow (PgUp) key until their desired previous executed command appears. If there is already an input in the CLI, it is saved. User can also press down arrow (PgDn) key to get back to the more recent/original command.
+    Use case ends.
+
+* 6a. There are up to 10 previous successfully executed commands. User presses up arrow key again.
+    * 6a1. User presses up arrow key until their desired previous executed command appears. If there is already an input in the CLI, it is saved. User can also press down arrow key to get back to the more recent/original command.
     * 6a2. User stops cycling at their desired past/current command.
     <br> *Use case resumes at step 7.*<br><br>
 
