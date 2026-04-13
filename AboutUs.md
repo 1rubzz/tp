@@ -7,8 +7,6 @@
 
 We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-You can reach us at the email `seer[at]comp.nus.edu.sg`
-
 ## Project team
 
 ### Ruben Teo
@@ -16,7 +14,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/1rubzz.png" width="200px">
 
 [[github](http://github.com/1rubzz)]
-[[portfolio]()]
 
 * Role: Team Lead
 
@@ -25,7 +22,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/petelectron.png" width="200px">
 
 [[github](https://github.com/petelectron)]
-[[portfolio]()]
 
 * Role: Team Member
 
@@ -34,7 +30,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/emperorgaodi.png" width="200px">
 
 [[github](http://github.com/emperorgaodi)]
-[[portfolio]()]
 
 * Role: Team Member
 
@@ -43,7 +38,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/qyscode.png" width="200px">
 
 [[github](https://github.com/qyscode)]
-[[portfolio]()]
 
 * Role: Team Member
 
@@ -52,6 +46,5 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/moonmertens.png" width="200px">
 
 [[github](https://github.com/moonmertens)]
-[[portfolio]()]
 
 * Role: Team Member

@@ -75,7 +75,7 @@
         "importing-employee-list": "Importing employee list",
         "exporting-employee-list": "Exporting employee list",
         "saving-and-loading-data": "Saving and loading data",
-        "future-enhancements": "Future Enhancements",
+        "planned-enhancements": "Planned Enhancements",
         "appendix-effort": "Appendix: Effort",
         "1-stats-panel-integration": "1. Stats Panel Integration",
         "2-quality-of-life-qol-features": "2. Quality of Life (QoL) Features",
@@ -152,7 +152,6 @@
         "editing-the-data-file": "Editing the data file",
         "appendix-2": "Appendix",
         "faq": "FAQ",
-        "known-issues": "Known issues",
         "command-summary": "Command summary"
       },
       "headingKeywords": {}

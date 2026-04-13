@@ -40,7 +40,7 @@ Here is a quick guide to jump straight to the section you need:
 
 * [Confirmation Prompts](#confirmation-prompts)
 * [Undo an executed command: `undo`](#undo-an-executed-command-undo)
-* [Cycle through previous executed commands](#cycle-through-previous-executed-commands)
+* [Cycle through command history](#cycle-through-command-history-previous-executed-commands)
 * [Saving the data](#saving-the-data)
 * [Editing the data file](#editing-the-data-file)
 
@@ -48,7 +48,6 @@ Here is a quick guide to jump straight to the section you need:
 
 * [FAQ](#faq)
 * [Known issues](#known-issues)
-* [Future implementations](#future-implementations)
 * [Command summary](#command-summary)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -106,7 +105,7 @@ This yellow box with a redo icon indicates that action can be undone. Use `undo`
 
 <br>
 
-![Ui](images/Ui.png)
+![Ui](images/Ui_annotated.png)
 
 <br>
 
@@ -191,7 +190,7 @@ Examples:
 
 <box theme="success" icon=":fa-solid-lightbulb:">
 
-Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for each field for details on acceptable values for each parameter.
+Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for acceptable values of each field.
 </box>
 
 <box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
@@ -337,7 +336,7 @@ Examples:
 
 <box theme="success" icon=":fa-solid-lightbulb:">
 
-Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for each field for details on acceptable values for each parameter.
+Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for acceptable values of each field.
 </box>
 
 <box type="important" icon=":fa-solid-exclamation-triangle:">
@@ -442,7 +441,7 @@ Alternative ways to import:
 
 <box theme="success" icon=":fa-solid-lightbulb:">
 
-Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for each field for details on acceptable values for each parameter.
+Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for acceptable values of each field.
 </box>
 
 <box theme="success" icon=":fa-solid-lightbulb:">
@@ -545,7 +544,10 @@ Since HRmanager stores **sensitive employee data** (personal information, contac
 
 <box type="info" icon=":fa-solid-code:">
 
-Command execution sequence example:
+The text starting with `>` shows the command you type into HRmanager. Do not type the `>` symbol itself.
+<br>The text after the `//` is a comment or explanation, not part of the actual command.<br>
+
+<br>Command execution sequence example:
 ```
 > delete 1
 ⚠ Warning! ⚠ Please confirm this action. Enter 'y' to proceed or 'n' to cancel.
@@ -581,7 +583,10 @@ Format: `undo`
 
 <box type="info" icon=":fa-solid-code:">
 
-Command execution sequence example:
+The text starting with `>` shows the command you type into HRmanager. Do not type the `>` symbol itself.
+<br>The text after the `//` is a comment or explanation, not part of the actual command.<br>
+
+<br>Command execution sequence example:
 * `undo` can be used repeatedly: the execution sequence
 ```
 > add (parameters...) // execute add
@@ -628,6 +633,30 @@ Each previous successful eligible command is saved (up to 10 of the latest ones)
 You can pre-fill the command box with your last successful commands using the **Up arrow key**. Use Up/Down arrows to browse through your last 10 successful distinct commands only (excluding y/n).
 * You can only cycle through commands executed in the current session. The command history resets when you restart the app.
 
+<box type="info" icon=":fa-solid-code:">
+
+The text starting with `>` shows the command you type into HRmanager. Do not type the `>` symbol itself.
+<br>The text after the `//` is a comment or explanation, not part of the actual command.<br>
+
+<br>Command execution sequence example:
+* After adding several employees and performing a search, you want to add another employee similar to a previous one:
+```
+> add n/John p/98765432 e/john@example.com r/Engineer d/Engineering // Executed add command to add John Doe
+> search Engineer
+> add n/Jane // Incomplete command (has not been executed yet)
+
+> (Press Up arrow once)  // Command box shows: search Engineer
+> (Press Up arrow again) // Command box shows: add n/John p/98765432 e/john@example.com r/Engineer d/Engineering
+> (Press Down arrow once)  // Command box shows: search Engineer
+> (Press Down arrow again) // Command box shows: add n/Jane Smith (incomplete command, not lost)
+```
+
+* You can then modify the retrieved command (e.g., change the name from John Doe to John Tan) and press Enter to execute the new command.
+* The current pending command is saved when you browse history, so typing add n/ then pressing Up arrow won't lose your partial input.
+
+</box>
+
+
 <box theme="success" icon=":fa-solid-lightbulb:">
 
 Use this to refer to an earlier command, or to repeat a similar command with slight modifications
@@ -668,11 +697,6 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 
 **Q**: How do I import multiple tags for a single employee in CSV?<br>
 **A**: In the CSV file, ensure that all tags for an employee are included in a single field (e.g., `tags`) and separated by commas. For example, if an employee has the tags "friend", "colleague", and "certified", the `tags` field for that employee should be formatted as `friend, colleague, certified`. When you import this CSV file into HRmanager, it will correctly parse the tags and assign them to the employee.
-
-<br>
-
-### Known issues
-1. This command history cycling and `undo` feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands/reversing a few of the most recent changes. Given this, and that most users are likely to only use/undo a few of the most recent commands, limiting cycling/undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour.
 
 <br>
 
