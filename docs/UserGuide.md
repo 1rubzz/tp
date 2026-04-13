@@ -650,11 +650,7 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 
 
 ## Known issues
-
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. Non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`)
-4. This command history cycling and `undo` feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands/reversing a few of the most recent changes. Given this, and that most users are likely to only use/undo a few of the most recent commands, limiting cycling/undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour.
+1. This command history cycling and `undo` feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands/reversing a few of the most recent changes. Given this, and that most users are likely to only use/undo a few of the most recent commands, limiting cycling/undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour.
 
 <br>
 
