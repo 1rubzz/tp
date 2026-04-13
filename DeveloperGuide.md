@@ -457,7 +457,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. System detects an error (e.g. format/syntax/duplicates error) in the entered data.
+* 1a. System detects an error (e.g. format/syntax/duplicate error) in the entered data.
     <br></p>
     * 1a1. System displays an error message with the correct format.
     * 1a2. User enters new data.
@@ -472,7 +472,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to remove one or more employees by specifying their index numbers in the displayed list.
 2. System validates the provided index numbers.
 3. System prompts the user for confirmation that they want to execute a deletion.
-4. User confirms their intent to proceed with the deletion.
+4. User confirms intent to proceed with the deletion.
 5. System removes the corresponding employee records from the system.
 6. System displays a success message indicating the number of employees deleted and their names.
     <br> *Use case ends.*
@@ -485,9 +485,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     <br> *Steps 1a1-1a2 are repeated until the data entered are correct.*
     <br> *Use case resumes from step 2.*<br><br>
 
-* 2a. One or more indexes are invalid (e.g., index exceeds list size).
+* 2a. One or more indexes are invalid (e.g. index exceeds list size).
     * 2a1. System displays an error message indicating the invalid index.
-    * 2a2. User modifies the command until the index is valid.
+    * 2a2. User modifies the command.
+    <br> *Steps 2a1-2a2 are repeated until the index is valid.*
     <br> *Use case resumes from step 2.*<br><br>
 
 * 4a. User decides not to proceed with the deletion.
@@ -526,70 +527,28 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1a1. System displays an invalid command format message together with the proper `search` usage.
     <br> *Use case resumes from step 1.*<br><br>
 
-* 1b. The user provides more than 5 keywords, or at least one keyword longer than 50 characters.
+* 1b. The user provides invalid input keywords.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
     <br> *Use case resumes from step 1.*<br><br>
 
 * 3a. No employees match the provided search query.
-    * 3a1. System displays an empty list and `0 employees listed!`.
+    * 3a1. System displays an empty list and a success message.
     <br> *Use case ends.*<br><br>
 
 * 4a. The user than wants to return to the full non-filtered list of employees.
-    * 4a1. User executes `list` to [view employees](#use-case-3-uc3-view-employees) (UC3).
+    * 4a1. User executes `list` to view employees (UC3).
     * 4a2. The system shows the full non-filtered list of employees.
     <br> *Use case ends.*
 
-
-**Use case 5 (UC5): Tag an employee**<br>
-
-**MSS**
-
-1. User [searches](use-case-4-uc4-search-for-an-employee) for employee. (UC4)
-2. System shows list of employees. (Steps 1 and 2 are necessary to see the changes)
-3. User requests to edit a specific employee in the list, modifying the person's tag(s).
-4. System prompts the user for confirmation that they want to execute a 'edit'.
-5. User confirms their intent to execute a 'edit' command, entering 'y'.
-6. System edits that employee, deleting all previous tags, and adding the given tags.
-7. System displays a confirmation message showing that the employee has been edited, and their new details. 
-   <br> *Use case ends.*
-
-**Extensions**
-
-* 2a. The list is empty.
-    <br> *Use case ends. (The person to tag does not exist)*
-
-* 3a. The given index is invalid.
-    * 3a1. System shows an error message.
-    * 3a2. The user modifies their command until the index is valid.
-    <br> *Use case resumes from step 4.*<br><br>
-
-* 3b. The tag name provided is already associated with this employee.
-    * 3b1. There is no problem. The action proceeds anyway, though there is essentially no change at step 6.
-    <br> *Use case resumes from step 4.*<br><br>
-
-* 3c. The tag provided is invalid (e.g., exceeds 30 characters, or contains non-alphanumeric characters).
-    * 3c1. System shows an error message: "Tags should only consist of alphanumeric characters, hyphens and spaces, and be between 1 and 30 characters long. The tag should not start or end with a space or hyphen, and it should not contain consecutive spaces or hyphens."
-    * 3c2. The user modifies their command until the tag(s) is/are valid.
-    <br> *Use case resumes from step 4.*<br><br>
-
-* 3d. The tag provided is blank, e.g., "edit 4 t/" (This is the way to delete tags)
-    * 3d1. The execution proceeds. The result is that at step 6, the employee at the given index has all their tags deleted.
-    <br> *Use case resumes from step 4.*<br><br>
-
-* 5a. User enter 'n' instead.
-    * 5a1. System displays a response indicating that the command was aborted.
-    <br> *Use case ends.*<br><br>
-
-
-**Use case 6 (UC6): Edit an employee's details**<br>
+**Use case 5 (UC5): Edit an employee's details**<br>
 
 **MSS**
 
 1. User requests to edit employee details, with the employee's index in the list, and enters the details to be updated (any combination of `name`, `phone`, `email`, `role`, `department`, tags).
 2. System prompts the user for confirmation that they want to execute a 'edit'.
-3. User confirms their intent to execute a 'edit' command, entering 'y'.
-4. System edits that employee, deleting all previous tags, and adding the given tags.
-5. System displays a confirmation message showing that the employee has been edited, and their new details.
+3. User confirms intent to proceed with the edit.
+4. System edits that employee, replacing the relevant fields with new ones.
+5. System displays a success message showing that the employee has been edited, and their new details.
    <br> *Use case ends.*
 
 **Extensions**
@@ -600,24 +559,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1b. The given index is invalid.
     * 1b1. System shows an error message.
-    * 1b2. The user modifies their command until the index is valid.
+    * 1b2. The user modifies the command.
+    <br> *Steps 1b1-1b2 are repeated until the index is valid.*
     <br> *Use case resumes from step 2.*<br><br>
 
 * 1c. The user's proposed details are invalid.
     * 1c1. The system shows an error message for the relevant field for which the input restrictions are not adhered to.
-    * 1c2. The user modifies their inputs until all of the proposed parameters are accepted.
+    * 1c2. The user modifies the inputs.
+    <br> *Steps 1c1-1c2 are repeated until the all the proposed parameters are accepted.*
     <br> *Use case resumes from step 2.*<br><br>
 
 * 1d. User enters empty details.
-    * 1d1. System shows an error message: "At least one field to edit must be provided."
+    * 1d1. System shows an error message.
     <br> *Use case resumes from step 1.*<br><br>
 
-* 3a. User enter 'n' instead.
+* 3a. User decides not to proceed with the edit.
     * 3a1. System displays a response indicating that the command was aborted.
     <br> *Use case ends.*<br><br>
 
 
-**Use case 7 (UC7): Cycle through previous executed commands**<br>
+**Use case 6 (UC6): Cycle through previous executed commands**<br>
 
 **MSS**
 
@@ -646,7 +607,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 6a2. User stops cycling at their desired past/current command.
     <br> *Use case resumes at step 7.*<br><br>
 
-**Use case 8 (UC8): Importing employee data**<br>
+**Use case 7 (UC7): Importing employee data**<br>
 
 **MSS**
 
@@ -654,7 +615,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. System resolves path and checks validity.
 3. System converts csv data into list of employees.
 4. System saves list of employees, overwriting any pre-existing employee data.
-5. System displays a confirmation message indicating the number of employees imported and the file used.
+5. System displays a success message indicating the number of employees imported and the file used.
    <br> *Use case ends.*
 
 **Extensions**
@@ -667,7 +628,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * 3a1. System displays an error message.
   <br> *Use case resumes at step 1.*
 
-**Use case 9 (UC9): Exporting current employee data**<br>
+**Use case 8 (UC8): Exporting current employee data**<br>
 
 **MSS**
 
@@ -675,7 +636,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. System resolves path and checks validity.
 3. System converts app data into csv format.
 4. System saves csv file into target destination.
-5. System displays a confirmation message indicating the file destination.
+5. System displays a success message indicating the file destination.
    <br> *Use case ends.*
 
 **Extensions**
