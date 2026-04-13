@@ -6,7 +6,9 @@
 
 # HRmanager User Guide
 
-HRmanager is a **desktop app for managing employee records, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). That is, based on typing commands instead of clicking buttons. If you can type fast, HRmanager can help you manage HR records faster than traditional GUI apps.
+HRmanager is a **desktop app designed for HR managers to manage employee records, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). That is, based on typing commands instead of clicking buttons. If you can type fast, HRmanager can help you manage HR records faster than traditional GUI apps.
+
+Managing employee records means storing and updating essential HR data: full name, phone number, email, job role, department, and custom tags (e.g., “certified”, “remote”). You can add, edit, delete, search, import/export, and view statistics – all from a single command‑driven interface.
 
 <!-- * Table of Contents -->
 
@@ -49,17 +51,47 @@ Here is a quick guide to jump straight to the section you need:
 * [Future implementations](#future-implementations)
 * [Command summary](#command-summary)
 
+--------------------------------------------------------------------------------------------------------------------
+
+### Conventions used
+This guide uses callout boxes to help you quickly identify different types of information:
+
+<box type="info" icon=":fa-solid-code:">
+
+This blue box with the code mark icon provides you with example commands that demonstrate how a feature works.
+</box>
+
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+This green box with a lightbulb icon highlights helpful tips for using HRmanager more effectively.
+</box>
+
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
+
+This yellow box with a redo icon indicates that action can be undone. Use `undo` to revert the last command that changed data.
+</box>
+
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+This red box with the checkmark icon asks you to confirm important actions before HRmanager executes them.
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
-   For Windows Users:
+
+    **For Windows Users:**
     * Open a command terminal (press Windows Key, enter "terminal", and open the terminal app)
     * Type `java -version` and press enter.
     * Check that `java version <version number>` is Java `17` or above.<br>
-    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+    * If you do not have Java installed or if your version is below `17`, please install the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html).
+    
+    **For Mac Users:** 
+    * Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+
+    <br>
 
 2. Download the latest `.jar` file from [the HRmanager releases page](https://github.com/AY2526S2-CS2103T-T13-1/tp/releases).
 
@@ -86,9 +118,6 @@ Here is a quick guide to jump straight to the section you need:
   * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) table above to jump each command implementation section quickly or continue scrolling for the for details of each command.
-
-<br>
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -117,12 +146,6 @@ Shows a dialog box with a link to the User Guide explaining how to use the app.
 
 Format: `help`
 
-Examples:
-* `help`
-
-Additional notes:
-* Extraneous parameters are ignored (for example, `help 123` is treated as `help`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
-
 Successful command output:
 
 ![help command](images/helpCommand.png)
@@ -136,12 +159,10 @@ Shows a list of all employees in HRmanager, sorted by the order they were added 
 
 Format: `list`
 
-Examples:
-* `list`
+<box theme="success" icon=":fa-solid-lightbulb:">
 
-Additional notes:
-* Extraneous parameters are ignored (for example, `list abc` is treated as `list`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
-* Running `list` returns the display to the full global employee list after any narrowed search results view.
+Running `list` returns the display to the full global employee list after any narrowed search results view.
+</box>
 
 Successful command output:
 
@@ -152,31 +173,30 @@ Successful command output:
 
 ### Adding an employee: `add`
 
-Adds a new employee to HRmanager and stores their employee details persistently.
+Adds a new employee to HRmanager and stores their employee details persistently. Names are stored in lowercase. All compulsory fields (`n/`, `p/`, `e/`, `r/`, `d/`) must be provided exactly once. `t/TAG` is optional (0 or more).
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE d/DEPARTMENT [t/TAG]…​`
+
+<box type="info" icon=":fa-solid-code:">
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com r/Receptionist d/Operations` adds an employee named John Doe with the specified details.
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com r/Associate Director d/Finance p/1234567` adds an employee named Betsy Crowe with a tag, `friend`.
+</box>
 
-Additional notes:
-* All compulsory fields (`n/`, `p/`, `e/`, `r/`, `d/`) must be provided exactly once. `t/TAG` is optional (0 or more).
-* Employee names must be unique (case-insensitive). For duplicate real-world names, add a suffix like `John Doe - Johnny`.
-* Names are stored in lowercase and only accept alphanumeric characters, hyphens, and spaces.
-    - **Unsupported:** Diacritics (Müller), non-Latin scripts (王小明), special punctuation (O'Connor, s/o)
-    - **Workaround:** Use ASCII equivalents (`Muller`, `Wang Xiaoming`, `OConnor`, `son of`)
-* Phone numbers accept only digits (3-16). Use tags for extensions or country codes (e.g., `t/ext 1234`, `t/sg`).
-* HRmanager has maximum capacity of 200 employees. To add new employees at full capacity, remove existing ones first.
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for each field for details on acceptable values for each parameter.
+</box>
+
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
+
+Undo Possible: This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
+</box>
 
 Successful command output:
 
 ![add command](images/addCommand.png)
-
-<box type="info" seamless>
-
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
-</box>
 
 <br>
 
@@ -217,27 +237,37 @@ Successful command output:
 * __Characters:__ The tag should consist of only alphanumeric characters and/or hyphens (`-`) and/or spaces (` `) and cannot be blank. The tag should not contain consecutive hyphens and/or spaces. The tag should not start or end with a hyphen. Leading and trailing spaces will be ignored. No other characters are allowed.
 * __Case sensitivity:__ The tag entered is case-insensitive eg. inputting `friend` will be the same as `Friend` and `FRIEND`. The tag will be stored in HRmanager in lower casing.
 * __Input length:__ The tag must be between 1 and 30 characters long (inclusive).
+* __Maximum count:__ Each employee can have at most 20 tags.
+
+#### Index (for `edit` and `delete` commands)
+
+* __Characters:__ The index should consist of only numeric digits.
+* __Input restrictions:__ The index must be a positive integer (1, 2, 3, …​) and must be within the range of the currently displayed employee list. For example, if there are currently 5 employees shown in the list, the index must be between 1 and 5 (inclusive).
+* `edit` Command: Exactly one index must be provided. The above character and input restrictions apply.
+* Exception: `delete` Command accepts up to 10 indexes. Duplicate indexes are removed before the command is processed. The above character and input restrictions apply to each index provided. If any index is invalid, the entire command fails (no partial deletion).
 
 <br>
 
 
 ### Searching for employees: `search`
 
-Finds employees whose fields contain at least one of the given keywords (name, phone, email, role, department, tags) with partial match support (e.g., Han matches Hans).
+Searches across all employee fields (name, phone, email, role, department, tags). Enter 1 to 5 keywords (up to 50 characters each) separated by spaces. The search finds anyone matching any keyword (e.g., `John` finds John, Johnson, Johnny). Capitalization doesn't matter, and special characters like `@`,`_`,`-`, and `.` are allowed.
 
 Format: `search KEYWORD [MORE_KEYWORDS]…` (keywords are separated by whitespace)
+
+<box type="info" icon=":fa-solid-code:">
 
 Examples:
 * `search John` returns employees with "John" anywhere in their fields (e.g., `John Doe`).
 * `search @` returns employees with `@` in any searchable field (commonly email).
 * `search alice eng` returns employees that match either "alice" and "eng" (e.g., Alice who is an Engineer).
 * `search zzz` shows `0 employees listed!` if no employee fields match.
+</box>
 
-Additional notes:
-* The search is case-insensitive.
-* at least **1** and at most **5** keywords (max **50** chars each) must be provided, separated by spaces. Special characters are allowed (for example `@`, `_`, `-`, and `.`).  Each keyword must be a **non-whitespace** token.
-* Combines multiple keywords using `OR` semantics.
-* To return to the full employee list after `search`, run `list`.
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+To return to the full employee list after `search`, run `list`.
+</box>
 
 Successful command output:
 
@@ -248,7 +278,7 @@ Successful command output:
 
 ### Switching the statistics dashboard mode: `stat`
 
-Switches the right-side statistics dashboard between tag, department, and role distributions to provide an at-a-glance view of workforce composition using full employee records (unaffected by on-screen filters).
+Switches the statistics dashboard to show tags, departments, or roles distributions to provide an at-a-glance view of workforce composition using full employee records (unaffected by on-screen filters). Exactly **one** mode must be provided. Mode is case-insensitive. By default, the dashboard starts in department mode. Values are sorted by count (highest first), then alphabetically for ties.
 
 Format: `stat MODE`
 
@@ -257,20 +287,18 @@ Supported modes:
 * `d`, `dept`, or `department` - Shows department-focused statistics.
 * `r` or `role` - Shows role-focused statistics.
 
+<box type="info" icon=":fa-solid-code:">
+
 Examples:
 * `stat t` switches the dashboard to tag distribution mode.
 * `stat department` switches the dashboard to department distribution mode.
 * `stat r` switches the dashboard to role distribution mode.
+</box>
 
-Additional notes:
-* By default, the dashboard starts in department mode when you launch the app.
-* Exactly **one** mode must be provided. Mode is case-insensitive (`t`, `tag`, `d`, `dept`, `department`, `r`, `role`).
-* Uses the **full employee dataset** (unaffected by on-screen filters like `search`).
-* **Tag mode:** Unique tags, most common tag, employees with/without tags, tag distribution.
-* **Department mode:** Unique departments, most common department, department distribution.
-* **Role mode:** Unique roles, most common role, role distribution.
-* Distribution values are sorted by count (highest first), then alphabetically for ties.
-* The dashboard updates automatically after `add`, `edit`, `delete`, or `clear`.
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+The dashboard updates automatically after `add`, `edit`, `delete`, or `clear`.
+</box>
 
 Successful command output - Tag mode dashboard:
 
@@ -284,42 +312,36 @@ Successful command output - Role mode dashboard
 
 ![statRole command](images/statRole.png)
 
-<box type="tip" seamless>
-
-**Tip:** The stats panel updates automatically after employee record changes (for example `add`, `edit`, `delete`, `clear`) while staying in the currently selected mode.
-</box>
-
 <br>
 
 
 ### Editing an employee: `edit`
 
-Edits an existing employee's details in HRmanager.
+Edits an existing employee's details in HRmanager. At least one field must be provided. Each field (`n/`, `p/`, `e/`, `r/`, `d/`) accepts at most 1 updated value. When editing tags, existing tags are replaced (not added to). To add a new tag while keeping existing ones, retype all desired tags. Use `t/` alone to clear all tags. Refer to [parameter restrictions](#parameter-restrictions-for-each-field) for each field for details on acceptable values for each parameter.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]…​`
+
+<box type="info" icon=":fa-solid-code:">
 
 Examples:
 * `edit 1 p/91234567 e/johndoe@example.com` edits the phone number and email address of the 1st employee to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower d/Marketing t/` edits the name and department of the 2nd employee to be `Betsy Crower` and `Marketing`, and clears all existing tags.
 * `edit 3 t/friend t/colleague` changes the tags of the 3rd employee to "friend" and "colleague". (If the employee already had "friend", you must retype it to keep it; otherwise, it will be replaced.)
+</box>
 
-Additional notes:
-* Edits the employee at the specified INDEX (must be a positive integer, 1, 2, 3, …​).
-* At least one optional field must be provided. Each field accepts at most 1 updated value. 
-* When editing tags, existing tags are replaced (not added to). To add a new tag while keeping existing ones, retype all desired tags. Use t/ without any tags to clear all tags.
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
+
+Undo Possible: This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
+</box>
+
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+Confirmation Required: This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
 
 Successful command output:
 
 ![edit command](images/editCommand.png)
-
-<box type="info" seamless>
-
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
-</box>
-<box type="info" seamless>
-
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
-</box>
 
 <br>
 
@@ -332,33 +354,34 @@ Format: `delete INDEX [MORE_INDEXES]`
 
 Alias: `del`
 
+<box type="info" icon=":fa-solid-code:">
+
 Examples:
 * `delete 2` deletes the 2nd employee in the currently displayed list.
 * `del 4` deletes the 4th employee using the alias.
 * `list` followed by `delete 1 3 5` deletes the 1st, 3rd, and 5th employees in the full list.
 * `search Betsy` followed by `delete 1` deletes the 1st employee in the filtered search results.
 * `delete 3 1 3` deletes the employees at indexes `3` and `1`; the repeated `3` is ignored.
+</box>
 
-Additional notes:
-* At least one index must be provided, up to a maximum of 10 indexes per command. 
-* Each index must be a positive integer (1, 2, 3, ...) based on the current displayed list. 
-* If any index is out of range, the entire deletion fails (no partial deletion). 
-* Repeated indexes are ignored internally. 
-* After deletion from a filtered list (e.g., after search), the view remains on the filtered list. 
-* You will be prompted to confirm the action before execution. Enter y to proceed or n to cancel.
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+After deletion from a filtered list (i.e. after search), the view remains on the filtered list. 
+</box>
+
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
+
+Undo Possible: This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
+</box>
+
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+Confirmation Required: This command requires confirmation before execution to prevent accidental deletion. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
 
 Successful command output:
 
 ![delete command](images/deleteCommand.png)
-
-<box type="info" seamless>
-
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental deletion. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
-</box>
-<box type="info" seamless>
-
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
-</box>
 
 <br>
 
@@ -369,23 +392,14 @@ Clears all employees from HRmanager.
 
 Format: `clear`
 
-Examples:
-* `clear`
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
 
-Additional notes:
-* Extraneous parameters are ignored (for example, `clear now` is treated as `clear`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
-
-Successful command output:
-
-![clear command](images/clearCommand.png)
-
-<box type="info" seamless>
-
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+Undo Possible: This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
 </box>
-<box type="info" seamless>
 
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+Confirmation Required: This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
 </box>
 
 <br>
@@ -393,9 +407,15 @@ Successful command output:
 
 ### Import employee data: `import`
 
-Imports a new list of employees from a local CSV (comma-separated values) file, overwriting all existing app data.
+Replaces all current data with employees from a CSV (comma-separated values) file. File must end in `.csv` with headers `name`, `phone`, `email`, `role`, `department` (`tags` optional). The file size limit is 100kB, and employee limit is 200. All data validation rules apply (e.g., no duplicate employee names, invalid or missing fields). See [parameter restrictions](#parameter-restrictions-for-each-field) for details on acceptable values for each field.
+* Only one layer of quotes can be parsed.
+* For MacOS/Linux, file paths containing spaces must be quoted.
+* Optionally, one `tags` column is accepted. All tags must be included in one single field, e.g. `tag1, tag2, tag3`.
+* In the case of duplicate headers, the left-most column is taken.
 
 Format: `import [FILE PATH]`
+
+<box type="info" icon=":fa-solid-code:">
 
 Examples:
 * `import employees.csv`
@@ -404,66 +424,63 @@ Examples:
 * `import /home/user/data.csv` (MacOS/Linux)
 * `import "/home/user/My Data.csv"` (MacOs/Linux)
 
-Notes on [FILE PATH] format:
-* Must end in `.csv`. 
-* Only one layer of quotes can be parsed.
-* For MacOS/Linux, file paths containing spaces must be quoted.
+  </box>
 
-Notes on csv file format:
-* Must contain a valid header row containing all of `name, phone, email, role, department` in any order.
-* Optionally, one `tags` column is accepted. All tags must be included in one single field, e.g. `tag1, tag2, tag3`.
-* In the case of duplicate headers, the left-most column is taken.
-* File size limit: 100kB. Employee limit: 200 employees.
-* All data validation rules apply (e.g., no duplicate names, invalid or missing fields). [Parameter restrictions](#parameter-restrictions-for-each-field)
-
-When multiple errors exist, only the first error is reported.
-
-Example of correct csv file format:
-
-![import command](images/importCommandCsv.png)
-
+<box theme="success" icon=":fa-solid-lightbulb:">
 
 Alternative ways to import:
-1) Drag the file into HRmanager's home folder, then run `import filename.csv` 
+1) Drag the file into HRmanager's home folder, then run `import filename.csv`
 2) Right-click the file → "Copy as path" → paste the path (Ctrl+V) when running `import <path/that/was/copied>`
+</box>
+
+<box theme="success" icon=":fa-solid-lightbulb:">
+
+When errors are detected in the CSV file, the first error will be shown.
+</box>
+
+<box type="warning" theme="warning" icon=":fa-solid-undo-alt:">
+
+Undo Possible: This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
+</box>
+
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+Confirmation Required: This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
+
+Correct csv file format:
+
+![import command](images/importCommandCsv.png)
 
 Successful command output:
 
 ![import command](images/importCommand.png)
-
-<box type="info" seamless>
-
-**⚠️ Confirmation Required:** This command requires confirmation before execution to prevent accidental data loss. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
-</box>
-<box type="info" seamless>
-
-**🔁 Undo Possible:** This command can be reversed if executed recently. See [Undo](#undo-an-executed-command-undo) for details.
-</box>
 
 <br>
 
 
 ### Export employee data: `export`
 
-Exports the current list of employees into a CSV (comma-separated values) file, saved into user-specified local destination.
+Exports all employees to a CSV (comma-separated values) file at your specified location. The full list is exported (even if you're viewing filtered results). File path must end in `.csv`. Use just a file name (e.g., `employees.csv`) to save in HRmanager's home folder. Overwriting existing files is **not allowed**.
 
 Format: `export [FILE PATH]`
+
+<box type="info" icon=":fa-solid-code:">
 
 Examples:
 * `export employees.csv`
 * `export C:\Users\username\Desktop\2026_employee_list.csv` (Windows)
 * `export /home/user/data.csv` (MacOS/Linux)
+* </box>
 
-Additional notes:
-* The full employee list is exported, even when the on-screen view is filtered (e.g., after `search`).
-* [FILE PATH] must end in ".csv". Exporting to other file formats is currently not supported.
-* Entering only a file name (e.g. "employees.csv") will export the current list into HRmanager's home folder.
-* Overwriting existing files is __not allowed__.
+<box type="important" icon=":fa-solid-exclamation-triangle:">
+
+Confirmation Required: This command requires confirmation before execution to prevent accidental edits. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+</box>
 
 Successful command output:
 
 ![export command](images/exportCommand.png)
-<box type="info" seamless>
 
 <br>
 
@@ -474,15 +491,14 @@ Closes the HRmanager application.
 
 Format: `exit`
 
-Examples:
-* `exit`
+<box theme="success" icon=":fa-solid-lightbulb:">
 
-Additional notes:
-* Extraneous parameters are ignored (for example, `exit now` is treated as `exit`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
+HRmanager will automatically save all data before exiting, so there is no need to save manually.
+</box>
 
-<box type="info" seamless>
+<box type="important" icon=":fa-solid-exclamation-triangle:">
 
-**⚠️ Confirmation Required:** This command requires confirmation before execution. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
+Confirmation Required: This command requires confirmation before execution. See [Confirmation Prompts](#confirmation-prompts) for details on how to respond.
 </box>
 
 <br>
@@ -513,7 +529,9 @@ Since HRmanager stores **sensitive employee data** (personal information, contac
    - `n` - to cancel and discard the command
 3. If you enter anything other than `y` or `n`, you will be asked to enter a valid response.
 
-**Example:**
+<box type="info" icon=":fa-solid-code:">
+
+Command execution sequence example:
 ```
 > delete 1
 ⚠ Warning! ⚠ Please confirm this action. Enter 'y' to proceed or 'n' to cancel.
@@ -531,10 +549,11 @@ Impact: Provided fields will overwrite existing employee details.
 > n
 Cancelled: edit employee details.
 ```
+</box>
 
-<box type="tip" seamless>
+<box theme="success" icon=":fa-solid-lightbulb:">
 
-**Tip:** This confirmation step is designed to prevent mistakes. If you accidentally type a command, simply enter `n` to cancel it without any changes being made to your employee data.
+This confirmation step is designed to prevent mistakes. If you accidentally type a command, simply enter `n` to cancel it without any changes being made to your employee data.
 </box>
 
 <br>
@@ -542,25 +561,16 @@ Cancelled: edit employee details.
 
 ### Undo an executed command: `undo`
 
-Reverses the effects of a prior `add`, `edit`, `delete`, `clear`, or `import` command (Collectively: "Eligible commands").
+Reverses the effects of a prior `add`, `edit`, `delete`, `clear`, or `import` command (Up to 10 commands) (Collectively: "Eligible commands").
+* Each previous successful eligible command is saved (up to 10 of the latest ones). If there are sufficient such saved commands, you can execute `undo` up to 10 times on the 10 eligible commands in a consecutive sequence.
+* If you close the app and re-run it, you will lose command execution history and hence the ability to do `undo` on those commands from previous sessions.
 
 Format: `undo`
 
-Examples:
-* `undo`
+<box type="info" icon=":fa-solid-code:">
 
-What this feature does:
-* Reverse/undo the effects of a previous successful eligible command.
-* Each previous successful eligible command is saved (up to 10 of the latest ones). Hence, if there are sufficient such saved commands, you can execute `undo` up to 10 times on the 10 eligible commands in a consecutive sequence.
-* You can only undo commands executed in the current session. That is, if you close the app and re-run it, you will lose command execution history and hence the ability to do `undo` on those commands from previous sessions.
-* If in a filtered view, `undo` clears the filter and returns to the main view.
-
-Additional notes:
-* Extraneous parameters are ignored (for example, `undo now` or `undo 3` is treated as `undo`). See: Extraneous parameters under [Notes about the command format](#notes-about-the-command-format)
-* `undo` is intended as a quality of life feature primarily to save time that would be spent reversing a few of the most recent changes if users change their mind. Given this, and that most users are likely to only undo a few recent actions, limiting undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour arising from a large number of reversals. 
-
-Examples:
-* `undo` can be used repeatedly up to 10 times from the latest command: the execution sequence
+Command execution sequence example:
+* `undo` can be used repeatedly: the execution sequence
 ```
 > add (parameters...) // execute add
 > edit (parameters...) // execute edit
@@ -592,27 +602,25 @@ then the execution of `undo` will ignore `help` (which is not eligible for undo)
 Design considerations:
 `undo` clears the filter and returns to the main view. If the filter were silently restored, users might not realize they are still in a filtered view, especially after multiple undo operations. This also maintains a single source of truth by ensuring users always return to a complete, reliable overview after undo, reducing ambiguity.
 
+</box>
+
 <br>
 
 
 ### Cycle through command history (previous executed commands)
 
-You can pre-fill the command box with your last successful commands using the **non-numpad Up arrow key** on your keyboard. This allows you to easily repeat your last commands without re-typing it in its entirety. This is also useful for referring back to the command written, which otherwise disappears after execution.
+You can pre-fill the command box with your last successful commands using the **Up arrow key**. Use Up/Down arrows to browse through your last 10 successful distinct commands only (excluding y/n).
+* You can only cycle through commands executed in the current session. That is, if you close the app and re-run it, you will lose command execution history and hence the ability to toggle/cycle through them.
 
-Format for command history navigation: Use the **non-numpad Up arrow key** key to move towards older commands, **non-numpad Down arrow key** to move towards latest commands.
+<box theme="success" icon=":fa-solid-lightbulb:">
 
-* Cycling is possible for only up to 10 distinct recent commands.
-* You can only cycle through commands executed in the current session: If you close the app and re-run it, you will lose command execution history and hence the ability to toggle/cycle through commands executed before closing the app.
+Use this to refer to an earlier command, or to repeat a similar command with slight modifications
+</box>
 
-Additional notes:
-* Only successful commands are saved.
-* Up to **10** past commands are saved. Thereafter, the oldest command is deleted to accomodate a new one.
-* The current pending command is saved when the command history is explored, so progress on half-written commands is not lost when browsing the command history.
-* The latest command will not be saved if it is exactly the same as the previous consecutively executed one (that is already saved).
-* Confirmatory commands like 'y' and 'n' are trivial and not saved.
+<box theme="success" icon=":fa-solid-lightbulb:">
 
-Design justification:
-* This command history cycling feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands. Given this, and that most users are likely to only use a few of the most recent commands, limiting cycling to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour. 
+The current pending command is saved when the command history is explored, so your progress on current half-written commands is not lost when you browse the command history.
+</box>
 
 <br>
 
@@ -649,19 +657,7 @@ Furthermore, certain edits can cause HRmanager to behave in unexpected ways (e.g
 
 
 ## Known issues
-
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. Non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) are not supported in the current version. The workaround is to use the closest ASCII equivalent or romanized version of the name. (e.g., `Muller`, `Josee`, `Pinata`, `Wang Xiaoming`, `Tian Zhong`, `Kim Cheolsu`, `OConnor`, `DAngelo`)
-
-<br>
-
-
-## Future implementations
-1. Support for non-ASCII characters (e.g., diacritics/accents, non-Latin scripts, and special punctuation) in employee names.
-2. Support for importing and exporting in file formats other than CSV.
-3. Support the management of more employees by increasing the storage limit.
-4. Searchor and Searchand features to allow more powerful and diverse searching capabilities.
+1. This command history cycling and `undo` feature is intended as a quality of life feature primarily to save time that would be spent re-typing similar commands/reversing a few of the most recent changes. Given this, and that most users are likely to only use/undo a few of the most recent commands, limiting cycling/undo to a maximum depth of 10 eligible actions in the past will cover most user needs while avoiding unnecessary complexity and unexpected behaviour.
 
 <br>
 
