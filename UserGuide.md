@@ -658,7 +658,6 @@ Action     | Format, Examples
 **Help**   | `help`
 **List**   | `list`
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL r/ROLE d/DEPARTMENT [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com r/Software Engineer d/Engineering t/friend t/colleague`
-**Search** | `search KEYWORD...`<br> e.g., `search James`
 **Search** | `search KEYWORD [MORE_KEYWORDS]...`<br> e.g., `search James @`
 **Stat** | `stat MODE`<br> e.g., `stat tag`, `stat dept`, `stat role`
 **Cycle commands** | up/down arrow keys
