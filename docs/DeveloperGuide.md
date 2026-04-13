@@ -963,11 +963,40 @@ testers are expected to do more *exploratory* testing.
         Expected: No csv file is created. An error message is shown, indicating invalid path.
 
 
+      
 
-### Saving data
+### Saving and loading data
 
-1. Dealing with missing/corrupted data files
+#### Dealing with corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+**Prerequisites:**
+- In the data folder, have a `HRmanager.json` file with at least one employee entry.
 
-1. _{ more test cases …​ }_
+**Test case 1:**
+Open `HRmanager.json` and modify an employee so that a mandatory field (e.g., name, phone, email, role, department) is set to an empty string: `""`. Start up the application.
+<br><br>
+**Expected:**
+- The employee list will appear blank in the UI.
+- A warning message is shown to the user.
+- The corrupted `HRmanager.json` file is not overwritten on exit or window close; it remains on disk in its corrupted state.
+- The file will be overwritten with clean (empty) data only after a data-modifying command (e.g., add, delete, edit) is executed.
+
+**Test case 2:**
+Delete a mandatory field from an employee entry, or insert an invalid value (e.g., special characters in name, malformed email). Start up the application.
+<br><br>
+**Expected:**
+- Similar to previous: blank list, warning message, file not overwritten until a data-modifying command is executed.
+
+#### Dealing with missing data files
+
+**Prerequisites:**
+- Have an existing `HRmanager.json` file in the data folder.
+
+**Test case 3:**
+Delete or rename `HRmanager.json`. Start up the application.
+<br><br>
+**Expected:**
+- The initial sample employee list will appear in the UI.
+- The `HRmanager.json` file will be created (with sample entries) only after a data-modifying command (e.g., add, delete, edit) is executed.
+
+### Future Enhancements
