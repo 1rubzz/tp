@@ -120,6 +120,7 @@
         "features": "Features",
         "other-features": "Other features",
         "appendix": "Appendix",
+        "conventions-used": "Conventions used",
         "quick-start": "Quick start",
         "features-2": "Features",
         "notes-about-the-command-format": "Notes about the command format",
@@ -144,7 +145,6 @@
         "appendix-2": "Appendix",
         "faq": "FAQ",
         "known-issues": "Known issues",
-        "future-implementations": "Future implementations",
         "command-summary": "Command summary"
       },
       "headingKeywords": {}
