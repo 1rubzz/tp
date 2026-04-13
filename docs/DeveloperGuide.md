@@ -685,6 +685,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Extensions**
 
 * 2a. The requested mode is invalid.
+  <br><br>
   * 2a1. System displays an error message indicating the correct format.
   <br> *Use case ends.*<br><br>
 
