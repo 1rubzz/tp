@@ -175,11 +175,11 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### Undo feature
 
-#### Proposed Implementation
+#### Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The undo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
 * `VersionedAddressBook#commit()` — Saves the current HRmanager state in its history.
 * `VersionedAddressBook#undo()` — Restores the previous HRmanager state from its history.
@@ -451,7 +451,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. System detects an error (e.g. format/syntax/duplicates error) in the entered data.
+* 1a. System detects an error (e.g. format/syntax/duplicate error) in the entered data.
     * 1a1. System displays an error message with the correct format.
     * 1a2. User enters new data.
     Steps 1a1-1a2 are repeated until the data entered are correct.
@@ -466,7 +466,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to remove one or more employees by specifying their index numbers in the displayed list.
 2. System validates the provided index numbers.
 3. System prompts the user for confirmation that they want to execute a deletion.
-4. User confirms their intent to execute a 'delete' command, entering 'y'.
+4. User confirms their command.
 5. System removes the corresponding employee records from the system.
 6. System displays a confirmation message indicating the number of employees deleted.
 
@@ -476,8 +476,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. System detects an error (e.g. format/syntax error) in the entered data.
     * 1a1. System displays an error message with the correct format.
-    * 1a2. User enters new data in the correct format.
-      Steps 1a1-1a2 are repeated until the data entered are correct.
+    * 1a2. User enters new data until it is in the correct format.
 
     Use case resumes from step 2.
 
@@ -487,7 +486,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes from step 2.
 
-* 4a. User enter 'n' instead.
+* 4a. User declines the confirmation of the command.
     * 4a1. System displays a response indicating that the command was aborted.
 
     Use case ends.
@@ -529,7 +528,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at step 1.
 
-* 1b. The user provides more than 5 keywords, or at least one keyword longer than 50 characters.
+* 1b. The user provides invalid input keywords.
     * 1b1. System displays an invalid command format message together with the proper `search` usage.
 
     Use case resumes at step 1.
@@ -642,8 +641,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  System {edits the employee's phone number in the records}.
 3.  System {displays confirmation message}. (If the command is confirmable)
 4.  User suddenly recalls that they have forgotten to also edit the employee's email address.
-5.  User presses the up arrow (PgUp) key in the CLI.
-6.  System prefills the CLI with the command used in step 5.
+5.  User presses the **non-numpad Up arrow key** in the CLI.
+6.  System prefills the CLI with the most recently executed command (from step 1)."
 7.  User deletes the {phone field} and types {the email details}, then enters the command. (The command {"edit"} and the relevant {employee index} is already prepared)
 8.  System {edits the employee's email address in the records}.
 
@@ -657,12 +656,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case ends.
 
 * 5a. There are no previous successfully executed commands.
-    * 5a1. System does not do anything in response to up arrow (PgUp) key.
+    * 5a1. System does not do anything in response to the up arrow key.
 
     Use case ends.
 
-* 6a. There are up to 10 previous successfully executed commands. User presses up arrow (PgUp) again.
-    * 6a1. User presses up arrow (PgUp) key until their desired previous executed command appears. If there is already an input in the CLI, it is saved. User can also press down arrow (PgDn) key to get back to the more recent/original command.
+* 6a. There are up to 10 previous successfully executed commands. User presses up arrow key again.
+    * 6a1. User presses up arrow key until their desired previous executed command appears. If there is already an input in the CLI, it is saved. User can also press down arrow key to get back to the more recent/original command.
     * 6a2. User stops cycling at their desired past/current command.
 
     Use case resumes at step 7.
