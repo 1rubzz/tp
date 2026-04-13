@@ -13,8 +13,9 @@ public class Department {
     public static final String MESSAGE_CONSTRAINTS =
             "Departments should only consist of alphanumeric characters, "
             + "hyphens and spaces, and be between 1 and " + MAX_LENGTH + " characters long.\n"
-            + "The department should not start or end with a space or hyphen, "
-            + "and it should not contain consecutive spaces or hyphens.";
+            + "Departments should not start or end with a space or hyphen.\n"
+            + "Departments should not contain consecutive spaces, consecutive hyphens, "
+            + "or a space beside a hyphen.";
 
     /*
      * The first character of the department must not be a whitespace,
