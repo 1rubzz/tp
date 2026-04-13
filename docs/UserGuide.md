@@ -132,10 +132,10 @@ This yellow box with a redo icon indicates that action can be undone. Use `undo`
 ### Notes about the command format
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
-* Items in square brackets are optional.<br>
+  e.g. in `add n/NAME`, `NAME` is a parameter which can be replaced by `John Doe`.
+* Parameters in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-* Items with `…` after them can be used multiple times including zero times.<br>
+* Parameters with `…` after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -165,7 +165,7 @@ Format: `list`
 
 <box theme="success" icon=":fa-solid-lightbulb:">
 
-Running `list` returns the display to the full global employee list after any narrowed search results view.
+Running `list` returns the display to the full global employee list after any narrowed search is done.
 </box>
 
 Successful command output:
@@ -247,7 +247,7 @@ Successful command output:
 * __Characters:__ The index should consist of only numeric digits.
 * __Input restrictions:__ The index must be a positive integer (1, 2, 3, …​) and must be within the range of the currently displayed employee list. For example, if there are currently 5 employees shown in the list, the index must be between 1 and 5 (inclusive).
 * `edit` Command: Exactly one index must be provided. The above character and input restrictions apply.
-* Exception: `delete` Command accepts up to 10 indexes. Duplicate indexes are removed before the command is processed. The above character and input restrictions apply to each index provided. If any index is invalid, the entire command fails (no partial deletion).
+* Exception: `delete` Command accepts up to 10 distinct indexes. Duplicate indexes are removed before the command is processed. The above character and input restrictions apply to each index provided. If any index is invalid, the entire command fails (no partial deletion).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -258,7 +258,7 @@ Searches across all employee fields (name, phone, email, role, department, tags)
 * The search is case-insensitive and finds anyone matching any keyword (e.g., `John` finds John, Johnson, Johnny). 
 * Special characters like `@`,`_`,`-`, and `.` are allowed.
 
-Format: `search KEYWORD [MORE_KEYWORDS]…` (keywords are separated by whitespace)
+Format: `search KEYWORD [MORE_KEYWORDS]…` (keywords are separated by a space (` `))
 
 <box type="info" icon=":fa-solid-code:">
 
@@ -284,7 +284,7 @@ Successful command output:
 
 Switches the statistics dashboard to show tags, departments, or roles distributions - providing HR managers with a breakdown of workforce composition to inform decisions on resource allocation.
 * Exactly **one** mode must be provided. Mode is case-insensitive. 
-* The dashboard is unaffected by on-screen filters
+* The dashboard always displays statistics for the global list, regardless of current search filters.
 * By default, the dashboard starts in department mode. 
 * Values are sorted by count (highest first), then alphabetically for ties.
 
@@ -329,9 +329,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROLE] [d/DEPARTMENT] [t/TAG]
 <box type="info" icon=":fa-solid-code:">
 
 Examples:
-* `edit 1 p/91234567 e/johndoe@example.com` edits the phone number and email address of the 1st employee to be `91234567` and `johndoe@example.com` respectively.
-* `edit 2 n/Betsy Crower d/Marketing t/` edits the name and department of the 2nd employee to be `Betsy Crower` and `Marketing`, and clears all existing tags.
-* `edit 3 t/friend t/colleague` changes the tags of the 3rd employee to "friend" and "colleague". (If the employee already had "friend", you must retype it to keep it; otherwise, it will be replaced.)
+* `edit 1 p/91234567 e/johndoe@example.com` edits the 1st employee's phone number to `91234567` and their email address to `johndoe@example.com`.
+* `edit 2 n/Betsy Crower d/Marketing t/` edits the 2nd employee's name to `Betsy Crower` and their department to `Marketing`, and clears all of their existing tags.
+* `edit 3 t/junior t/intern` changes the tags of the 3rd employee to "junior" and "intern". (If the employee already had "junior", you must retype it to keep it; otherwise, it will be replaced.)
 </box>
 
 <box theme="success" icon=":fa-solid-lightbulb:">
@@ -367,7 +367,7 @@ Alias: `del`
 
 Examples:
 * `delete 2` deletes the 2nd employee in the currently displayed list.
-* `del 4` deletes the 4th employee using the alias.
+* `del 4` deletes the 4th employee.
 * `list` followed by `delete 1 3 5` deletes the 1st, 3rd, and 5th employees in the full list.
 * `search Betsy` followed by `delete 1` deletes the 1st employee in the filtered search results.
 * `delete 3 1 3` deletes the employees at indexes `3` and `1`; the repeated `3` is ignored.
@@ -415,8 +415,9 @@ Undo Possible: This command can be reversed if executed recently. See [Undo](#un
 ### Import employee data: `import`
 
 Replaces all current data with employees from a CSV (comma-separated values) file - allowing HR managers to quickly load employee records from spreadsheets or migrate data from existing HR systems.
-* File must end in `.csv` with headers `name`, `phone`, `email`, `role`, `department` (`tags` optional). If used, one `tags` column is accepted. All tags must be included in one single field, e.g. `tag1, tag2, tag3`. All data validation rules apply (e.g., no duplicate employee names, invalid or missing fields).
-* In the case of duplicate headers, the left-most column is taken.
+* File path must end in `.csv`.
+* File must have headers `name`, `phone`, `email`, `role`, `department` (`tags` optional). If used, one `tags` column is accepted. All tags must be included in one single field, e.g. `tag1, tag2, tag3`. All data validation rules apply (e.g., no duplicate employee names, invalid or missing fields).
+* In the case of duplicate headers, the leftmost column is taken.
 * The file size limit is 100kB, and employee limit is 200. 
 * For MacOS/Linux, file paths containing spaces must be quoted. Only one layer of quotes can be parsed.
 
