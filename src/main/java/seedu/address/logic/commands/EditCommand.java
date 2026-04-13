@@ -57,6 +57,8 @@ public class EditCommand extends Command implements ConfirmableCommand {
     public static final String ACTION_SUMMARY_FORMAT = "Edit employee at index %1$d.";
     public static final String IMPACT_SUMMARY =
             "Provided fields will overwrite existing employee details.";
+    public static final String IMPACT_SUMMARY_WITH_NAMES_FORMAT =
+            "Provided fields will overwrite existing employee details for: %1$s.";
     public static final String ACTION_DESCRIPTION = "edit employee details";
 
     private final Index index;
@@ -90,6 +92,22 @@ public class EditCommand extends Command implements ConfirmableCommand {
         assert actionSummary != null && !actionSummary.isEmpty() : "Action summary should not be null or empty";
 
         return ConfirmationPromptFormatter.format(actionSummary, IMPACT_SUMMARY);
+    }
+
+    @Override
+    public String getConfirmationPrompt(Model model) {
+        requireNonNull(model);
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        String actionSummary = String.format(ACTION_SUMMARY_FORMAT, index.getOneBased());
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            return ConfirmationPromptFormatter.format(actionSummary, IMPACT_SUMMARY);
+        }
+
+        String targetName = lastShownList.get(index.getZeroBased()).getName().getFullName();
+        String impactSummary = String.format(IMPACT_SUMMARY_WITH_NAMES_FORMAT, targetName);
+        return ConfirmationPromptFormatter.format(actionSummary, impactSummary);
     }
 
     /**
