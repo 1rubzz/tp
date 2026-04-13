@@ -929,7 +929,7 @@ Test the following for each confirmable command:
     2. Test case: Enter `clear`. When prompted, enter `n`.<br>
        Expected: The clear operation is cancelled. No changes are made. Cancellation message is shown. <br><br>
 
-4. Exiting the application (exit command, if confirmable)
+4. Exiting the application (exit command)
     1. Test case: Enter `exit`. When prompted, enter `y`.<br>
        Expected: The application closes.
     2. Test case: Enter `exit`. When prompted, enter `n`.<br>
@@ -1069,16 +1069,19 @@ Delete or rename `HRmanager.json`. Start up the application.
 - The initial sample employee list will appear in the UI.
 - The `HRmanager.json` file will be created (with sample entries) only after a data-modifying command (e.g., add, delete, edit) is executed.
 
-### Future Enhancements
+### Planned Enhancements
 
-1. **Allow Duplicate Names**: Support adding employees with the exact same name, provided they can be uniquely identified by other fields such as their phone numbers.
-2. **Non-ASCII Character Support**: Extend data validation to support non-ASCII characters, allowing for diverse and international names.
-3. **Support for Phone Extensions**: Update the phone number constraints and formatting to accept different phone extensions.
-4. **Increase Maximum Number of Employees**: Optimize the underlying storage and UI to smoothly handle a significantly larger database of employees.
-5. **Detailed Undo Feedback**: Modify the `undo` command's success message to explicitly state which command was just undone.
-6. **Expanded Import/Export Formats**: Support importing and exporting data using other common file formats beyond `.csv` (e.g., `.xlsx`).
-7. **Fix Multi-screen Coordinate Bug**: Resolve an issue where opening the app on a single screen, after previously moving it to a secondary screen, causes the GUI to open off-screen.
-8. **Increase Undo Limit**: Increase the capacity of the undo history queue to allow users to revert more previous commands.
+Team Members: 5
+
+1. **Same-Name Support:** Allow adding multiple employees who share the exact same legal name, uniquely identified by other fields such as phone, email, or an auto-generated employee ID (instead of requiring artificial suffixes like "John Doe - Junior").
+2. **Unique Contact Validation:** Enforce uniqueness on phone numbers and email addresses to prevent duplicate contact details across employees, while allowing multiple employees to share the same legal name without artificial suffixes.
+3. **Non-ASCII Character Support**: Extend data validation to support non-ASCII characters, allowing for diverse and international names.
+4. **Support for Phone Extensions**: Update the phone number constraints and formatting to accept different phone extensions.
+5. **Increase Maximum Number of Employees**: Optimize the underlying storage and UI to smoothly handle a significantly larger database of employees.
+6. **Detailed Undo Feedback**: Modify the `undo` command's success message to explicitly state which command was just undone.
+7. **Expanded Import/Export Formats**: Support importing and exporting data using other common file formats beyond `.csv` (e.g., `.xlsx`).
+8. **Fix Multi-screen Coordinate Bug**: Resolve an issue where opening the app on a single screen, after previously moving it to a secondary screen, causes the GUI to open off-screen.
+9. **Increase Undo Limit**: Increase the capacity of the undo history queue to allow users to revert more previous commands.
 
 ## **Appendix: Effort**
 
@@ -1098,5 +1101,5 @@ To elevate the application from a basic address book to a professional tool, we 
 
 ### 3. Import / Export System
 While AB3 handles basic background JSON, HR professionals primarily work with spreadsheets. We implemented robust `.csv` Import and Export commands.
-*   **The Effort:** This was far more difficult than simple File I/O. We had to build a custom CSV parser and serializer capable of mapping raw strings to our domain-specific objects (like `Department`, `Leave`, or `Role`), whilst handling formatting errors (duplicates, missing values, etc.) gracefully. The system had to be capable of bulk-adding entries, validating them on the fly, and rejecting malformed files without corrupting the existing HRManager database.
+*   **The Effort:** This was far more difficult than simple File I/O. We had to build a custom CSV parser and serializer capable of mapping raw strings to our domain-specific objects (like `Department` or `Role`), whilst handling formatting errors (duplicates, missing values, etc.) gracefully. The system had to be capable of bulk-adding entries, validating them on the fly, and rejecting malformed files without corrupting the existing HRManager database.
 
