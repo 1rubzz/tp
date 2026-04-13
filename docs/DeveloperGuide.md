@@ -473,9 +473,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 1a. System detects an error (e.g. format/syntax error) in the provided data.
     * 1a1. System displays an error message with the correct format.
-    * 1a2. User provides new data until it is in the correct format.
-
-    Use case resumes from step 2.
+      * 1a2. User provides new data until it is in the correct format.
+      <br> *Use case resumes from step 2.*<br><br>
 
 * 2a. One or more indexes are invalid (e.g. index exceeds list size).
     * 2a1. System displays an error message indicating the invalid index.

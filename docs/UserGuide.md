@@ -106,7 +106,7 @@ This yellow box with a redo icon indicates that action can be undone. Use `undo`
 
 <br>
 
-![Ui](images/Ui.png)
+![Ui](images/Ui_annotated.png)
 
 <br>
 
