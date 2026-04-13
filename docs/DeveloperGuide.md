@@ -972,8 +972,7 @@ Delete or rename `HRmanager.json`. Start up the application.
 5. **Detailed Undo Feedback**: Modify the `undo` command's success message to explicitly state which command was just undone.
 6. **Expanded Import/Export Formats**: Support importing and exporting data using other common file formats beyond `.csv` (e.g., `.xlsx`).
 7. **Fix Multi-screen Coordinate Bug**: Resolve an issue where opening the app on a single screen, after previously moving it to a secondary screen, causes the GUI to open off-screen.
-8. **Fix Minimized Help Window Bug**: Resolve an issue where, if the Help Window is minimized, running the `help` command again (or using the menu/F1) does not bring a Help Window into focus.
-9. **Increase Undo Limit**: Increase the capacity of the undo history queue to allow users to revert more previous commands.
+8. **Increase Undo Limit**: Increase the capacity of the undo history queue to allow users to revert more previous commands.
 
 ## **Appendix: Effort**
 
@@ -987,7 +986,7 @@ One of the biggest changes to the project was the introduction of the Stats Pane
 
 ### 2. Quality of Life (QoL) Features
 To elevate the application from a basic address book to a professional tool, we dedicated considerable time to QoL features that streamline the user experience:
-*   **Confirmation States:** For destructive actions (like clearing the database), we implemented a confirmation requirement. This involved modifying the standard command execution loop to pause, wait for a `Y`/`N` input, and hold a temporary state without breaking the overarching Model.
+*   **Confirmation Prompts:** For destructive actions (like clearing the database), we implemented a confirmation requirement. This involved modifying the standard command execution loop to pause, wait for a `Y`/`N` input, and hold a temporary state without breaking the overarching Model.
 *   **Command Cycling:** We implemented shell-like command history navigation (using up/down arrow keys), which required adding a command history tracker to the UI controller and syncing it with user keystrokes.
 *   **Undo Functionality:** Introducing an undo mechanism was a highly complex endeavor. It required us to snapshot the system state before any mutative command, ensuring we could safely revert data without memory leaks or state corruption.
 
