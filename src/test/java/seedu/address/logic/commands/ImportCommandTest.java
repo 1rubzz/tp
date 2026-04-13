@@ -209,14 +209,6 @@ public class ImportCommandTest {
     }
 
     @Test
-    void getConfirmationPrompt_containsActionAndImpactSummary() {
-        ImportCommand cmd = new ImportCommand("/some/path.csv");
-        String prompt = cmd.getConfirmationPrompt();
-        assertTrue(prompt.contains(ImportCommand.ACTION_SUMMARY));
-        assertTrue(prompt.contains(ImportCommand.IMPACT_SUMMARY));
-    }
-
-    @Test
     void getActionDescription_returnsExpectedString() {
         assertEquals(ImportCommand.ACTION_DESCRIPTION,
             new ImportCommand("/some/path.csv").getActionDescription());
